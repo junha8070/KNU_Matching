@@ -24,7 +24,7 @@ public class LoginActivity extends AppCompatActivity {
     private DatabaseReference mDatabaseRef;
     private Button btn_login, btn_IdFind, btn_PwdFind, btn_Register;
     private EditText edt_Email, edt_Pwd;
-    //private AppCompatEditText edt_Email, edt_Pwd;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +41,14 @@ public class LoginActivity extends AppCompatActivity {
 
         edt_Email = findViewById(R.id.edt_email);
         edt_Pwd = findViewById(R.id.edt_pwd);
+
+        btn_IdFind.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(LoginActivity.this, FindIDActivity.class);
+                startActivity(intent);
+            }
+        });
 
         btn_Register.setOnClickListener(new View.OnClickListener() {
             @Override

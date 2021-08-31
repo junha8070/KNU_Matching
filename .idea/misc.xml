@@ -3,16 +3,11 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/yulim/AndroidStudioProjects/Knu_Matching/app/src/main/res/layout/activity_find_idactivity.xml" value="0.4" />
         <entry key="..\:/Users/yulim/AndroidStudioProjects/Knu_Matching/app/src/main/res/layout/activity_login.xml" value="0.22916666666666666" />
         <entry key="..\:/Users/yulim/AndroidStudioProjects/Knu_Matching/app/src/main/res/layout/activity_main.xml" value="0.24974358974358973" />
         <entry key="..\:/Users/yulim/AndroidStudioProjects/Knu_Matching/app/src/main/res/layout/activity_register.xml" value="0.25364583333333335" />
         <entry key="..\:/Users/yulim/AndroidStudioProjects/Knu_Matching/app/src/main/res/layout/activity_student_certificate.xml" value="0.22864583333333333" />
-        <entry key="..\:/Users/bhyn9/AndroidStudioProjects/Knu_Matching/app/src/main/res/layout/activity_login.xml" value="0.4" />
-        <entry key="..\:/Users/bhyn9/AndroidStudioProjects/Knu_Matching/app/src/main/res/layout/activity_main.xml" value="0.1" />
-        <entry key="..\:/Users/bhyn9/AndroidStudioProjects/Knu_Matching/app/src/main/res/layout/activity_register.xml" value="0.11818181818181818" />
-        <entry key="..\:/Users/yulim/AndroidStudioProjects/Knu_Matching/app/src/main/res/layout/activity_login.xml" value="0.22916666666666666" />
-        <entry key="..\:/Users/yulim/AndroidStudioProjects/Knu_Matching/app/src/main/res/layout/activity_main.xml" value="0.24974358974358973" />
-        <entry key="..\:/Users/yulim/AndroidStudioProjects/Knu_Matching/app/src/main/res/layout/activity_register.xml" value="0.25364583333333335" />
       </map>
     </option>
   </component>
