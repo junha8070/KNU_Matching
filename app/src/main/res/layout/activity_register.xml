@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".Register_Activity"
+    tools:context=".RegisterActivity"
     android:gravity="center">
 
     <TextView
@@ -71,6 +71,7 @@
             android:id="@+id/edt_Password"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:inputType="textPassword"
             android:ems="10" />
     </LinearLayout>
 
@@ -86,10 +87,16 @@
             android:text="Nickname : " />
 
         <EditText
-            android:id="@+id/edt_Nickname"
+            android:id="@+id/edt_nickname"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ems="10" />
+
+        <Button
+            android:id="@+id/btn_check_nick"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="확인" />
     </LinearLayout>
 
     <Button

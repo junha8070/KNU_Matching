@@ -5,6 +5,16 @@ public class UserAccount {
     private String emailId;
     private String password;
     private String idToken;
+    private String nickName;
+
+    public String getNickName() {
+        return nickName;
+    }
+
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
+    }
+
 
     public String getIdToken() {
         return idToken;

@@ -13,10 +13,10 @@
             android:name=".MainActivity"
             android:exported="true" />
         <activity
-            android:name=".Register_Activity"
+            android:name=".RegisterActivity"
             android:exported="true" />
         <activity
-            android:name=".Login_Activity"
+            android:name=".LoginActivity"
             android:exported="true" />
     </application>
 

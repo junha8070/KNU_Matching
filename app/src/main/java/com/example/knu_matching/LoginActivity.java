@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
 
-public class Login_Activity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity {
 
     private Button btn_login, btn_IdFind, btn_PwdFind;
     private EditText edt_Email, edt_Pwd;
