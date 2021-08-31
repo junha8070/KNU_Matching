@@ -3,6 +3,10 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/Excellent_Summer/AndroidStudioProjects/Knu_Matching/app/src/main/res/layout/activity_login.xml" value="0.1984375" />
+        <entry key="..\:/Users/Excellent_Summer/AndroidStudioProjects/Knu_Matching/app/src/main/res/layout/activity_main.xml" value="0.18385416666666668" />
+        <entry key="..\:/Users/Excellent_Summer/AndroidStudioProjects/Knu_Matching/app/src/main/res/layout/activity_register.xml" value="0.2609375" />
+        <entry key="..\:/Users/Excellent_Summer/AndroidStudioProjects/Knu_Matching/app/src/main/res/layout/activity_student_certificate.xml" value="0.1" />
         <entry key="..\:/Users/bhyn9/AndroidStudioProjects/Knu_Matching/app/src/main/res/layout/activity_login.xml" value="0.4" />
         <entry key="..\:/Users/bhyn9/AndroidStudioProjects/Knu_Matching/app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="..\:/Users/bhyn9/AndroidStudioProjects/Knu_Matching/app/src/main/res/layout/activity_register.xml" value="0.11818181818181818" />
@@ -12,7 +16,7 @@
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">
