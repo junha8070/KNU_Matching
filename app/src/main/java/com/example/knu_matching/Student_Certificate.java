@@ -19,7 +19,7 @@ public class Student_Certificate extends AppCompatActivity {
 
     private WebView mWebView;
     private WebSettings mWebSettings;
-    public String StudentId=null, Major=null;
+    public String StudentId=null, Major=null, Email=null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +77,8 @@ public class Student_Certificate extends AppCompatActivity {
             String EndIDTarget = "\",\"inputDm";
             String StartMajorTarget = "userDeptNm\":\"";
             String EndMajorTarget = "\",\"userDeptCd";
+            String StartEmailTarget = "\"userMail\":\"";
+            String EndEmailTarget = "\",\"userPosi\"";
 
             int start = html.indexOf(StartIDTarget);
             int End = html.indexOf(EndIDTarget);
@@ -89,15 +91,22 @@ public class Student_Certificate extends AppCompatActivity {
             Major = html.substring(start + 13, End);
             System.out.println("디버깅5");
             System.out.println("학번:" + Major);
-            backMainActivity(StudentId,Major);
+
+            start = html.indexOf(StartEmailTarget);
+            End = html.indexOf(EndEmailTarget);
+            Email = html.substring(start + 12, End);
+            System.out.println("디버깅5");
+            System.out.println("학번:" + Email);
+            backMainActivity(StudentId,Major,Email);
         }
     }
 
-    private void backMainActivity(String StudentId, String Major) {
+    private void backMainActivity(String StudentId, String Major, String Email) {
         System.out.println("디버깅3");
         Intent intent = new Intent();
         intent.putExtra("StudentId",StudentId);
         intent.putExtra("Major",Major);
+        intent.putExtra("Email",Email);
         setResult(Activity.RESULT_OK, intent);
         finish();
     }

@@ -34,9 +34,9 @@ public class RegisterActivity extends AppCompatActivity {
 
     private FirebaseAuth mFirebaseAuth;
     private DatabaseReference mDatabaseref;
-    private EditText edt_Email, edt_password, edt_Nickname, edt_StudentID;
+    private EditText edt_StudentID, edt_Major,edt_Email, edt_password, edt_repassword, edt_Nickname;
     private Button btn_finish, btn_check_nick, btn_knuID;
-    private String strID, strEmail, strPassword, strNick, StudentId, Major;
+    private String strID, strEmail, strPassword, strNick, Major;
     private boolean nickname_state;
 
     @Override
@@ -49,12 +49,16 @@ public class RegisterActivity extends AppCompatActivity {
         DatabaseReference mProfieDatabaseReference = mDatabaseref.child("UserAccount");
 
         edt_StudentID = findViewById(R.id.edt_StudentID);
+        edt_Major = findViewById(R.id.edt_Major);
         edt_Email = findViewById(R.id.edt_Email);
         edt_password = findViewById(R.id.edt_Password);
+        edt_repassword = findViewById(R.id.edt_RePassword);
         edt_Nickname = findViewById(R.id.edt_nickname);
+
+
+        btn_knuID = findViewById(R.id.btn_knuID);
         btn_check_nick = findViewById(R.id.btn_check_nick);
         btn_finish = findViewById(R.id.btn_registerButton);
-        btn_knuID = findViewById(R.id.btn_knuID);
 
         btn_check_nick.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -148,11 +152,14 @@ public class RegisterActivity extends AppCompatActivity {
                 public void onActivityResult(ActivityResult result) {
                     if (result.getResultCode() == Activity.RESULT_OK) {
                         Log.d(TAG, "RegisterActivity로 돌아왔다. ");
-                        StudentId = result.getData().getStringExtra("StudentId");
-                        System.out.println("회원가입 디버깅:"+StudentId);
+                        strID = result.getData().getStringExtra("StudentId");
+                        System.out.println("회원가입 디버깅:"+strID);
                         Major = result.getData().getStringExtra("Major");
                         System.out.println("회원가입 디버깅:"+Major);
-                        edt_StudentID.setText(StudentId);
+                        strEmail = result.getData().getStringExtra("Email");
+                        edt_StudentID.setText(strID);
+                        edt_Major.setText(Major);
+                        edt_Email.setText(strEmail);
                     }
                 }
             });

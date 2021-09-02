@@ -5,105 +5,161 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".RegisterActivity"
-    android:gravity="center">
+    tools:context=".RegisterActivity">
 
-    <TextView
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="회원가입"
+            android:textAlignment="center" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="강남대학교 종합정보시스템 기준으로\n학번과 전공과 이메일이 채워집니다.\n이메일은 수정가능합니다!"
+            android:textAlignment="center" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_margin="20dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="회원가입"
-        android:textAlignment="center" />
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:orientation="horizontal">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Student ID : " />
-
         <EditText
+            android:background="#FFFFFFFF"
             android:id="@+id/edt_StudentID"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ems="10" />
-
-        <Button
-            android:id="@+id/btn_knuID"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="확인" />
+            android:layout_height="wrap_content"
+            android:enabled="false"
+            android:hint="학번(조회버튼을 눌러주세요!)" />
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_margin="20dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:orientation="horizontal">
 
-        <TextView
+        <EditText
+            android:background="#FFFFFFFF"
+            android:id="@+id/edt_Major"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Email : " />
+            android:enabled="false"
+            android:hint="전공(조회버튼을 눌러주세요!)" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_margin="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="vertical">
 
         <EditText
+            android:background="#FFFFFFFF"
             android:id="@+id/edt_Email"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ems="10" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:orientation="horizontal">
-
+            android:hint="Email(조회버튼을 눌러주세요!)"
+            android:inputType="textEmailAddress" />
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Password : " />
+            android:text="* ID로 쓰입니다! *"/>
 
-        <EditText
-            android:id="@+id/edt_Password"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:inputType="textPassword"
-            android:ems="10" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Nickname : " />
-
-        <EditText
-            android:id="@+id/edt_nickname"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ems="10" />
-
-        <Button
-            android:id="@+id/btn_check_nick"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="확인" />
     </LinearLayout>
 
     <Button
-        android:id="@+id/btn_registerButton"
+        android:layout_marginBottom="10dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        android:id="@+id/btn_knuID"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="조회" />
+
+    <LinearLayout
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="회원가입" />
+        android:orientation="vertical">
+
+        <EditText
+            android:background="#FFFFFFFF"
+            android:id="@+id/edt_Password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="비밀번호"
+            android:inputType="textPassword" />
+
+        <EditText
+            android:layout_marginTop="20dp"
+            android:background="#FFFFFFFF"
+            android:id="@+id/edt_RePassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="비밀번호 재입력"
+            android:inputType="textPassword" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:gravity="center"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="horizontal">
+
+        <EditText
+            android:background="#FFFFFFFF"
+            android:id="@+id/edt_nickname"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="Nickname" />
+
+        <Button
+            android:layout_weight="3"
+            android:id="@+id/btn_check_nick"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="중복\n확인" />
+    </LinearLayout>
+
+
+
+    <LinearLayout
+        android:layout_margin="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/btn_registerButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="회원가입" />
+    </LinearLayout>
 
 </LinearLayout>
