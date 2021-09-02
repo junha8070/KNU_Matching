@@ -42,7 +42,8 @@ public class Student_Certificate extends AppCompatActivity {
                 Uri uri = Uri.parse(view.getUrl()); //url을 uri로 변경
                 System.out.println("테스트 디버깅:" + uri);
                 if (uri.toString().contains("web.kangnam.ac.kr/sso/index.jsp")) {
-                    backMainActivity();
+                    System.out.println("디버깅2");
+                    //로딩창 띄워버리기
                 }
 
                 view.loadUrl(url);
@@ -80,17 +81,20 @@ public class Student_Certificate extends AppCompatActivity {
             int start = html.indexOf(StartIDTarget);
             int End = html.indexOf(EndIDTarget);
             StudentId = html.substring(start + 11, End);
+            System.out.println("디버깅4");
             System.out.println("학번:" + StudentId);
-
 
             start = html.indexOf(StartMajorTarget);
             End = html.indexOf(EndMajorTarget);
             Major = html.substring(start + 13, End);
+            System.out.println("디버깅5");
             System.out.println("학번:" + Major);
+            backMainActivity(StudentId,Major);
         }
     }
 
-    private void backMainActivity() {
+    private void backMainActivity(String StudentId, String Major) {
+        System.out.println("디버깅3");
         Intent intent = new Intent();
         intent.putExtra("StudentId",StudentId);
         intent.putExtra("Major",Major);

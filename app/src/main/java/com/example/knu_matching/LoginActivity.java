@@ -25,7 +25,6 @@ public class LoginActivity extends AppCompatActivity {
     private Button btn_login, btn_IdFind, btn_PwdFind, btn_Register;
     private EditText edt_Email, edt_Pwd;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,11 +75,9 @@ public class LoginActivity extends AppCompatActivity {
                         }else {
                             Toast.makeText(LoginActivity.this, "이메일이나 비밀번호 오류", Toast.LENGTH_SHORT).show();
                         }
-
                     }
                 });
             }
         });
-
     }
 }
