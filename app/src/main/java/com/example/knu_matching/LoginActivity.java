@@ -41,6 +41,14 @@ public class LoginActivity extends AppCompatActivity {
         edt_Email = findViewById(R.id.edt_email);
         edt_Pwd = findViewById(R.id.edt_pwd);
 
+        btn_PwdFind.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(LoginActivity.this, FindPasswordActivity.class);
+                startActivity(intent);
+            }
+        });
+
         btn_IdFind.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

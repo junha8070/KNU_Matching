@@ -13,6 +13,9 @@
         android:theme="@style/Theme.Knu_Matching"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".FindPasswordActivity"
+            android:exported="true" />
+        <activity
             android:name=".FindIDActivity"
             android:exported="true" />
         <activity

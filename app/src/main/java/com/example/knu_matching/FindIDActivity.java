@@ -59,9 +59,9 @@ public class FindIDActivity extends AppCompatActivity {
                             nickname_state = true;
                             System.out.println("test_state" + nickname_state);
 
-//                            String key = mProfieDatabaseReference.;
+                            String key = mProfieDatabaseReference.getKey();
 
-//                            System.out.println("test_state" + key);
+                            System.out.println("test_state" + key);
 
                             Toast.makeText(FindIDActivity.this, "", Toast.LENGTH_LONG).show();
 
