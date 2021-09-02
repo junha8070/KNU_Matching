@@ -32,7 +32,6 @@ import com.google.firebase.database.ValueEventListener;
 
 public class RegisterActivity extends AppCompatActivity {
 
-
     private FirebaseAuth mFirebaseAuth;
     private DatabaseReference mDatabaseref;
     private EditText edt_Email, edt_password, edt_Nickname, edt_StudentID;
