@@ -1,4 +1,4 @@
-package com.example.knu_matching;
+package com.example.knu_matching.membermanage;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -11,6 +11,8 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+
+import com.example.knu_matching.R;
 
 /*
 실제 존재하는 학번인지 확인하는 코드

@@ -1,22 +1,15 @@
-package com.example.knu_matching;
+package com.example.knu_matching.main;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.viewpager.widget.ViewPager;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
-import com.example.knu_matching.main.FirstFragment;
-import com.example.knu_matching.main.MyViewPagerAdapter;
-import com.example.knu_matching.main.SecondFragment;
-import com.example.knu_matching.main.ThirdFragment;
+import com.example.knu_matching.R;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.google.firebase.auth.FirebaseAuth;

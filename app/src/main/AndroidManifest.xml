@@ -13,22 +13,22 @@
         android:theme="@style/Theme.Knu_Matching"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".FindPasswordActivity"
+            android:name=".membermanage.FindPasswordActivity"
             android:exported="true" />
         <activity
-            android:name=".FindIDActivity"
+            android:name=".membermanage.FindIDActivity"
             android:exported="true" />
         <activity
-            android:name=".Student_Certificate"
+            android:name=".membermanage.Student_Certificate"
             android:exported="true" />
         <activity
-            android:name=".MainActivity"
+            android:name=".main.MainActivity"
             android:exported="true" />
         <activity
-            android:name=".RegisterActivity"
+            android:name=".membermanage.RegisterActivity"
             android:exported="true" />
         <activity
-            android:name=".LoginActivity"
+            android:name=".membermanage.LoginActivity"
             android:exported="true" />
     </application>
 
