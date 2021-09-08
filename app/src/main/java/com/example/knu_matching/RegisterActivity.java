@@ -34,9 +34,9 @@ public class RegisterActivity extends AppCompatActivity {
 
     private FirebaseAuth mFirebaseAuth;
     private DatabaseReference mDatabaseref;
-    private EditText edt_StudentID, edt_Major,edt_Email, edt_password, edt_repassword, edt_Nickname;
+    private EditText edt_StudentID, edt_Major, edt_Email, edt_password, edt_repassword, edt_Nickname;
     private Button btn_finish, btn_check_nick, btn_knuID;
-    private String strID, strEmail, strPassword, strNick, Major;
+    private String strEmail, strPassword, strNick, strMaojr, strStudentId;
     private boolean nickname_state;
 
     @Override
@@ -64,18 +64,15 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                strID = edt_StudentID.getText().toString();
-                strEmail = edt_Email.getText().toString();
-                strPassword = edt_password.getText().toString();
                 strNick = edt_Nickname.getText().toString();
-                System.out.println("test2222   " + strNick +" " + strEmail +" "+ strID);
+                System.out.println("test2222   " + strNick + " " + strEmail + " " + strStudentId);
 
                 mProfieDatabaseReference.orderByChild("nickName").equalTo(strNick).addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        if (snapshot.exists()){
+                        if (snapshot.exists()) {
                             nickname_state = false;
-                            System.out.println("test_state" +nickname_state);
+                            System.out.println("test_state" + nickname_state);
                             Toast.makeText(RegisterActivity.this, "실패패패패패", Toast.LENGTH_SHORT).show();
                         } else {
                             nickname_state = true;
@@ -102,13 +99,13 @@ public class RegisterActivity extends AppCompatActivity {
         btn_finish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                strID = edt_StudentID.getText().toString();
+                strStudentId = edt_StudentID.getText().toString();
                 strEmail = edt_Email.getText().toString();
                 strPassword = edt_password.getText().toString();
                 strNick = edt_Nickname.getText().toString();
-                System.out.println("test" + strNick +" " + strEmail +" "+ strID);
+                System.out.println("test" + strNick + " " + strEmail + " " + strStudentId);
 
-                if (strEmail.trim().equals("") || strPassword.trim().equals("") || strNick.trim().equals("") || strID.trim().equals("")) {
+                if (strEmail.trim().equals("") || strPassword.trim().equals("") || strNick.trim().equals("") || strStudentId.trim().equals("") || strMaojr.trim().equals("")) {
                     Toast.makeText(RegisterActivity.this, "빈칸을 채워주세요:(", Toast.LENGTH_SHORT).show();
                 } else {
                     if (nickname_state == false) {
@@ -123,6 +120,8 @@ public class RegisterActivity extends AppCompatActivity {
                                     UserAccount account = new UserAccount();
                                     account.setIdToken(firebaseUser.getUid());
                                     account.setEmailId(firebaseUser.getEmail());
+                                    account.setStudentId(strStudentId);
+                                    account.setMajor(strMaojr);
                                     account.setNickName(strNick);
                                     account.setPassword(strPassword);
                                     mProfieDatabaseReference.child(firebaseUser.getEmail().replace(".", ">")).setValue(account);
@@ -152,13 +151,13 @@ public class RegisterActivity extends AppCompatActivity {
                 public void onActivityResult(ActivityResult result) {
                     if (result.getResultCode() == Activity.RESULT_OK) {
                         Log.d(TAG, "RegisterActivity로 돌아왔다. ");
-                        strID = result.getData().getStringExtra("StudentId");
-                        System.out.println("회원가입 디버깅:"+strID);
-                        Major = result.getData().getStringExtra("Major");
-                        System.out.println("회원가입 디버깅:"+Major);
+                        strStudentId = result.getData().getStringExtra("StudentId");
+                        System.out.println("회원가입 디버깅:" + strStudentId);
+                        strMaojr = result.getData().getStringExtra("Major");
+                        System.out.println("회원가입 디버깅:" + strMaojr);
                         strEmail = result.getData().getStringExtra("Email");
-                        edt_StudentID.setText(strID);
-                        edt_Major.setText(Major);
+                        edt_StudentID.setText(strStudentId);
+                        edt_Major.setText(strMaojr);
                         edt_Email.setText(strEmail);
                     }
                 }

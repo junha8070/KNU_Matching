@@ -4,8 +4,26 @@ public class UserAccount {
 
     private String emailId;
     private String password;
+    private String major;
     private String idToken;
     private String nickName;
+    private String StudentId;
+
+    public String getStudentId() {
+        return StudentId;
+    }
+
+    public void setStudentId(String studentId) {
+        StudentId = studentId;
+    }
+
+    public String getMajor() {
+        return major;
+    }
+
+    public void setMajor(String major) {
+        this.major = major;
+    }
 
     public String getNickName() {
         return nickName;

@@ -23,7 +23,7 @@ public class FindIDActivity extends AppCompatActivity {
     private DatabaseReference mDatabaseRef;
     private FirebaseAuth mFirebaseAuth;
     boolean nickname_state;
-    String strNick;
+    String strStudentId, strEmail;
 
 
     @Override
@@ -43,19 +43,25 @@ public class FindIDActivity extends AppCompatActivity {
         btn_FindloginId.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                strNick = edt_name.getText().toString();
+                strStudentId = edt_name.getText().toString();
                 System.out.println("test");
-                if(strNick.length() == 0){
+                if(strStudentId.length() == 0){
                     Toast.makeText(FindIDActivity.this, "이름을 입력해 주세요.", Toast.LENGTH_SHORT).show();
                     edt_name.requestFocus();
                     return;
                 }
-                System.out.println("test   " +strNick);
-                mProfieDatabaseReference.orderByChild("nickName").equalTo(strNick).addValueEventListener(new ValueEventListener() {
+                System.out.println("test   " +strStudentId);
+                mProfieDatabaseReference.orderByChild("studentId").equalTo(strStudentId).addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if (snapshot.exists()){
-                            System.out.println("test   " +strNick);
+                            System.out.println("test   " +strStudentId);
+                            System.out.println("test_state" + snapshot);
+                            System.out.println("test_state" + snapshot.toString());
+                            String temp = snapshot.toString();
+                            int start = temp.indexOf("emailId=");
+                            int End = temp.indexOf("}} }");
+                            strEmail = snapshot.toString().substring(start+8,End);
                             nickname_state = true;
                             System.out.println("test_state" + nickname_state);
 
@@ -63,10 +69,10 @@ public class FindIDActivity extends AppCompatActivity {
 
                             System.out.println("test_state" + key);
 
-                            Toast.makeText(FindIDActivity.this, "", Toast.LENGTH_LONG).show();
+                            Toast.makeText(FindIDActivity.this, strEmail, Toast.LENGTH_LONG).show();
 
                         } else {
-                            System.out.println("test   " +strNick);
+                            System.out.println("test   " +strStudentId);
                             nickname_state = false;
                             System.out.println("test_state" +nickname_state);
                             Toast.makeText(FindIDActivity.this, "존재하지 않는 별명", Toast.LENGTH_SHORT).show();
