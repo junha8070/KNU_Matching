@@ -22,6 +22,8 @@ import com.example.knu_matching.main.MainActivity;
 import com.example.knu_matching.R;
 import com.example.knu_matching.UserAccount;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -31,11 +33,17 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.auth.User;
 
 public class RegisterActivity extends AppCompatActivity {
 
     private FirebaseAuth mFirebaseAuth;
     private DatabaseReference mDatabaseref;
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private EditText edt_StudentID, edt_Major, edt_Email, edt_password, edt_repassword, edt_Nickname;
     private Button btn_finish, btn_check_nick, btn_knuID;
     private String strEmail, strPassword, strNick, strMaojr, strStudentId;
@@ -65,29 +73,34 @@ public class RegisterActivity extends AppCompatActivity {
         btn_check_nick.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 strNick = edt_Nickname.getText().toString();
                 System.out.println("test2222   " + strNick + " " + strEmail + " " + strStudentId);
 
-                mProfieDatabaseReference.orderByChild("nickName").equalTo(strNick).addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        if (snapshot.exists()) {
-                            nickname_state = false;
-                            System.out.println("test_state" + nickname_state);
-                            Toast.makeText(RegisterActivity.this, "실패패패패패", Toast.LENGTH_SHORT).show();
-                        } else {
-                            nickname_state = true;
-                            System.out.println("test_state" + nickname_state);
-                            Toast.makeText(RegisterActivity.this, "성공공공공공", Toast.LENGTH_SHORT).show();
-                        }
-                    }
+                db.collection("Account")
+                        .whereEqualTo("nickName", strNick)
+                        .get()
+                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                                System.out.println("회원가입 디버깅"+QuerySnapshot document:task.getResult());
+                                if(task.isSuccessful()){
+                                    for(QueryDocumentSnapshot document : task.getResult()){
+                                        UserAccount userAccount = document.toObject(UserAccount.class);
+                                        Log.d("db디버깅",userAccount.getNickName());
+                                        if(strNick.equals(userAccount.getNickName())){
+                                            Toast.makeText(RegisterActivity.this,"중복됨",Toast.LENGTH_SHORT).show();
+                                            nickname_state = false;
+                                            return;
+                                        }
+                                    }
+                                    nickname_state = true;
+                                    Toast.makeText(RegisterActivity.this,"중복안됨",Toast.LENGTH_SHORT).show();
+                                }
+                                else{
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                });
+                                }
+                            }
+                        });
             }
         });
 
@@ -126,7 +139,22 @@ public class RegisterActivity extends AppCompatActivity {
                                     account.setMajor(strMaojr);
                                     account.setNickName(strNick);
                                     account.setPassword(strPassword);
-                                    mProfieDatabaseReference.child(firebaseUser.getEmail().replace(".", ">")).setValue(account);
+//                                    mProfieDatabaseReference.child(firebaseUser.getEmail().replace(".", ">")).setValue(account);
+                                    db.collection("Account")
+                                            .document(firebaseUser.getEmail().replace(".", ">"))
+                                            .set(account)
+                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                @Override
+                                                public void onSuccess(Void unused) {
+                                                    Log.d(TAG, "DocumentSnapshot added with ID: " + task.isSuccessful());
+                                                }
+                                            })
+                                            .addOnFailureListener(new OnFailureListener() {
+                                                @Override
+                                                public void onFailure(@NonNull Exception e) {
+                                                    Log.d(TAG, "DocumentSnapshot added with ID: " + task.isSuccessful());
+                                                }
+                                            });
                                     Toast.makeText(RegisterActivity.this, "성공", Toast.LENGTH_SHORT).show();
                                     Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
                                     startActivity(intent);

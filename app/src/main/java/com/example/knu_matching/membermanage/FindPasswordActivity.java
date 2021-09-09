@@ -40,8 +40,6 @@ public class FindPasswordActivity extends AppCompatActivity {
 
     }
 
-
-
     private void send(){
         String email = edt_email.getText().toString();
 
@@ -63,9 +61,5 @@ public class FindPasswordActivity extends AppCompatActivity {
         }else {
             Toast.makeText(FindPasswordActivity.this, "이메일을 입력해 주세요", Toast.LENGTH_SHORT).show();
         }
-
-
-
-
     }
 }

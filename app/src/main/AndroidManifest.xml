@@ -13,6 +13,9 @@
         android:theme="@style/Theme.Knu_Matching"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".main.InfoModify"
+            android:exported="true" />
+        <activity
             android:name=".membermanage.FindPasswordActivity"
             android:exported="true" />
         <activity
