@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
     private TabLayout tabLayout;
 
     String code;
-    private String[] titles = new String[]{"리스트", "웹뷰", "연락처"};
+    private String[] titles = new String[]{"최신글", "웹뷰", "연락처"};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
