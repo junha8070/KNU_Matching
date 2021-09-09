@@ -20,7 +20,7 @@
         android:layout_margin="5dp"
         android:ems="10"
         android:hint="Email"
-        android:inputType="textPersonName" />
+        android:inputType="textEmailAddress" />
 
     <EditText
 
