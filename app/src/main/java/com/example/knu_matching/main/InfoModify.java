@@ -28,7 +28,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-
+// TODO: 정보 불러오기까지 완료/ FireStore Cloud에서 업데이트 작업하기
 public class InfoModify extends AppCompatActivity {
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private String strEmail, strPassword, strNick, strMaojr, strStudentId, strPhoneNumber, strStudentName;
