@@ -3,12 +3,17 @@ package com.example.knu_matching.main;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.example.knu_matching.R;
+import com.example.knu_matching.membermanage.FindIDActivity;
+import com.example.knu_matching.membermanage.LoginActivity;
+import com.example.knu_matching.postActivity;
 
 public class FirstFragment extends Fragment {
 
@@ -20,6 +25,9 @@ public class FirstFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private Button btn_Recent;
+    private Button btn_next;
+    private Button btn_back;
 
     public FirstFragment() {
         // Required empty public constructor
@@ -55,7 +63,33 @@ public class FirstFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        View v = inflater.inflate(R.layout.activity_first_fragment, container, false);
+        Button btn_Recent = v.findViewById(R.id.btn_Recent);
+        Button btn_next = v.findViewById(R.id.btn_next);
+        Button btn_back = v.findViewById(R.id.btn_back);
+        btn_Recent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), postActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        btn_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
+        btn_next.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.activity_first_fragment, container, false);
+        return v;
     }
 }
