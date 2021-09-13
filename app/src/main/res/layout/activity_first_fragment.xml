@@ -41,5 +41,4 @@ tools:context=".main.FirstFragment">
             android:layout_alignParentRight="true"
             android:text="글쓰기" />
     </RelativeLayout>
-
 </FrameLayout>
