@@ -24,7 +24,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 public class MainActivity extends AppCompatActivity {
-
+    public static Context context;
     public Button btn_register, btn_logout;
     private final String TAG = this.getClass().getSimpleName();
     private FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseAuth mFirebaseAuth = FirebaseAuth.getInstance();
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     Context mContext;
-    protected String strEmail, strPassword, strNick, strMaojr, strStudentId, strPhoneNumber, strStudentName;
+    public String strEmail, strPassword, strNick, strMaojr, strStudentId, strPhoneNumber, strStudentName;
 
     private ViewPager2 mViewPager;
     private MyViewPagerAdapter myPagerAdapter;
@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mContext = MainActivity.this;
+        context = MainActivity.this;
         getSupportActionBar().hide();
 
         db.collection("Account")

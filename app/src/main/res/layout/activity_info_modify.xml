@@ -100,14 +100,24 @@
         android:gravity="center"
         android:orientation="horizontal">
 
-        <EditText
-            android:id="@+id/edt_nickname"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="#FFFFFFFF"
-            android:enabled="false"
-            android:hint="닉네임" />
+            android:orientation="vertical">
+            <EditText
+                android:id="@+id/edt_nickname"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#FFFFFFFF"
+                android:hint="닉네임" />
+            <TextView
+                android:textColor="@color/black"
+                android:id="@+id/tv_nickstate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+
 
         <Button
             android:id="@+id/btn_check_nick"
