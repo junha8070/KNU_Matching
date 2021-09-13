@@ -18,6 +18,7 @@ import com.example.knu_matching.UserAccount;
 import com.example.knu_matching.membermanage.LoginActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class ThirdFragment extends Fragment {
 
@@ -26,10 +27,12 @@ public class ThirdFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     private Context context;
-    Button btn_modify;
-    TextView tv_name, tv_rate, tv_nickname, tv_email, tv_major, tv_studentId, tv_number, tv_leave, tv_signout;
-
-    FirebaseAuth mFirebaseAuth = FirebaseAuth.getInstance();
+    private Button btn_modify;
+    private TextView tv_name, tv_rate, tv_nickname, tv_email, tv_major, tv_studentId, tv_number, tv_leave, tv_signout;
+    private FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+    private String uid = user != null ? user.getUid() : null;
+    private FirebaseAuth mFirebaseAuth = FirebaseAuth.getInstance();
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
     UserAccount account = new UserAccount();
 
     // TODO: Rename and change types of parameters
@@ -83,6 +86,8 @@ public class ThirdFragment extends Fragment {
         tv_number = (TextView) v.findViewById(R.id.tv_number);
         tv_leave = (TextView) v.findViewById(R.id.tv_leave);
         tv_signout = (TextView) v.findViewById(R.id.tv_signout);
+// TODO: Acticity에서 값 끌고와서 적용시키기
+        tv_major.setText(((MainActivity)getActivity()).strMaojr);
 
 //        tv_name.setText(account.getEmailId(FirebaseUser));
 
