@@ -44,9 +44,9 @@ public class RegisterActivity extends AppCompatActivity {
     private FirebaseAuth mFirebaseAuth;
     private DatabaseReference mDatabaseref;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private EditText edt_StudentID, edt_Major, edt_Email, edt_password, edt_repassword, edt_Nickname;
+    private EditText edt_StudentID, edt_Major, edt_Email, edt_password, edt_repassword, edt_Nickname, edt_PhoneNumber, edt_StudentName;
     private Button btn_finish, btn_check_nick, btn_knuID;
-    private String strEmail, strPassword, strNick, strMaojr, strStudentId;
+    private String strEmail, strPassword, strNick, strMaojr, strStudentId, strPhoneNumber, strStudentName;
     private boolean nickname_state;
 
     @Override
@@ -58,8 +58,10 @@ public class RegisterActivity extends AppCompatActivity {
         mDatabaseref = FirebaseDatabase.getInstance().getReference("Knu_Matching");
         DatabaseReference mProfieDatabaseReference = mDatabaseref.child("UserAccount");
 
+        edt_StudentName = findViewById(R.id.edt_StudentName);
         edt_StudentID = findViewById(R.id.edt_StudentID);
         edt_Major = findViewById(R.id.edt_Major);
+        edt_PhoneNumber = findViewById(R.id.edt_PhoneNumber);
         edt_Email = findViewById(R.id.edt_Email);
         edt_password = findViewById(R.id.edt_Password);
         edt_repassword = findViewById(R.id.edt_RePassword);
@@ -120,7 +122,7 @@ public class RegisterActivity extends AppCompatActivity {
                 strNick = edt_Nickname.getText().toString();
                 System.out.println("test" + strNick + " " + strEmail + " " + strStudentId);
 
-                if (strEmail.trim().equals("") || strPassword.trim().equals("") || strNick.trim().equals("") || strStudentId.trim().equals("") || strMaojr.trim().equals("")) {
+                if (strStudentName.trim().equals("")||strEmail.trim().equals("") || strPassword.trim().equals("") || strNick.trim().equals("") || strStudentId.trim().equals("") || strMaojr.trim().equals("") ||strPhoneNumber.trim().equals("") ) {
                     Toast.makeText(RegisterActivity.this, "빈칸을 채워주세요:(", Toast.LENGTH_SHORT).show();
                 } else {
                     if (nickname_state == false) {
@@ -135,6 +137,8 @@ public class RegisterActivity extends AppCompatActivity {
                                     UserAccount account = new UserAccount();
                                     account.setIdToken(firebaseUser.getUid());
                                     account.setEmailId(firebaseUser.getEmail());
+                                    account.setPhoneNumber(strPhoneNumber);
+                                    account.setStudentName(strStudentName);
                                     account.setStudentId(strStudentId);
                                     account.setMajor(strMaojr);
                                     account.setNickName(strNick);
@@ -186,9 +190,13 @@ public class RegisterActivity extends AppCompatActivity {
                         strMaojr = result.getData().getStringExtra("Major");
                         System.out.println("회원가입 디버깅:" + strMaojr);
                         strEmail = result.getData().getStringExtra("Email");
+                        strStudentName = result.getData().getStringExtra("StudentName");
+                        strPhoneNumber = result.getData().getStringExtra("PhoneNumber");
+                        edt_StudentName.setText(strStudentName);
                         edt_StudentID.setText(strStudentId);
                         edt_Major.setText(strMaojr);
                         edt_Email.setText(strEmail);
+                        edt_PhoneNumber.setText(strPhoneNumber);
                     }
                 }
             });

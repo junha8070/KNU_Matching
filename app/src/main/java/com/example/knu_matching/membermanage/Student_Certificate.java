@@ -21,7 +21,7 @@ public class Student_Certificate extends AppCompatActivity {
 
     private WebView mWebView;
     private WebSettings mWebSettings;
-    public String StudentId=null, Major=null, Email=null;
+    public String StudentId=null, Major=null, Email=null, StudentName = null, PhoneNumber = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,38 +77,51 @@ public class Student_Certificate extends AppCompatActivity {
             System.out.println(html);
             String StartIDTarget = "inputUid\":\"";
             String EndIDTarget = "\",\"inputDm";
+            String StartNameTartget = ",\"userNm\":\"";
+            String EndNameTarget = "\",\"userDeptNm\"";
             String StartMajorTarget = "userDeptNm\":\"";
             String EndMajorTarget = "\",\"userDeptCd";
             String StartEmailTarget = "\"userMail\":\"";
             String EndEmailTarget = "\",\"userPosi\"";
+            String StartPhoneNumberTarget = "\",\"userPhon\":\"";
+            String EndPhoneNumberTarget = "\",\"ssoId\":\"";
 
             int start = html.indexOf(StartIDTarget);
             int End = html.indexOf(EndIDTarget);
             StudentId = html.substring(start + 11, End);
-            System.out.println("디버깅4");
-            System.out.println("학번:" + StudentId);
+            System.out.println("인증확인 학번:" + StudentId);
+
+            start = html.indexOf(StartNameTartget);
+            End = html.indexOf(EndNameTarget);
+            StudentName = html.substring(start + 11, End);
+            System.out.println("인증확인 이름:" + StudentName);
+
+            start = html.indexOf(StartPhoneNumberTarget);
+            End = html.indexOf(EndPhoneNumberTarget);
+            PhoneNumber = html.substring(start + 14, End);
+            System.out.println("인증확인 핸드폰번호:" + PhoneNumber);
 
             start = html.indexOf(StartMajorTarget);
             End = html.indexOf(EndMajorTarget);
             Major = html.substring(start + 13, End);
-            System.out.println("디버깅5");
-            System.out.println("학번:" + Major);
+            System.out.println("인증확인 전공:" + Major);
 
             start = html.indexOf(StartEmailTarget);
             End = html.indexOf(EndEmailTarget);
             Email = html.substring(start + 12, End);
-            System.out.println("디버깅5");
-            System.out.println("학번:" + Email);
-            backMainActivity(StudentId,Major,Email);
+            System.out.println("인증확인 이메일:" + Email);
+            backMainActivity(StudentId,Major,Email, StudentName, PhoneNumber);
         }
     }
 
-    private void backMainActivity(String StudentId, String Major, String Email) {
+    private void backMainActivity(String StudentId, String Major, String Email, String StudentName, String PhoneNumber) {
         System.out.println("디버깅3");
         Intent intent = new Intent();
         intent.putExtra("StudentId",StudentId);
         intent.putExtra("Major",Major);
         intent.putExtra("Email",Email);
+        intent.putExtra("StudentName",StudentName);
+        intent.putExtra("PhoneNumber",PhoneNumber);
         setResult(Activity.RESULT_OK, intent);
         finish();
     }

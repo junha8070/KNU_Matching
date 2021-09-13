@@ -87,7 +87,12 @@ public class ThirdFragment extends Fragment {
         tv_leave = (TextView) v.findViewById(R.id.tv_leave);
         tv_signout = (TextView) v.findViewById(R.id.tv_signout);
 // TODO: Acticity에서 값 끌고와서 적용시키기
+        tv_nickname.setText(((MainActivity)getActivity()).strNick);
+        tv_email.setText(((MainActivity)getActivity()).strEmail);
         tv_major.setText(((MainActivity)getActivity()).strMaojr);
+        tv_studentId.setText(((MainActivity)getActivity()).strStudentId);
+        tv_number.setText(((MainActivity)getActivity()).strPhoneNumber);
+        tv_name.setText(((MainActivity)getActivity()).strStudentName);
 
 //        tv_name.setText(account.getEmailId(FirebaseUser));
 
@@ -104,7 +109,8 @@ public class ThirdFragment extends Fragment {
         btn_modify.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(v.getContext(),"테스트",Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getContext(), InfoModify.class);
+                startActivity(intent);
             }
         });
 

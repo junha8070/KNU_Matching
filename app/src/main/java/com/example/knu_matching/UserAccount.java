@@ -8,6 +8,24 @@ public class UserAccount {
     private String idToken;
     private String nickName;
     private String StudentId;
+    private String StudentName;
+    private String PhoneNumber;
+
+    public String getStudentName() {
+        return StudentName;
+    }
+
+    public void setStudentName(String studentName) {
+        StudentName = studentName;
+    }
+
+    public String getPhoneNumber() {
+        return PhoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        PhoneNumber = phoneNumber;
+    }
 
     public String getStudentId() {
         return StudentId;

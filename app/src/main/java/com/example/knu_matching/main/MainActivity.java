@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseAuth mFirebaseAuth = FirebaseAuth.getInstance();
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     Context mContext;
-    protected String strEmail, strPassword, strNick, strMaojr, strStudentId;
+    protected String strEmail, strPassword, strNick, strMaojr, strStudentId, strPhoneNumber, strStudentName;
 
     private ViewPager2 mViewPager;
     private MyViewPagerAdapter myPagerAdapter;
@@ -57,11 +57,13 @@ public class MainActivity extends AppCompatActivity {
                         if(task.isSuccessful()){
                             DocumentSnapshot document = task.getResult();
                             UserAccount userAccount = document.toObject(UserAccount.class);
+                            strStudentName = userAccount.getStudentName();
                             strEmail = userAccount.getEmailId();
                             strPassword = userAccount.getPassword();
                             strNick = userAccount.getNickName();
                             strMaojr = userAccount.getMajor();
                             strStudentId = userAccount.getStudentId();
+                            strPhoneNumber = userAccount.getPhoneNumber();
                             Toast.makeText(MainActivity.this, strMaojr,Toast.LENGTH_SHORT).show();
                         }
                     }

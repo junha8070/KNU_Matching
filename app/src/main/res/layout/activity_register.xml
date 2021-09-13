@@ -29,6 +29,21 @@
             android:textAlignment="center" />
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_margin="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="horizontal">
+
+        <EditText
+            android:background="#FFFFFFFF"
+            android:id="@+id/edt_StudentName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:enabled="false"
+            android:hint="이름(조회버튼을 눌러주세요!)" />
+    </LinearLayout>
 
     <LinearLayout
         android:layout_margin="20dp"
@@ -60,6 +75,22 @@
             android:layout_height="wrap_content"
             android:enabled="false"
             android:hint="전공(조회버튼을 눌러주세요!)" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_margin="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="horizontal">
+
+        <EditText
+            android:background="#FFFFFFFF"
+            android:id="@+id/edt_PhoneNumber"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:enabled="false"
+            android:hint="핸드폰 번호(조회버튼을 눌러주세요!)" />
     </LinearLayout>
 
     <LinearLayout
