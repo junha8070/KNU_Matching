@@ -111,7 +111,7 @@ public class FirstFragment extends Fragment {
                             if (task.isSuccessful()) {
                                 ArrayList<postInfo> postList = new ArrayList<>();
                                 for (QueryDocumentSnapshot document : task.getResult()) {
-                                    Log.d(TAG, document.getId() + "=>" + document.getData());
+                                    Log.d(TAG, document.getId() + "==>" + document.getData());
                                     postList.add(new postInfo(
                                             document.getData().get("str_Title").toString(),
                                             document.getData().get("str_date").toString(),
