@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
@@ -92,10 +93,11 @@ public class MainActivity extends AppCompatActivity {
                     strMaojr = userAccount.getMajor();
                     strStudentId = userAccount.getStudentId();
                     strPhoneNumber = userAccount.getPhoneNumber();
-                    Toast.makeText(MainActivity.this, strMaojr, Toast.LENGTH_SHORT).show();
+
+                    Toast.makeText(MainActivity.this, "메인2"+strNick, Toast.LENGTH_SHORT).show();
                 } else {
                     Log.d(TAG, "Current data: null");
-                }
+                }Toast.makeText(MainActivity.this, "메인"+strNick, Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -119,5 +121,14 @@ public class MainActivity extends AppCompatActivity {
 
         //displaying tabs
         new TabLayoutMediator(tabLayout, mViewPager, (tab, position) -> tab.setText(titles[position])).attach();
+    }
+
+    public void refresh(){
+        Intent intent = getIntent();
+        finish(); //현재 액티비티 종료 실시
+        overridePendingTransition(0, 0); //인텐트 애니메이션 없애기
+        startActivity(intent); //현재 액티비티 재실행 실시
+        overridePendingTransition(0, 0);
+
     }
 }

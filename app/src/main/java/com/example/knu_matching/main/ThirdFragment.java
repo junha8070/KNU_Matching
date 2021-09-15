@@ -8,6 +8,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.app.Activity;
 import android.content.Context;
@@ -132,7 +133,23 @@ public class ThirdFragment extends Fragment {
                 public void onActivityResult(ActivityResult result) {
                     if (result.getResultCode() == Activity.RESULT_OK) {
                         Toast.makeText(getContext(),"테스트",Toast.LENGTH_SHORT).show();
+//                        FragmentTransaction ft = getFragmentManager().beginTransaction();
+                        ((MainActivity)MainActivity.context).refresh();
+                        tv_nickname.setText(((MainActivity)getActivity()).strNick);
+                        System.out.println("setText테스트"+((MainActivity)getActivity()).strNick);
+                        tv_email.setText(((MainActivity)getActivity()).strEmail);
+                        tv_major.setText(((MainActivity)getActivity()).strMaojr);
+                        tv_studentId.setText(((MainActivity)getActivity()).strStudentId);
+                        tv_number.setText(((MainActivity)getActivity()).strPhoneNumber);
+                        tv_name.setText(((MainActivity)getActivity()).strStudentName);
+//                        Intent intent = ((MainActivity)context).getIntent();
+//                        ((MainActivity)context).finish(); //현재 액티비티 종료 실시
+//                        ((MainActivity)context).overridePendingTransition(0, 0); //효과 없애기
+//                        ((MainActivity)context).startActivity(intent); //현재 액티비티 재실행 실시
+//                        ((MainActivity)context).overridePendingTransition(0, 0); //효과 없애기
 
+
+//                        ft.detach(ThirdFragment.this).attach(ThirdFragment.this).commit();
                     }
                 }
             });

@@ -36,6 +36,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -100,6 +101,7 @@ public class FirstFragment extends Fragment {
         user = FirebaseAuth.getInstance().getCurrentUser();
 
             db.collection("Post")
+                    .orderBy("str_time", Query.Direction.ASCENDING)
                     //.document(user.getEmail().replace(".",">"))
                     //.collection("post")
                     .get()
@@ -114,7 +116,8 @@ public class FirstFragment extends Fragment {
                                             document.getData().get("str_Title").toString(),
                                             document.getData().get("str_date").toString(),
                                             document.getData().get("str_Number").toString(),
-                                            document.getData().get("str_post").toString()
+                                            document.getData().get("str_post").toString(),
+                                            document.getData().get("str_time").toString()
                                             //new Date(document.getDate("date_date").getTime())
                                     ));
 
@@ -130,9 +133,6 @@ public class FirstFragment extends Fragment {
                             }
                         }
                     });
-
-
-
 
         btn_Recent.setOnClickListener(new View.OnClickListener() {
             @Override
