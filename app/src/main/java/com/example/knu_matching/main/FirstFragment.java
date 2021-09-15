@@ -31,7 +31,10 @@ import com.example.knu_matching.postActivity;
 import com.example.knu_matching.postInfo;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -52,6 +55,7 @@ public class FirstFragment extends Fragment {
     private Button btn_Recent;
     private Button btn_next;
     private Button btn_back;
+    private FirebaseUser user;
 
     public FirstFragment() {
         // Required empty public constructor
@@ -93,37 +97,42 @@ public class FirstFragment extends Fragment {
         Button btn_back = v.findViewById(R.id.btn_back);
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        //DocumentReference doRef = db.collection("users").document(user.getUid());
+        user = FirebaseAuth.getInstance().getCurrentUser();
 
-        //ArrayList<postInfo> postList = new ArrayList<>();
-        db.collection("post")
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            ArrayList<postInfo> postList = new ArrayList<>();
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                Log.d(TAG, document.getId() + "=>" + document.getData());
-                                postList.add(new postInfo(
-                                        document.getData().get("str_Title").toString(),
-                                        document.getData().get("str_date").toString(),
-                                        document.getData().get("str_Number").toString(),
-                                        document.getData().get("str_post").toString()
-                                        //new Date(document.getDate("date_date").getTime())
-                                ));
+            db.collection("Post")
+                    //.document(user.getEmail().replace(".",">"))
+                    //.collection("post")
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                ArrayList<postInfo> postList = new ArrayList<>();
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                    Log.d(TAG, document.getId() + "=>" + document.getData());
+                                    postList.add(new postInfo(
+                                            document.getData().get("str_Title").toString(),
+                                            document.getData().get("str_date").toString(),
+                                            document.getData().get("str_Number").toString(),
+                                            document.getData().get("str_post").toString()
+                                            //new Date(document.getDate("date_date").getTime())
+                                    ));
 
+
+                                }
+                                RecyclerView recyclerView = v.findViewById(R.id.recycleView);
+                                recyclerView.setHasFixedSize(true);
+                                recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+                                RecyclerView.Adapter mAdapter = new AdapterActivity(getActivity(), postList);
+                                recyclerView.setAdapter(mAdapter);
+                            } else {
+                                Log.d(TAG, "error", task.getException());
                             }
-                            RecyclerView recyclerView = v.findViewById(R.id.recycleView);
-                            recyclerView.setHasFixedSize(true);
-                            recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-                            RecyclerView.Adapter mAdapter = new AdapterActivity(getActivity(), postList);
-                            recyclerView.setAdapter(mAdapter);
-                        } else {
-                            Log.d(TAG, "error", task.getException());
                         }
-                    }
-                });
+                    });
+
+
+
 
         btn_Recent.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -148,6 +157,11 @@ public class FirstFragment extends Fragment {
 
         // Inflate the layout for this fragment
         return v;
+    }
+
+    private void myStartActivity(Class c){
+        Intent intent =new Intent(getActivity(), c);
+        startActivity(intent);
     }
 
     private void moveSubActivity() {

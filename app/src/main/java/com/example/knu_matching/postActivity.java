@@ -15,6 +15,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Date;
@@ -71,10 +72,10 @@ public class postActivity extends AppCompatActivity {
     private void update(postInfo postInfo) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         user = FirebaseAuth.getInstance().getCurrentUser();
-        db.collection("users").document(user.getEmail().replace(".",">")).collection("post").document(str_Title).set(postInfo)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
+        db.collection("Post").add(postInfo)
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
-                    public void onSuccess(Void aVoid) {
+                    public void onSuccess(DocumentReference documentReference) {
                         Toast.makeText(postActivity.this, "성공", Toast.LENGTH_SHORT).show();
                         finish();
                     }
