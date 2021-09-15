@@ -1,9 +1,10 @@
 package com.example.knu_matching.main;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.content.Context;
@@ -12,10 +13,9 @@ import android.util.Log;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.example.knu_matching.AdapterActivity;
 import com.example.knu_matching.R;
 import com.example.knu_matching.UserAccount;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.google.firebase.auth.FirebaseAuth;
@@ -25,8 +25,8 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.auth.User;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     public static Context context;
@@ -54,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
 
         context = MainActivity.this;
         getSupportActionBar().hide();
+
 
 //        dbRef.get()
 //                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {

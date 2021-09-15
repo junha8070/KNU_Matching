@@ -6,8 +6,11 @@ import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 
 import android.app.Activity;
 import android.content.Intent;
@@ -18,12 +21,23 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.example.knu_matching.AdapterActivity;
 import com.example.knu_matching.R;
 import com.example.knu_matching.membermanage.FindIDActivity;
 import com.example.knu_matching.membermanage.LoginActivity;
 import com.example.knu_matching.membermanage.RegisterActivity;
 import com.example.knu_matching.membermanage.Student_Certificate;
 import com.example.knu_matching.postActivity;
+import com.example.knu_matching.postInfo;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.ArrayList;
+import java.util.Date;
 
 public class FirstFragment extends Fragment {
 
@@ -77,6 +91,40 @@ public class FirstFragment extends Fragment {
         Button btn_Recent = v.findViewById(R.id.btn_Recent);
         Button btn_next = v.findViewById(R.id.btn_next);
         Button btn_back = v.findViewById(R.id.btn_back);
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        //DocumentReference doRef = db.collection("users").document(user.getUid());
+
+        //ArrayList<postInfo> postList = new ArrayList<>();
+        db.collection("post")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            ArrayList<postInfo> postList = new ArrayList<>();
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.d(TAG, document.getId() + "=>" + document.getData());
+                                postList.add(new postInfo(
+                                        document.getData().get("str_Title").toString(),
+                                        document.getData().get("str_date").toString(),
+                                        document.getData().get("str_Number").toString(),
+                                        document.getData().get("str_post").toString()
+                                        //new Date(document.getDate("date_date").getTime())
+                                ));
+
+                            }
+                            RecyclerView recyclerView = v.findViewById(R.id.recycleView);
+                            recyclerView.setHasFixedSize(true);
+                            recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+                            RecyclerView.Adapter mAdapter = new AdapterActivity(getActivity(), postList);
+                            recyclerView.setAdapter(mAdapter);
+                        } else {
+                            Log.d(TAG, "error", task.getException());
+                        }
+                    }
+                });
+
         btn_Recent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
