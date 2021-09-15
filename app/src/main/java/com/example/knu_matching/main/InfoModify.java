@@ -7,6 +7,7 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
@@ -24,13 +25,21 @@ import com.example.knu_matching.UserAccount;
 import com.example.knu_matching.membermanage.RegisterActivity;
 import com.example.knu_matching.membermanage.Student_Certificate;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.Transaction;
+
 // TODO: 2021-09-13 정보 불러오기까지 완료/ FireStore Cloud에서 업데이트 작업하기
 public class InfoModify extends AppCompatActivity {
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    final DocumentReference dbRef = db.collection("Account").document((((MainActivity)MainActivity.context).strEmail.replace(".",">")));
     private String strEmail, strPassword, strNick, strMaojr, strStudentId, strPhoneNumber, strStudentName;
     private EditText edt_StudentName, edt_StudentID, edt_Major, edt_PhoneNumber, edt_nickname;
     private Button btn_update, btn_check_nick, btn_finish_modify;
@@ -50,7 +59,7 @@ public class InfoModify extends AppCompatActivity {
         btn_update.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                moveSubActivity();
+                MoveToStudentCertificate();
             }
         });
 
@@ -58,6 +67,16 @@ public class InfoModify extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Check_NickName_Duplicate();
+            }
+        });
+
+        btn_finish_modify.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish_modify();
+                Intent intent = new Intent();
+                setResult(Activity.RESULT_OK, intent);
+                finish();
             }
         });
     }
@@ -79,7 +98,7 @@ public class InfoModify extends AppCompatActivity {
         edt_nickname.setText(((MainActivity)MainActivity.context).strNick);
     }
 
-    private void moveSubActivity() {
+    private void MoveToStudentCertificate() {
         Intent intent = new Intent(InfoModify.this, Student_Certificate.class);
         startActivityResult.launch(intent);
     }
@@ -90,7 +109,7 @@ public class InfoModify extends AppCompatActivity {
                 @Override
                 public void onActivityResult(ActivityResult result) {
                     if (result.getResultCode() == Activity.RESULT_OK) {
-                        Log.d(TAG, "RegisterActivity로 돌아왔다. ");
+                        Log.d(TAG, "InfoModify 돌아왔다. ");
                         strStudentName = result.getData().getStringExtra("StudentName");
                         strStudentId = result.getData().getStringExtra("StudentId");
                         strMaojr = result.getData().getStringExtra("Major");
@@ -133,4 +152,30 @@ public class InfoModify extends AppCompatActivity {
                 });
     }
 
+// FireStore Transaction
+    private void finish_modify(){
+        db.runTransaction(new Transaction.Function<Void>() {
+            @Nullable
+            @Override
+            public Void apply(@NonNull Transaction transaction) throws FirebaseFirestoreException {
+                transaction.update(dbRef,"studentName",edt_StudentName.getText().toString());
+                transaction.update(dbRef,"studentId",edt_StudentID.getText().toString());
+                transaction.update(dbRef,"major",edt_Major.getText().toString());
+                transaction.update(dbRef,"phoneNumber",edt_PhoneNumber.getText().toString());
+                transaction.update(dbRef,"nickName",edt_nickname.getText().toString());
+                return null;
+            }
+        }).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+                Log.d(TAG, "Transaction success!");
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.w(TAG, "Transaction failure.", e);
+            }
+        });
+
+    }
 }

@@ -131,6 +131,7 @@ public class ThirdFragment extends Fragment {
                 @Override
                 public void onActivityResult(ActivityResult result) {
                     if (result.getResultCode() == Activity.RESULT_OK) {
+                        Toast.makeText(getContext(),"테스트",Toast.LENGTH_SHORT).show();
 
                     }
                 }
