@@ -101,7 +101,7 @@ public class FirstFragment extends Fragment {
         user = FirebaseAuth.getInstance().getCurrentUser();
 
             db.collection("Post")
-                    .orderBy("str_time", Query.Direction.ASCENDING)
+                    .orderBy("str_time", Query.Direction.DESCENDING)
                     //.document(user.getEmail().replace(".",">"))
                     //.collection("post")
                     .get()
