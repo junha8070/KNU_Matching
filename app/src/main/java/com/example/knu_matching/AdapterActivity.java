@@ -13,7 +13,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.text.Format;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 
 public class AdapterActivity extends RecyclerView.Adapter<AdapterActivity.GalleryViewHolder> {
     private ArrayList<postInfo> mDataset;
@@ -51,6 +56,8 @@ public class AdapterActivity extends RecyclerView.Adapter<AdapterActivity.Galler
         CardView cardView = holder.cardView;
         TextView textView = cardView.findViewById(R.id.textView);
         textView.setText(mDataset.get(position).getStr_Title());
+        TextView dateView = cardView.findViewById(R.id.dateView);
+        dateView.setText((mDataset.get(position).getStr_time().substring(0,12)));
     }
 
     @Override
