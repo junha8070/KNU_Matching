@@ -16,6 +16,15 @@
             android:name=".postRegisterActivity"
             android:exported="true" />
         <activity
+            android:name=".main.ChangePassWord"
+            android:exported="true" />
+        <activity
+            android:name=".main.FourthFragment"
+            android:exported="true" />
+        <activity
+            android:name=".main.ThirdFragment"
+            android:exported="true" />
+        <activity
             android:name=".postActivity"
             android:exported="true" />
         <activity

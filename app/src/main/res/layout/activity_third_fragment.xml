@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".main.ThirdFragment">
+    tools:context=".main.FifthFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <LinearLayout
@@ -249,12 +249,17 @@
             android:layout_height="wrap_content"
             android:layout_margin="23dp"
             android:orientation="vertical">
-
             <Button
                 android:id="@+id/btn_modify"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="수정하기" />
+            <Button
+                android:id="@+id/btn_PwdChg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="비밀번호 변경" />
+
         </LinearLayout>
 
         <LinearLayout

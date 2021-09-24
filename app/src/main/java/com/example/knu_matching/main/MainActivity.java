@@ -3,8 +3,6 @@ package com.example.knu_matching.main;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.content.Context;
@@ -14,7 +12,6 @@ import android.util.Log;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.example.knu_matching.AdapterActivity;
 import com.example.knu_matching.R;
 import com.example.knu_matching.UserAccount;
 import com.google.android.material.tabs.TabLayout;
@@ -26,8 +23,6 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
-
-import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     public static Context context;
@@ -46,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
     private TabLayout tabLayout;
 
     String code;
-    private String[] titles = new String[]{"최신글", "웹뷰", "연락처"};
+    private String[] titles = new String[]{"최신글", "웹뷰", "연락처", "네번째", "다섯번째"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,6 +103,8 @@ public class MainActivity extends AppCompatActivity {
         Fragment frag1 = new FirstFragment().newInstance(code, "");
         Fragment frag2 = new SecondFragment().newInstance(code, "");
         Fragment frag3 = new ThirdFragment().newInstance(code, "");
+        Fragment frag4 = new FourthFragment().newInstance(code, "");
+        Fragment frag5 = new FifthFragment().newInstance(code, "");
 
         mViewPager = findViewById(R.id.viewPager);
         tabLayout = findViewById(R.id.tab_layout);
@@ -116,6 +113,8 @@ public class MainActivity extends AppCompatActivity {
         myPagerAdapter.addFrag(frag1);
         myPagerAdapter.addFrag(frag2);
         myPagerAdapter.addFrag(frag3);
+        myPagerAdapter.addFrag(frag4);
+        myPagerAdapter.addFrag(frag5);
 
         mViewPager.setAdapter(myPagerAdapter);
 
