@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
     private TabLayout tabLayout;
 
     String code;
-    private String[] titles = new String[]{"최신글", "웹뷰", "연락처", "네번째", "다섯번째"};
+    private String[] titles = new String[]{"최신글", "채팅", "모집\n상황", "활동\n게시판", "My\nPage"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -13,18 +13,21 @@
         android:orientation="vertical">
 
         <EditText
+            android:inputType="textPassword"
             android:id="@+id/edt_original_pwd"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="기존 비밀번호" />
 
         <EditText
+            android:inputType="textPassword"
             android:id="@+id/edt_new_pwd"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="새로운 비밀번호" />
 
         <EditText
+            android:inputType="textPassword"
             android:id="@+id/edt_re_pwd"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

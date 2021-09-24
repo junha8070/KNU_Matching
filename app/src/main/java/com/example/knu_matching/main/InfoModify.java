@@ -77,6 +77,11 @@ public class InfoModify extends AppCompatActivity {
             public void onClick(View view) {
                 finish_modify();
                 Intent intent = new Intent();
+                intent.putExtra("nickname",strNick);
+                intent.putExtra("studentId",strStudentId);
+                intent.putExtra("major",strMaojr);
+                intent.putExtra("phoneNumber",strPhoneNumber);
+                intent.putExtra("studentName",strStudentName);
                 setResult(Activity.RESULT_OK, intent);
                 finish();
             }

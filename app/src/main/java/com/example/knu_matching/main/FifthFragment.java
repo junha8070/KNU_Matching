@@ -1,15 +1,19 @@
 package com.example.knu_matching.main;
 
+import static android.content.ContentValues.TAG;
+
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +26,11 @@ import com.example.knu_matching.UserAccount;
 import com.example.knu_matching.membermanage.LoginActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 
 public class FifthFragment extends Fragment {
 
@@ -37,12 +45,13 @@ public class FifthFragment extends Fragment {
     private String uid = user != null ? user.getUid() : null;
     private FirebaseAuth mFirebaseAuth = FirebaseAuth.getInstance();
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    final DocumentReference dbRef = db.collection("Account").document(user.getEmail().replace(".", ">"));
+    public String strEmail, strPassword, strNick, strMaojr, strStudentId, strPhoneNumber, strStudentName;
     UserAccount account = new UserAccount();
 
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-
 
 
     public FifthFragment() {
@@ -77,8 +86,7 @@ public class FifthFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.activity_third_fragment, container, false);
         btn_PwdChg = (Button) v.findViewById(R.id.btn_PwdChg);
         btn_modify = (Button) v.findViewById(R.id.btn_modify);
@@ -91,13 +99,37 @@ public class FifthFragment extends Fragment {
         tv_number = (TextView) v.findViewById(R.id.tv_number);
         tv_leave = (TextView) v.findViewById(R.id.tv_leave);
         tv_signout = (TextView) v.findViewById(R.id.tv_signout);
-// TODO: Acticity에서 값 끌고와서 적용시키기
-        tv_nickname.setText(((MainActivity)getActivity()).strNick);
-        tv_email.setText(((MainActivity)getActivity()).strEmail);
-        tv_major.setText(((MainActivity)getActivity()).strMaojr);
-        tv_studentId.setText(((MainActivity)getActivity()).strStudentId);
-        tv_number.setText(((MainActivity)getActivity()).strPhoneNumber);
-        tv_name.setText(((MainActivity)getActivity()).strStudentName);
+
+        dbRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot snapshot, @Nullable FirebaseFirestoreException e) {
+                if (e != null) {
+                    Log.w(TAG, "Listen failed.", e);
+                    return;
+                }
+                if (snapshot != null && snapshot.exists()) {
+                    Log.d(TAG, "Current data: " + snapshot.getData());
+                    UserAccount userAccount = snapshot.toObject(UserAccount.class);
+                    strStudentName = userAccount.getStudentName();
+                    strEmail = userAccount.getEmailId();
+                    strPassword = userAccount.getPassword();
+                    strNick = userAccount.getNickName();
+                    strMaojr = userAccount.getMajor();
+                    strStudentId = userAccount.getStudentId();
+                    strPhoneNumber = userAccount.getPhoneNumber();
+                    tv_nickname.setText(strNick);
+                    tv_email.setText(strEmail);
+                    tv_major.setText(strMaojr);
+                    tv_studentId.setText(strStudentId);
+                    tv_number.setText(strPhoneNumber);
+                    tv_name.setText(strStudentName);
+                } else {
+                    Log.d(TAG, "Current data: null");
+                }
+            }
+        });
+
+
 
 //        tv_name.setText(account.getEmailId(FirebaseUser));
 
@@ -136,24 +168,7 @@ public class FifthFragment extends Fragment {
                 @Override
                 public void onActivityResult(ActivityResult result) {
                     if (result.getResultCode() == Activity.RESULT_OK) {
-                        Toast.makeText(getContext(),"테스트",Toast.LENGTH_SHORT).show();
-//                        FragmentTransaction ft = getFragmentManager().beginTransaction();
-                        ((MainActivity)MainActivity.context).refresh();
-                        tv_nickname.setText(((MainActivity)getActivity()).strNick);
-                        System.out.println("setText테스트"+((MainActivity)getActivity()).strNick);
-                        tv_email.setText(((MainActivity)getActivity()).strEmail);
-                        tv_major.setText(((MainActivity)getActivity()).strMaojr);
-                        tv_studentId.setText(((MainActivity)getActivity()).strStudentId);
-                        tv_number.setText(((MainActivity)getActivity()).strPhoneNumber);
-                        tv_name.setText(((MainActivity)getActivity()).strStudentName);
-//                        Intent intent = ((MainActivity)context).getIntent();
-//                        ((MainActivity)context).finish(); //현재 액티비티 종료 실시
-//                        ((MainActivity)context).overridePendingTransition(0, 0); //효과 없애기
-//                        ((MainActivity)context).startActivity(intent); //현재 액티비티 재실행 실시
-//                        ((MainActivity)context).overridePendingTransition(0, 0); //효과 없애기
-
-
-//                        ft.detach(ThirdFragment.this).attach(ThirdFragment.this).commit();
+                        Toast.makeText(getContext(), "테스트", Toast.LENGTH_SHORT).show();
                     }
                 }
             });

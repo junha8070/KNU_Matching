@@ -3,6 +3,7 @@ package com.example.knu_matching.main;
 import static android.content.ContentValues.TAG;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
@@ -14,12 +15,16 @@ import android.widget.Toast;
 
 import com.example.knu_matching.R;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.Transaction;
 
 public class ChangePassWord extends AppCompatActivity {
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -78,7 +83,25 @@ public class ChangePassWord extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
-                            Log.d(TAG, "User password updated.");
+                            db.runTransaction(new Transaction.Function<Void>() {
+                                @Nullable
+                                @Override
+                                public Void apply(@NonNull Transaction transaction) throws FirebaseFirestoreException {
+                                    transaction.update(dbRef,"password",edt_new_pwd.getText().toString());
+                                    return null;
+                                }
+                            }).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void unused) {
+                                    Log.d(TAG, "비밀번호 변경 성공");
+                                    finish();
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Log.w(TAG, "비밀번호 변경 실패", e);
+                                }
+                            });
                         }
                     }
                 });
