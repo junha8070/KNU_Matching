@@ -120,8 +120,6 @@ public class FirstFragment extends Fragment {
                                             document.getData().get("str_time").toString()
                                             //new Date(document.getDate("date_date").getTime())
                                     ));
-
-
                                 }
                                 RecyclerView recyclerView = v.findViewById(R.id.recycleView);
                                 recyclerView.setHasFixedSize(true);

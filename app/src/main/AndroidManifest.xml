@@ -13,6 +13,9 @@
         android:theme="@style/Theme.Knu_Matching"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".postRegisterActivity"
+            android:exported="true" />
+        <activity
             android:name=".postActivity"
             android:exported="true" />
         <activity
