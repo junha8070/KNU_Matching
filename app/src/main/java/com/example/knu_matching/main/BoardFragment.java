@@ -1,6 +1,5 @@
 package com.example.knu_matching.main;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import android.os.Bundle;
@@ -10,7 +9,7 @@ import android.view.ViewGroup;
 
 import com.example.knu_matching.R;
 
-public class FourthFragment extends Fragment {
+public class BoardFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -21,7 +20,7 @@ public class FourthFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public FourthFragment() {
+    public BoardFragment() {
         // Required empty public constructor
     }
 
@@ -34,8 +33,8 @@ public class FourthFragment extends Fragment {
      * @return A new instance of fragment Fragment4.
      */
     // TODO: Rename and change types and number of parameters
-    public static FourthFragment newInstance(String param1, String param2) {
-        FourthFragment fragment = new FourthFragment();
+    public static BoardFragment newInstance(String param1, String param2) {
+        BoardFragment fragment = new BoardFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);

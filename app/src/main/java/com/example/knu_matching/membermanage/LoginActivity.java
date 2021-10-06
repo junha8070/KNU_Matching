@@ -75,19 +75,19 @@ public class LoginActivity extends AppCompatActivity {
 
                 mFirebaseAuth.signInWithEmailAndPassword(edtEmail,edtPassword).addOnCompleteListener
                         (LoginActivity.this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
 
-                        if(task.isSuccessful()){
-                            
-                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                            startActivity(intent);
-                            finish();
-                        }else {
-                            Toast.makeText(LoginActivity.this, "이메일이나 비밀번호 오류", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
+                                if(task.isSuccessful()){
+
+                                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                    startActivity(intent);
+                                    finish();
+                                }else {
+                                    Toast.makeText(LoginActivity.this, "이메일이나 비밀번호 오류", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
             }
         });
     }

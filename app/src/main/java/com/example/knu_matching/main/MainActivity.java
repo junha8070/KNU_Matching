@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
     private TabLayout tabLayout;
 
     String code;
-    private String[] titles = new String[]{"최신글", "채팅", "모집\n상황", "활동\n게시판", "My\nPage"};
+    private String[] titles = new String[]{"최신글", "채팅", "친구", "모집\n상황", "활동\n게시판", "My\nPage"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,22 +100,23 @@ public class MainActivity extends AppCompatActivity {
         code = "";
         Log.e(TAG, code);
 
-        Fragment frag1 = new FirstFragment().newInstance(code, "");
-        Fragment frag2 = new SecondFragment().newInstance(code, "");
-        Fragment frag3 = new ThirdFragment().newInstance(code, "");
-        Fragment frag4 = new FourthFragment().newInstance(code, "");
-        Fragment frag5 = new FifthFragment().newInstance(code, "");
+        Fragment frag_post = new PostFragment().newInstance(code, "");
+        Fragment frag_chat = new Fragment();
+        Fragment frag_people = new PeolpeFragment();
+        Fragment frag_recruit = new RecruitmentFragment().newInstance(code, "");
+        Fragment frag_board = new BoardFragment().newInstance(code, "");
+        Fragment frag_mypage = new MypageFragment().newInstance(code, "");
 
         mViewPager = findViewById(R.id.viewPager);
         tabLayout = findViewById(R.id.tab_layout);
 
         myPagerAdapter = new MyViewPagerAdapter(this);
-        myPagerAdapter.addFrag(frag1);
-        myPagerAdapter.addFrag(frag2);
-        myPagerAdapter.addFrag(frag3);
-        myPagerAdapter.addFrag(frag4);
-        myPagerAdapter.addFrag(frag5);
-
+        myPagerAdapter.addFrag(frag_post);
+        myPagerAdapter.addFrag(frag_chat);
+        myPagerAdapter.addFrag(frag_people);
+        myPagerAdapter.addFrag(frag_recruit);
+        myPagerAdapter.addFrag(frag_board);
+        myPagerAdapter.addFrag(frag_mypage);
         mViewPager.setAdapter(myPagerAdapter);
 
         //displaying tabs

@@ -32,7 +32,7 @@ import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 
-public class FifthFragment extends Fragment {
+public class MypageFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -54,7 +54,7 @@ public class FifthFragment extends Fragment {
     private String mParam2;
 
 
-    public FifthFragment() {
+    public MypageFragment() {
         // Required empty public constructor
     }
 
@@ -67,8 +67,8 @@ public class FifthFragment extends Fragment {
      * @return A new instance of fragment Fragment4.
      */
     // TODO: Rename and change types and number of parameters
-    public static FifthFragment newInstance(String param1, String param2) {
-        FifthFragment fragment = new FifthFragment();
+    public static MypageFragment newInstance(String param1, String param2) {
+        MypageFragment fragment = new MypageFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -87,7 +87,7 @@ public class FifthFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.activity_third_fragment, container, false);
+        View v = inflater.inflate(R.layout.activity_mypage_fragment, container, false);
         btn_PwdChg = (Button) v.findViewById(R.id.btn_PwdChg);
         btn_modify = (Button) v.findViewById(R.id.btn_modify);
         tv_name = (TextView) v.findViewById(R.id.tv_name);
@@ -172,4 +172,5 @@ public class FifthFragment extends Fragment {
                     }
                 }
             });
+
 }

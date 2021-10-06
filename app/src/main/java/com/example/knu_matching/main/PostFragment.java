@@ -23,27 +23,20 @@ import android.widget.Button;
 
 import com.example.knu_matching.AdapterActivity;
 import com.example.knu_matching.R;
-import com.example.knu_matching.membermanage.FindIDActivity;
-import com.example.knu_matching.membermanage.LoginActivity;
-import com.example.knu_matching.membermanage.RegisterActivity;
-import com.example.knu_matching.membermanage.Student_Certificate;
 import com.example.knu_matching.postActivity;
 import com.example.knu_matching.postInfo;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
-import java.util.Date;
 
-public class FirstFragment extends Fragment {
+public class PostFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -58,7 +51,7 @@ public class FirstFragment extends Fragment {
     private Button btn_back;
     private FirebaseUser user;
 
-    public FirstFragment() {
+    public PostFragment() {
         // Required empty public constructor
     }
 
@@ -71,8 +64,8 @@ public class FirstFragment extends Fragment {
      * @return A new instance of fragment Fragment4.
      */
     // TODO: Rename and change types and number of parameters
-    public static FirstFragment newInstance(String param1, String param2) {
-        FirstFragment fragment = new FirstFragment();
+    public static PostFragment newInstance(String param1, String param2) {
+        PostFragment fragment = new PostFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -92,7 +85,7 @@ public class FirstFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.activity_first_fragment, container, false);
+        View v = inflater.inflate(R.layout.activity_post_fragment, container, false);
         Button btn_Recent = v.findViewById(R.id.btn_Recent);
         Button btn_next = v.findViewById(R.id.btn_next);
         Button btn_back = v.findViewById(R.id.btn_back);

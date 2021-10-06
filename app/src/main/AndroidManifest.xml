@@ -13,22 +13,19 @@
         android:theme="@style/Theme.Knu_Matching"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".postRegisterActivity"
-            android:exported="true" />
-        <activity
             android:name=".main.ChangePassWord"
-            android:exported="true" />
-        <activity
-            android:name=".main.FourthFragment"
-            android:exported="true" />
-        <activity
-            android:name=".main.ThirdFragment"
             android:exported="true" />
         <activity
             android:name=".postActivity"
             android:exported="true" />
         <activity
             android:name=".main.InfoModify"
+            android:exported="true" />
+        <activity
+            android:name=".chatting.ChatActivity"
+            android:exported="true" />
+        <activity
+            android:name=".membermanage.LoginActivity"
             android:exported="true" />
         <activity
             android:name=".membermanage.FindPasswordActivity"
@@ -44,9 +41,6 @@
             android:exported="true" />
         <activity
             android:name=".membermanage.RegisterActivity"
-            android:exported="true" />
-        <activity
-            android:name=".membermanage.LoginActivity"
             android:exported="true" />
     </application>
 

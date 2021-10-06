@@ -2,10 +2,10 @@ package com.example.knu_matching;
 
 public class UserAccount {
 
+    public String uid;
     private String emailId;
     private String password;
     private String major;
-    private String idToken;
     private String nickName;
     private String StudentId;
     private String StudentName;
@@ -51,15 +51,6 @@ public class UserAccount {
         this.nickName = nickName;
     }
 
-
-    public String getIdToken() {
-        return idToken;
-    }
-
-    public void setIdToken(String idToken) {
-        this.idToken = idToken;
-    }
-
     public String getEmailId() {
         return emailId;
     }
@@ -74,6 +65,14 @@ public class UserAccount {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
     }
 
     public UserAccount() {

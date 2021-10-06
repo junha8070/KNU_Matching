@@ -57,7 +57,6 @@ public class RegisterActivity extends AppCompatActivity {
         mFirebaseAuth = FirebaseAuth.getInstance();
         mDatabaseref = FirebaseDatabase.getInstance().getReference("Knu_Matching");
         DatabaseReference mProfieDatabaseReference = mDatabaseref.child("UserAccount");
-
         edt_StudentName = findViewById(R.id.edt_StudentName);
         edt_StudentID = findViewById(R.id.edt_StudentID);
         edt_Major = findViewById(R.id.edt_Major);
@@ -129,13 +128,15 @@ public class RegisterActivity extends AppCompatActivity {
                         Toast.makeText(RegisterActivity.this, "닉네임 중복여부를 확인해주세요:(", Toast.LENGTH_SHORT).show();
                     }
                     if (nickname_state == true) {
+
+
                         mFirebaseAuth.createUserWithEmailAndPassword(strEmail, strPassword).addOnCompleteListener(RegisterActivity.this, new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
                                     FirebaseUser firebaseUser = mFirebaseAuth.getCurrentUser();
                                     UserAccount account = new UserAccount();
-                                    account.setIdToken(firebaseUser.getUid());
+                                    account.setUid(firebaseUser.getUid());
                                     account.setEmailId(firebaseUser.getEmail());
                                     account.setPhoneNumber(strPhoneNumber);
                                     account.setStudentName(strStudentName);
@@ -143,7 +144,8 @@ public class RegisterActivity extends AppCompatActivity {
                                     account.setMajor(strMaojr);
                                     account.setNickName(strNick);
                                     account.setPassword(strPassword);
-//                                    mProfieDatabaseReference.child(firebaseUser.getEmail().replace(".", ">")).setValue(account);
+
+                                    mProfieDatabaseReference.child(account.uid).setValue(account.uid);
                                     db.collection("Account")
                                             .document(firebaseUser.getEmail().replace(".", ">"))
                                             .set(account)
