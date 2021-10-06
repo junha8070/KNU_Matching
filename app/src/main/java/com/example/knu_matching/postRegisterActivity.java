@@ -92,29 +92,21 @@ public class postRegisterActivity extends AppCompatActivity {
         btn_delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                db.collection("Post").document("Uid").delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-//                    @Override
-//                    public void onSuccess(Void unused) {
-//                        Toast.makeText(postRegisterActivity.this, "성공", Toast.LENGTH_SHORT).show();
-//                    }
-//                }).addOnFailureListener(new OnFailureListener() {
-//                            @Override
-//                            public void onFailure(@NonNull Exception e) {
-//                                Toast.makeText(postRegisterActivity.this, "실패", Toast.LENGTH_SHORT).show();
-//
-//                            }
-//                        });
+                db.collection("Post").document(str_Id).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void v) {
+                        Toast.makeText(postRegisterActivity.this, "성공", Toast.LENGTH_SHORT).show();
+                        finish();
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Toast.makeText(postRegisterActivity.this, "실패", Toast.LENGTH_SHORT).show();
+                            }
+                        });
 
-
-
-
-                
             }
         });
-
-
-
-
 
     }
 
