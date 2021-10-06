@@ -1,6 +1,7 @@
 package com.example.knu_matching;
 
 import android.app.Activity;
+import android.app.LauncherActivity;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -53,6 +54,7 @@ public class AdapterActivity extends RecyclerView.Adapter<AdapterActivity.Galler
 
     @Override
     public void onBindViewHolder(@NonNull final GalleryViewHolder holder,int position){
+        int temp = position;
         CardView cardView = holder.cardView;
         TextView textView = cardView.findViewById(R.id.textView);
         textView.setText(mDataset.get(position).getStr_Title());
@@ -62,7 +64,14 @@ public class AdapterActivity extends RecyclerView.Adapter<AdapterActivity.Galler
         cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Intent intent = new Intent(view.getContext(), postRegisterActivity.class);
+                intent.putExtra("Title", mDataset.get(temp).getStr_Title());
+                intent.putExtra("Date", mDataset.get(temp).getStr_date());
+                intent.putExtra("Number", mDataset.get(temp).getStr_Number());
+                intent.putExtra("Post", mDataset.get(temp).getStr_post());
+                intent.putExtra("Id", mDataset.get(temp).getStr_Id());
+                view.getContext().startActivity(intent);
+                System.out.println("자리 확인"+mDataset.get(temp).getStr_Title());
             }
         });
     }

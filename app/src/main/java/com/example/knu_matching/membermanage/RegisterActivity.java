@@ -106,6 +106,8 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
 
+
+
         btn_knuID.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

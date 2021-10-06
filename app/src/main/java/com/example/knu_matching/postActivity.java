@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -32,7 +33,7 @@ public class postActivity extends AppCompatActivity {
     private EditText edt_Title, edt_Number, edt_date, edt_post;
     private FirebaseAuth mFirebaseAuth;
     private DatabaseReference mDatabaseRef;
-    private String str_Title, str_date, str_Number, str_post, str_time;
+    private String str_Title, str_date, str_Number, str_post, str_id;
     private FirebaseUser user;
     // 현재 날짜/시간
     LocalDateTime now = LocalDateTime.now();
@@ -64,14 +65,11 @@ public class postActivity extends AppCompatActivity {
                 str_Number = edt_Number.getText().toString();
                 str_post = edt_post.getText().toString();
 
-
-                //System.out.println("test" + strNick + " " + strEmail + " " + strStudentId);
-
                 if (str_Title.trim().equals("") || str_date.trim().equals("") || str_Number.trim().equals("") || str_post.trim().equals("")) {
                     Toast.makeText(postActivity.this, "빈칸을 채워주세요", Toast.LENGTH_SHORT).show();
                 } else {
                     user = FirebaseAuth.getInstance().getCurrentUser();
-                    postInfo postInfo = new postInfo(str_Title, str_date, str_Number, str_post, formatedNow);
+                    postInfo postInfo = new postInfo(str_Title, str_date, str_Number, str_post, formatedNow, str_id);
                     update(postInfo);
                     Intent intent = new Intent();
                     setResult(Activity.RESULT_OK, intent);
@@ -89,7 +87,6 @@ public class postActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
                         Toast.makeText(postActivity.this, "성공", Toast.LENGTH_SHORT).show();
-                        finish();
                     }
                 });
     }
