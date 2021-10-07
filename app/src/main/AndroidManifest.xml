@@ -3,7 +3,7 @@
     package="com.example.knu_matching">
     <!-- 권한 설정 -->
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 
     <application
         android:allowBackup="true"
@@ -13,15 +13,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Knu_Matching"
         android:usesCleartextTraffic="true">
-        <activity
-            android:name=".main.recruitFragment.Child1_Fragment"
-            android:exported="true" />
-        <activity
-            android:name=".main.recruitFragment.Child2_Fragment"
-            android:exported="true" />
-        <activity
-            android:name=".main.recruitFragment.Child3_Fragment"
-            android:exported="true" />
         <activity
             android:name=".main.ChangePassWord"
             android:exported="true" />
