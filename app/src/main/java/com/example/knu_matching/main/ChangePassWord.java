@@ -87,7 +87,7 @@ public class ChangePassWord extends AppCompatActivity {
                                 @Nullable
                                 @Override
                                 public Void apply(@NonNull Transaction transaction) throws FirebaseFirestoreException {
-                                    transaction.update(dbRef,"password",edt_new_pwd.getText().toString());
+                                    transaction.update(dbRef,"pas sword",edt_new_pwd.getText().toString());
                                     return null;
                                 }
                             }).addOnSuccessListener(new OnSuccessListener<Void>() {

@@ -6,8 +6,10 @@ import android.os.AsyncTask;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -27,7 +29,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class FourthAdapter extends RecyclerView.Adapter<FourthAdapter.ViewHolder> {
+public class FourthAdapter extends RecyclerView.Adapter<FourthAdapter.RecyclerViewHolders> {
     Context context;
     ArrayList<HashMap<String, String>> noticeList; //공지사항 정보 담겨있음
 
@@ -41,20 +43,21 @@ public class FourthAdapter extends RecyclerView.Adapter<FourthAdapter.ViewHolder
 
     @NonNull
     @Override
-    public FourthAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public RecyclerViewHolders onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_notice, null);
-        return new ViewHolder(v);
+        RecyclerViewHolders rcv = new RecyclerViewHolders(v);
+        return rcv;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull FourthAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(RecyclerViewHolders holder, int position) {
         HashMap<String, String> noticeItem = noticeList.get(position);
         holder.tv_title.setText(noticeItem.get("title")); //작성자
         holder.tv_place.setText(noticeItem.get("place")); //작성자
         holder.tv_region.setText(noticeItem.get("region")); //작성자
         holder.tv_startDate.setText(noticeItem.get("startDate")); //작성자
         holder.tv_endDate.setText(noticeItem.get("endDate")); //작성자
-        System.out.println("이미지 주소 추적"+noticeItem.get("imgurl"));
+//        System.out.println("이미지 주소 추적"+noticeItem.get("imgurl"));
 //        Picasso.get().load(noticeItem.get("url")).into(holder.iv_url);
 //        JsoupAsyncTask jsoupAsyncTask = new JsoupAsyncTask(noticeItem.get("url"));
 //        jsoupAsyncTask.execute();
@@ -71,7 +74,7 @@ public class FourthAdapter extends RecyclerView.Adapter<FourthAdapter.ViewHolder
     /**
      * item layout 불러오기
      **/
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class RecyclerViewHolders extends RecyclerView.ViewHolder{
         TextView tv_title;
         TextView tv_place;
         TextView tv_region;
@@ -79,17 +82,31 @@ public class FourthAdapter extends RecyclerView.Adapter<FourthAdapter.ViewHolder
         TextView tv_endDate;
         CardView cv;
         ImageView iv_url;
+        ImageButton btn_scrap, btn_recruit;
 
-        public ViewHolder(View v) {
-            super(v);
-            tv_title = (TextView) v.findViewById(R.id.tv_title);
-            tv_place = (TextView) v.findViewById(R.id.tv_place);
-            tv_region = (TextView) v.findViewById(R.id.tv_region);
-            tv_startDate = (TextView) v.findViewById(R.id.tv_startDate);
-            tv_endDate = (TextView) v.findViewById(R.id.tv_endDate);
-            iv_url = (ImageView) v.findViewById(R.id.iv_url);
-            cv = (CardView) v.findViewById(R.id.cv);
+        public RecyclerViewHolders(@NonNull View itemView) {
+            super(itemView);
+            tv_title = (TextView) itemView.findViewById(R.id.tv_title);
+            tv_place = (TextView) itemView.findViewById(R.id.tv_place);
+            tv_region = (TextView) itemView.findViewById(R.id.tv_region);
+            tv_startDate = (TextView) itemView.findViewById(R.id.tv_startDate);
+            tv_endDate = (TextView) itemView.findViewById(R.id.tv_endDate);
+//            iv_url = (ImageView) v.findViewById(R.id.iv_url);
+            cv = (CardView) itemView.findViewById(R.id.cv);
+            btn_scrap = (ImageButton) itemView.findViewById(R.id.btn_scrap);
+            btn_recruit = (ImageButton) itemView.findViewById(R.id.btn_recruit);
+
+            btn_scrap.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    btn_scrap.setImageResource(R.drawable.ic_after_scrap);
+                    Toast.makeText(itemView.getContext(), "click position"+getLayoutPosition(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(itemView.getContext(), "click position"+getAdapterPosition(), Toast.LENGTH_SHORT).show();
+                }
+            });
         }
+
+
     }
 
 

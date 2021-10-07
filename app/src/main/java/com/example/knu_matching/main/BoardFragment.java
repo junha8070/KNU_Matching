@@ -122,7 +122,7 @@ public class BoardFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_fourth_fragment, container, false);
-        mLinearLayoutManager = new GridLayoutManager(getActivity(),2);
+        mLinearLayoutManager = new GridLayoutManager(getActivity(),1);
         mLinearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         rv = (RecyclerView) view.findViewById(R.id.recycleView);
         rv.setHasFixedSize(true);
@@ -134,6 +134,8 @@ public class BoardFragment extends Fragment {
 //
 //            }
 //        });
+
+
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -146,8 +148,8 @@ public class BoardFragment extends Fragment {
                         adapter.notifyDataSetChanged();
                         for(int i=0;i<noticeList.size();i++){
                             System.out.println("뭘까"+noticeList.get(i).get(TAG_URL));
-                            JsoupAsyncTask jsoupAsyncTask = new JsoupAsyncTask(noticeList.get(i).get(TAG_URL));
-                            jsoupAsyncTask.execute();
+//                            JsoupAsyncTask jsoupAsyncTask = new JsoupAsyncTask(noticeList.get(i).get(TAG_URL));
+//                            jsoupAsyncTask.execute();
                         }
                     }
                 });
@@ -236,51 +238,51 @@ public class BoardFragment extends Fragment {
         System.out.println("디버깅3" + posts.get(TAG_TITLE));
     }//getXmlData method....
 
-    private class JsoupAsyncTask extends AsyncTask {
-        String this_url;
-        JsoupAsyncTask(String get_url) {
-            this_url = get_url;
-        }
-
-        @Override
-        protected Object doInBackground(Object[] objects) {
-            try {
-                Connection con = Jsoup.connect(this_url);
-                Document doc = con.get();
-                Elements ogTags = doc.select("meta[property^=og:]");
-                if (ogTags.size() <= 0) {
-                    return null;
-                }
-                // 필요한 OGTag를 추려낸다
-                for (int i = 0; i < ogTags.size(); i++) {
-                    Element tag = ogTags.get(i);
-
-                    String text = tag.attr("property");
-                    if ("og:image".equals(text)) {
-                        img_url = tag.attr("content");
-                        System.out.println("이미지 주소2"+img_url);
-                        array.put(TAG_IMGURL,img_url);
-                        arrayList.add(array);
-                        array = new HashMap<>();
-                        System.out.println("사진리스트2"+arrayList);
-                    }
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPreExecute() {
-
-        }
-        @Override
-        protected void onPostExecute(Object o) {
-            System.out.println("사진리스트3"+arrayList);
-            FourthAdapter adapter = new FourthAdapter(getActivity(), arrayList);
-            rv.setAdapter(adapter);
-//            adapter.notifyDataSetChanged();
-        }
-    }
+//    private class JsoupAsyncTask extends AsyncTask {
+//        String this_url;
+//        JsoupAsyncTask(String get_url) {
+//            this_url = get_url;
+//        }
+//
+//        @Override
+//        protected Object doInBackground(Object[] objects) {
+//            try {
+//                Connection con = Jsoup.connect(this_url);
+//                Document doc = con.get();
+//                Elements ogTags = doc.select("meta[property^=og:]");
+//                if (ogTags.size() <= 0) {
+//                    return null;
+//                }
+//                // 필요한 OGTag를 추려낸다
+//                for (int i = 0; i < ogTags.size(); i++) {
+//                    Element tag = ogTags.get(i);
+//
+//                    String text = tag.attr("property");
+//                    if ("og:image".equals(text)) {
+//                        img_url = tag.attr("content");
+//                        System.out.println("이미지 주소2"+img_url);
+//                        array.put(TAG_IMGURL,img_url);
+//                        arrayList.add(array);
+//                        array = new HashMap<>();
+//                        System.out.println("사진리스트2"+arrayList);
+//                    }
+//                }
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//            return null;
+//        }
+//
+//        @Override
+//        protected void onPreExecute() {
+//
+//        }
+//        @Override
+//        protected void onPostExecute(Object o) {
+//            System.out.println("사진리스트3"+arrayList);
+//            FourthAdapter adapter = new FourthAdapter(getActivity(), arrayList);
+//            rv.setAdapter(adapter);
+////            adapter.notifyDataSetChanged();
+//        }
+//    }
 }
