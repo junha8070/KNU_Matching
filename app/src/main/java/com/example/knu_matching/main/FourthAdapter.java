@@ -104,6 +104,14 @@ public class FourthAdapter extends RecyclerView.Adapter<FourthAdapter.RecyclerVi
                     Toast.makeText(itemView.getContext(), "click position"+getAdapterPosition(), Toast.LENGTH_SHORT).show();
                 }
             });
+
+            //TODO : 팀원 구하기 버튼
+//            btn_recruit.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//
+//                }
+//            });
         }
 
 
