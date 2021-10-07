@@ -30,9 +30,9 @@ public class RecruitmentFragment extends Fragment {
 
         tabRoot = rootView.findViewById(R.id.tab_layout);
         tabRoot.removeAllTabs();
-        tabRoot.addTab(tabRoot.newTab().setText("1번탭"));
-        tabRoot.addTab(tabRoot.newTab().setText("2번탭"));
-        tabRoot.addTab(tabRoot.newTab().setText("3번탭"));
+        tabRoot.addTab(tabRoot.newTab().setText("팀원 구하기\n현황"));
+        tabRoot.addTab(tabRoot.newTab().setText("게시글\n스크랩"));
+        tabRoot.addTab(tabRoot.newTab().setText("대외활동\n스크랩"));
 
         getChildFragmentManager().beginTransaction().replace(R.id.tab1_container, child1_fragment).commit();
 
