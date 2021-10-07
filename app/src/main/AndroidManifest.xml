@@ -3,7 +3,7 @@
     package="com.example.knu_matching">
     <!-- 권한 설정 -->
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 
     <application
         android:allowBackup="true"
@@ -14,13 +14,7 @@
         android:theme="@style/Theme.Knu_Matching"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".PostRegisterActivity2"
-            android:exported="true" />
-        <activity
             android:name=".main.ChangePassWord"
-            android:exported="true" />
-        <activity
-            android:name=".postRegisterActivity"
             android:exported="true" />
         <activity
             android:name=".postActivity"
@@ -49,7 +43,6 @@
         <activity
             android:name=".membermanage.RegisterActivity"
             android:exported="true" />
-
     </application>
 
 </manifest>

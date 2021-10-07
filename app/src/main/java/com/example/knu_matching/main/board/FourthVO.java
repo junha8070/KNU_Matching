@@ -1,4 +1,4 @@
-package com.example.knu_matching.main;
+package com.example.knu_matching.main.board;
 
 public class FourthVO {
     private String authKey;//인증키

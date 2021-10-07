@@ -14,6 +14,8 @@ import android.widget.Toast;
 
 import com.example.knu_matching.R;
 import com.example.knu_matching.UserAccount;
+import com.example.knu_matching.main.board.BoardFragment;
+import com.example.knu_matching.main.recruit.RecruitmentFragment;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.google.firebase.auth.FirebaseAuth;
@@ -103,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
         Fragment frag_post = new PostFragment().newInstance(code, "");
         Fragment frag_chat = new Fragment();
         Fragment frag_people = new PeolpeFragment();
-        Fragment frag_recruit = new RecruitmentFragment().newInstance(code, "");
+        Fragment frag_recruit = new RecruitmentFragment();
         Fragment frag_board = new BoardFragment().newInstance(code, "");
         Fragment frag_mypage = new MypageFragment().newInstance(code, "");
 
