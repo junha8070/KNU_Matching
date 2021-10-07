@@ -33,7 +33,7 @@ public class postActivity extends AppCompatActivity {
     private EditText edt_Title, edt_Number, edt_date, edt_post;
     private FirebaseAuth mFirebaseAuth;
     private DatabaseReference mDatabaseRef;
-    private String str_Title, str_date, str_Number, str_post, str_id;
+    private String str_Title, str_date, str_Number, str_post, str_id, str_email;
     private FirebaseUser user;
     // 현재 날짜/시간
     LocalDateTime now = LocalDateTime.now();
@@ -69,7 +69,7 @@ public class postActivity extends AppCompatActivity {
                     Toast.makeText(postActivity.this, "빈칸을 채워주세요", Toast.LENGTH_SHORT).show();
                 } else {
                     user = FirebaseAuth.getInstance().getCurrentUser();
-                    postInfo postInfo = new postInfo(str_Title, str_date, str_Number, str_post, formatedNow, str_id);
+                    postInfo postInfo = new postInfo(str_Title, str_date, str_Number, str_post, formatedNow, str_id, str_email);
                     update(postInfo);
                     Intent intent = new Intent();
                     setResult(Activity.RESULT_OK, intent);

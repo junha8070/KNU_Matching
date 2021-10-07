@@ -70,6 +70,8 @@ public class AdapterActivity extends RecyclerView.Adapter<AdapterActivity.Galler
                 intent.putExtra("Number", mDataset.get(temp).getStr_Number());
                 intent.putExtra("Post", mDataset.get(temp).getStr_post());
                 intent.putExtra("Id", mDataset.get(temp).getStr_Id());
+                intent.putExtra("Email", mDataset.get(temp).getStr_email());
+                System.out.println("이메일3"+ mDataset.get(temp).getStr_email());
                 view.getContext().startActivity(intent);
                 System.out.println("자리 확인"+mDataset.get(temp).getStr_Title());
             }

@@ -10,10 +10,17 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.knu_matching.main.MainActivity;
+import com.example.knu_matching.membermanage.LoginActivity;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
@@ -21,14 +28,14 @@ import java.util.ArrayList;
 
 public class postRegisterActivity extends AppCompatActivity {
 
-
+    private FirebaseAuth mFirebaseAuth;
     private DatabaseReference mDatabaseRef;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private ArrayList<postInfo> mDataset;
 
     private TextView tv_Title, tv_Number, tv_date, tv_post;
     private Button btn_list, btn_change, btn_delete;
-    private String str_Title, str_date, str_Number, str_post, str_time, str_Id;
+    private String str_Title, str_date, str_Number, str_post, str_time, str_Id, str_email;
     private ArrayList<postInfo> postInfo;
 
 
@@ -48,6 +55,7 @@ public class postRegisterActivity extends AppCompatActivity {
         btn_list = findViewById(R.id.btn_list);
         btn_delete = findViewById(R.id.btn_delete);
 
+        mFirebaseAuth = FirebaseAuth.getInstance();
         mDatabaseRef = FirebaseDatabase.getInstance().getReference("Knu_Matching");
 
         Intent intent = getIntent();
@@ -56,6 +64,8 @@ public class postRegisterActivity extends AppCompatActivity {
         str_Number = intent.getStringExtra("Number");
         str_post = intent.getStringExtra("Post");
         str_Id = intent.getStringExtra("Id");
+        str_email = intent.getStringExtra("Email");
+        System.out.println("uid 출력"+str_email);
 
         tv_Title.setText(str_Title);
         tv_Number.setText(str_Number);
@@ -101,6 +111,13 @@ public class postRegisterActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        System.out.println("이메일2"+mFirebaseAuth.getCurrentUser().getEmail());
+
+        if(mFirebaseAuth.getCurrentUser().getEmail().equals(str_email)==false){
+            btn_change.setVisibility(View.GONE);
+            btn_delete.setVisibility(View.GONE);
+        }
 
 
 
