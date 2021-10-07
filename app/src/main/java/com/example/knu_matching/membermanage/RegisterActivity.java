@@ -147,7 +147,7 @@ public class RegisterActivity extends AppCompatActivity {
                                     account.setNickName(strNick);
                                     account.setPassword(strPassword);
 
-                                    mProfieDatabaseReference.child(account.uid).setValue(account.uid);
+                                    mDatabaseref.child("users").child(account.uid);
                                     db.collection("Account")
                                             .document(firebaseUser.getEmail().replace(".", ">"))
                                             .set(account)

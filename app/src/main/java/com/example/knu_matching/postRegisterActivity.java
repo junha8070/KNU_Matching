@@ -15,7 +15,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.knu_matching.main.FirstFragment;
+import com.example.knu_matching.main.PostFragment;
 import com.example.knu_matching.main.MainActivity;
 import com.example.knu_matching.membermanage.RegisterActivity;
 import com.example.knu_matching.membermanage.Student_Certificate;

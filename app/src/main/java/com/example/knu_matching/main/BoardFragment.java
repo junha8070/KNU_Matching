@@ -45,7 +45,7 @@ import java.util.HashMap;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 
-public class FourthFragment extends Fragment {
+public class BoardFragment extends Fragment {
     private String ParsingUrl = "https://adst.jobaba.net/jobabaApi/v1.do?authKey=32BMWQNO5SCJE5AY9J07P0FTBFTKJ98D&type=C";
     HashMap<String, String> posts = new HashMap<String, String>();
     HashMap<String, String> array = new HashMap<String, String>();
@@ -69,8 +69,6 @@ public class FourthFragment extends Fragment {
     String data, title, place, region, startDate, endDate, site, img_url;
 
     private Button btn_test;
-
-public class BoardFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
