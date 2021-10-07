@@ -95,8 +95,6 @@ public class PostFragment extends Fragment {
 
         db.collection("Post")
                 .orderBy("str_time", Query.Direction.DESCENDING)
-                //.document(user.getEmail().replace(".",">"))
-                //.collection("post")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
