@@ -14,7 +14,8 @@ import android.widget.Toast;
 
 import com.example.knu_matching.R;
 import com.example.knu_matching.UserAccount;
-import com.example.knu_matching.main.recruitFragment.RecruitmentFragment;
+import com.example.knu_matching.main.board.BoardFragment;
+import com.example.knu_matching.main.recruit.RecruitmentFragment;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.google.firebase.auth.FirebaseAuth;

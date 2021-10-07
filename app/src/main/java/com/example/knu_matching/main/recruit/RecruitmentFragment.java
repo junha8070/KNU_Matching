@@ -1,4 +1,4 @@
-package com.example.knu_matching.main.recruitFragment;
+package com.example.knu_matching.main.recruit;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;

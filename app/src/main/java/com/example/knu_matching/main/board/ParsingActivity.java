@@ -1,4 +1,4 @@
-package com.example.knu_matching.main;
+package com.example.knu_matching.main.board;
 
 import android.content.Context;
 import android.util.Log;

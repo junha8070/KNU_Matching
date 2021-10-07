@@ -1,4 +1,4 @@
-package com.example.knu_matching.main;
+package com.example.knu_matching.main.board;
 
 import android.annotation.SuppressLint;
 import android.os.AsyncTask;
