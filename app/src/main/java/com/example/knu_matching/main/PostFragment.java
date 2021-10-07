@@ -93,37 +93,38 @@ public class PostFragment extends Fragment {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         user = FirebaseAuth.getInstance().getCurrentUser();
 
-            db.collection("Post")
-                    .orderBy("str_time", Query.Direction.DESCENDING)
-                    //.document(user.getEmail().replace(".",">"))
-                    //.collection("post")
-                    .get()
-                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                            if (task.isSuccessful()) {
-                                ArrayList<postInfo> postList = new ArrayList<>();
-                                for (QueryDocumentSnapshot document : task.getResult()) {
-                                    Log.d(TAG, document.getId() + "==>" + document.getData());
-                                    postList.add(new postInfo(
-                                            document.getData().get("str_Title").toString(),
-                                            document.getData().get("str_date").toString(),
-                                            document.getData().get("str_Number").toString(),
-                                            document.getData().get("str_post").toString(),
-                                            document.getData().get("str_time").toString()
-                                            //new Date(document.getDate("date_date").getTime())
-                                    ));
-                                }
-                                RecyclerView recyclerView = v.findViewById(R.id.recycleView);
-                                recyclerView.setHasFixedSize(true);
-                                recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-                                RecyclerView.Adapter mAdapter = new AdapterActivity(getActivity(), postList);
-                                recyclerView.setAdapter(mAdapter);
-                            } else {
-                                Log.d(TAG, "error", task.getException());
+        db.collection("Post")
+                .orderBy("str_time", Query.Direction.DESCENDING)
+                //.document(user.getEmail().replace(".",">"))
+                //.collection("post")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            ArrayList<postInfo> postList = new ArrayList<>();
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.d(TAG, document.getId() + "==>" + document.getData());
+                                postList.add(new postInfo(
+                                        document.getData().get("str_Title").toString(),
+                                        document.getData().get("str_date").toString(),
+                                        document.getData().get("str_Number").toString(),
+                                        document.getData().get("str_post").toString(),
+                                        document.getData().get("str_time").toString(),
+                                        document.getId()
+                                        //new Date(document.getDate("date_date").getTime())
+                                ));
                             }
+                            RecyclerView recyclerView = v.findViewById(R.id.recycleView);
+                            recyclerView.setHasFixedSize(true);
+                            recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+                            RecyclerView.Adapter mAdapter = new AdapterActivity(getActivity(), postList);
+                            recyclerView.setAdapter(mAdapter);
+                        } else {
+                            Log.d(TAG, "error", task.getException());
                         }
-                    });
+                    }
+                });
 
         btn_Recent.setOnClickListener(new View.OnClickListener() {
             @Override

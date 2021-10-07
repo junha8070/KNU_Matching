@@ -27,8 +27,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="게시글 제목 "
+                android:id="@+id/Title"
                 android:layout_margin="10px"/>
-            <EditText
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="10"
@@ -47,7 +48,7 @@
                 android:layout_height="wrap_content"
                 android:text="모집인원 수 "
                 android:layout_margin="10px"/>
-            <EditText
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="3"
@@ -66,7 +67,7 @@
                 android:layout_height="wrap_content"
                 android:text="모집기간 "
                 android:layout_margin="10px"/>
-            <EditText
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="10"
@@ -85,7 +86,7 @@
                 android:layout_height="wrap_content"
                 android:text="내용 "
                 android:layout_margin="10px"/>
-            <EditText
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:ems="10"
@@ -99,11 +100,12 @@
             android:orientation="horizontal">
 
             <Button
+                android:id="@+id/btn_list"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="목록"
                 android:layout_margin="10px"
-                android:id="@+id/btn_list"/>
+                android:text="목록" />
+
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
