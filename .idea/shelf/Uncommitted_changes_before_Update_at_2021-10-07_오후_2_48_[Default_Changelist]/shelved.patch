@@ -1,0 +1,452 @@
+Index: app/src/main/java/com/example/knu_matching/main/BoardFragment.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.knu_matching.main;\r\n\r\nimport androidx.annotation.NonNull;\r\nimport androidx.appcompat.app.AppCompatActivity;\r\nimport androidx.fragment.app.Fragment;\r\nimport androidx.recyclerview.widget.GridLayoutManager;\r\nimport androidx.recyclerview.widget.LinearLayoutManager;\r\nimport androidx.recyclerview.widget.RecyclerView;\r\n\r\nimport android.annotation.SuppressLint;\r\nimport android.app.Activity;\r\nimport android.content.Context;\r\nimport android.os.AsyncTask;\r\nimport android.os.Bundle;\r\nimport android.util.Log;\r\nimport android.view.LayoutInflater;\r\nimport android.view.View;\r\nimport android.view.ViewGroup;\r\nimport android.widget.Button;\r\n\r\nimport com.bumptech.glide.Glide;\r\nimport com.example.knu_matching.R;\r\n\r\nimport org.json.JSONArray;\r\nimport org.json.JSONObject;\r\nimport org.jsoup.Connection;\r\nimport org.jsoup.Jsoup;\r\nimport org.jsoup.nodes.Document;\r\nimport org.jsoup.nodes.Element;\r\nimport org.jsoup.select.Elements;\r\nimport org.w3c.dom.Node;\r\nimport org.w3c.dom.NodeList;\r\nimport org.xmlpull.v1.XmlPullParser;\r\nimport org.xmlpull.v1.XmlPullParserFactory;\r\n\r\nimport java.io.BufferedReader;\r\nimport java.io.IOException;\r\nimport java.io.InputStream;\r\nimport java.io.InputStreamReader;\r\nimport java.net.HttpURLConnection;\r\nimport java.net.URL;\r\nimport java.net.URLDecoder;\r\nimport java.util.ArrayList;\r\nimport java.util.HashMap;\r\n\r\nimport javax.xml.parsers.DocumentBuilderFactory;\r\n\r\npublic class FourthFragment extends Fragment {\r\n    private String ParsingUrl = \"https://adst.jobaba.net/jobabaApi/v1.do?authKey=32BMWQNO5SCJE5AY9J07P0FTBFTKJ98D&type=C\";\r\n    HashMap<String, String> posts = new HashMap<String, String>();\r\n    HashMap<String, String> array = new HashMap<String, String>();\r\n    ArrayList<HashMap<String, String>> arrayList = new ArrayList<HashMap<String, String>>();\r\n    ArrayList<HashMap<String, String>> noticeList = new ArrayList<HashMap<String, String>>();\r\n    FourthAdapter adapter = new FourthAdapter(getActivity(), noticeList);\r\n    private static final String TAG_TITLE = \"title\";\r\n    private static final String TAG_PLACE = \"place\";\r\n    private static final String TAG_STARTDATE = \"startDate\";\r\n    private static final String TAG_ENDDATE = \"endDate\";\r\n    private static final String TAG_CATEGORY = \"category\";\r\n    private static final String TAG_REGION = \"region\";\r\n    private static final String TAG_URL = \"url\";\r\n    private static final String TAG_IMGURL = \"imgurl\";\r\n    XmlPullParser xpp;\r\n    private Context mContext;\r\n    Activity activity;\r\n    private RecyclerView rv;\r\n    private LinearLayoutManager mLinearLayoutManager;\r\n    ParsingActivity parsingActivity = new ParsingActivity();\r\n    String data, title, place, region, startDate, endDate, site, img_url;\r\n\r\n    private Button btn_test;\r\n\r\npublic class BoardFragment extends Fragment {\r\n\r\n    // TODO: Rename parameter arguments, choose names that match\r\n    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER\r\n    private static final String ARG_PARAM1 = \"param1\";\r\n    private static final String ARG_PARAM2 = \"param2\";\r\n\r\n    // TODO: Rename and change types of parameters\r\n    private String mParam1;\r\n    private String mParam2;\r\n\r\n    public BoardFragment() {\r\n        // Required empty public constructor\r\n    }\r\n\r\n    @Override\r\n    public void onAttach(Context context) {\r\n        super.onAttach(context);\r\n\r\n        if (context instanceof Activity)\r\n            activity = (Activity) context;\r\n    }\r\n\r\n    /**\r\n     * Use this factory method to create a new instance of\r\n     * this fragment using the provided parameters.\r\n     *\r\n     * @param param1 Parameter 1.\r\n     * @param param2 Parameter 2.\r\n     * @return A new instance of fragment Fragment4.\r\n     */\r\n    // TODO: Rename and change types and number of parameters\r\n    public static BoardFragment newInstance(String param1, String param2) {\r\n        BoardFragment fragment = new BoardFragment();\r\n        Bundle args = new Bundle();\r\n        args.putString(ARG_PARAM1, param1);\r\n        args.putString(ARG_PARAM2, param2);\r\n        fragment.setArguments(args);\r\n        return fragment;\r\n    }\r\n\r\n    @Override\r\n    public void onCreate(Bundle savedInstanceState) {\r\n        super.onCreate(savedInstanceState);\r\n        if (getArguments() != null) {\r\n            mParam1 = getArguments().getString(ARG_PARAM1);\r\n            mParam2 = getArguments().getString(ARG_PARAM2);\r\n        }\r\n    }\r\n\r\n    @Override\r\n    public View onCreateView(LayoutInflater inflater, ViewGroup container,\r\n                             Bundle savedInstanceState) {\r\n        View view = inflater.inflate(R.layout.activity_fourth_fragment, container, false);\r\n        mLinearLayoutManager = new GridLayoutManager(getActivity(),2);\r\n        mLinearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);\r\n        rv = (RecyclerView) view.findViewById(R.id.recycleView);\r\n        rv.setHasFixedSize(true);\r\n        rv.setLayoutManager(mLinearLayoutManager);\r\n//        btn_test = (Button) view.findViewById(R.id.btn_test);\r\n//        btn_test.setOnClickListener(new View.OnClickListener() {\r\n//            @Override\r\n//            public void onClick(View view) {\r\n//\r\n//            }\r\n//        });\r\n        new Thread(new Runnable() {\r\n            @Override\r\n            public void run() {\r\n                getXmlData();\r\n\r\n                activity.runOnUiThread(new Runnable() {\r\n                    @Override\r\n                    public void run() {\r\n                        rv.setAdapter(adapter);\r\n                        adapter.notifyDataSetChanged();\r\n                        for(int i=0;i<noticeList.size();i++){\r\n                            System.out.println(\"뭘까\"+noticeList.get(i).get(TAG_URL));\r\n                            JsoupAsyncTask jsoupAsyncTask = new JsoupAsyncTask(noticeList.get(i).get(TAG_URL));\r\n                            jsoupAsyncTask.execute();\r\n                        }\r\n                    }\r\n                });\r\n            }\r\n        }).start();\r\n\r\n\r\n\r\n        // Inflate the layout for this fragment\r\n        return view;\r\n\r\n    }\r\n\r\n    void getXmlData() {\r\n        try {\r\n            URL url = new URL(ParsingUrl);//문자열로 된 요청 url을 URL 객체로 생성.\r\n            InputStream is = url.openStream(); //url위치로 입력스트림 연결\r\n            XmlPullParserFactory factory = XmlPullParserFactory.newInstance();//xml파싱을 위한\r\n            XmlPullParser xpp = factory.newPullParser();\r\n            xpp.setInput(new InputStreamReader(is, \"UTF-8\")); //inputstream 으로부터 xml 입력받기\r\n            String tag;\r\n            xpp.next();\r\n            int eventType = xpp.getEventType();\r\n\r\n            while (eventType != XmlPullParser.END_DOCUMENT) {\r\n\r\n                switch (eventType) {\r\n\r\n                    case XmlPullParser.START_DOCUMENT:\r\n                        break;\r\n                    case XmlPullParser.START_TAG:\r\n                        tag = xpp.getName();//테그 이름 얻어오기\r\n\r\n                        if (tag.equals(\"data\")) ;// 첫번째 검색결과\r\n                        else if (tag.equals(\"title\")) {\r\n                            xpp.next();\r\n                            posts.put(TAG_TITLE, xpp.getText());\r\n                            System.out.println(\"파싱:\" + xpp.getText());\r\n                        } else if (tag.equals(\"place\")) {\r\n                            xpp.next();\r\n                            posts.put(TAG_PLACE, xpp.getText());\r\n                            System.out.println(\"파싱:\" + xpp.getText());\r\n                        } else if (tag.equals(\"startDate\")) {\r\n                            xpp.next();\r\n                            posts.put(TAG_STARTDATE, xpp.getText());\r\n                            System.out.println(\"파싱:\" + xpp.getText());\r\n                        } else if (tag.equals(\"endDate\")) {\r\n                            xpp.next();\r\n                            posts.put(TAG_ENDDATE, xpp.getText());\r\n                            System.out.println(\"파싱:\" + xpp.getText());\r\n                        } else if (tag.equals(\"clCd\")) {\r\n                            xpp.next();\r\n                            posts.put(TAG_CATEGORY, xpp.getText());\r\n                            System.out.println(\"파싱:\" + xpp.getText());\r\n                        } else if (tag.equals(\"legalCd\")) {\r\n                            xpp.next();\r\n                            posts.put(TAG_REGION, xpp.getText());\r\n                            System.out.println(\"파싱:\" + xpp.getText());\r\n                        } else if (tag.equals(\"jobabaUrl\")) {\r\n                            xpp.next();\r\n                            posts.put(TAG_URL, xpp.getText());\r\n\r\n                            System.out.println(\"파싱:\" + xpp.getText());\r\n                            System.out.println(\"hash 출력\" + posts);\r\n                            System.out.println(\"post출력\" + posts);\r\n                            noticeList.add(posts);\r\n                            posts = new HashMap<>();//메모리 주소를 다시 생성하고 다시 생성한것에 값을 넣어줘야 된다.\r\n                        }\r\n                        break;\r\n\r\n                    case XmlPullParser.TEXT:\r\n                        break;\r\n\r\n                    case XmlPullParser.END_TAG:\r\n                        break;\r\n\r\n                }\r\n                eventType = xpp.next();\r\n\r\n            }\r\n        } catch (Exception e) {\r\n            e.printStackTrace();\r\n        }\r\n\r\n        System.out.println(\"리스트 출력23\" + noticeList.toString());\r\n        System.out.println(\"디버깅3\" + posts.get(TAG_TITLE));\r\n    }//getXmlData method....\r\n\r\n    private class JsoupAsyncTask extends AsyncTask {\r\n        String this_url;\r\n        JsoupAsyncTask(String get_url) {\r\n            this_url = get_url;\r\n        }\r\n\r\n        @Override\r\n        protected Object doInBackground(Object[] objects) {\r\n            try {\r\n                Connection con = Jsoup.connect(this_url);\r\n                Document doc = con.get();\r\n                Elements ogTags = doc.select(\"meta[property^=og:]\");\r\n                if (ogTags.size() <= 0) {\r\n                    return null;\r\n                }\r\n                // 필요한 OGTag를 추려낸다\r\n                for (int i = 0; i < ogTags.size(); i++) {\r\n                    Element tag = ogTags.get(i);\r\n\r\n                    String text = tag.attr(\"property\");\r\n                    if (\"og:image\".equals(text)) {\r\n                        img_url = tag.attr(\"content\");\r\n                        System.out.println(\"이미지 주소2\"+img_url);\r\n                        array.put(TAG_IMGURL,img_url);\r\n                        arrayList.add(array);\r\n                        array = new HashMap<>();\r\n                        System.out.println(\"사진리스트2\"+arrayList);\r\n                    }\r\n                }\r\n            } catch (IOException e) {\r\n                e.printStackTrace();\r\n            }\r\n            return null;\r\n        }\r\n\r\n        @Override\r\n        protected void onPreExecute() {\r\n\r\n        }\r\n        @Override\r\n        protected void onPostExecute(Object o) {\r\n            System.out.println(\"사진리스트3\"+arrayList);\r\n            FourthAdapter adapter = new FourthAdapter(getActivity(), arrayList);\r\n            rv.setAdapter(adapter);\r\n//            adapter.notifyDataSetChanged();\r\n        }\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/knu_matching/main/BoardFragment.java b/app/src/main/java/com/example/knu_matching/main/BoardFragment.java
+--- a/app/src/main/java/com/example/knu_matching/main/BoardFragment.java	(revision a8133d73b91b821139ddd7d32c1f583b303db1c7)
++++ b/app/src/main/java/com/example/knu_matching/main/BoardFragment.java	(date 1633584410692)
+@@ -45,7 +45,7 @@
+ 
+ import javax.xml.parsers.DocumentBuilderFactory;
+ 
+-public class FourthFragment extends Fragment {
++public class BoardFragment extends Fragment {
+     private String ParsingUrl = "https://adst.jobaba.net/jobabaApi/v1.do?authKey=32BMWQNO5SCJE5AY9J07P0FTBFTKJ98D&type=C";
+     HashMap<String, String> posts = new HashMap<String, String>();
+     HashMap<String, String> array = new HashMap<String, String>();
+@@ -70,8 +70,6 @@
+ 
+     private Button btn_test;
+ 
+-public class BoardFragment extends Fragment {
+-
+     // TODO: Rename parameter arguments, choose names that match
+     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+     private static final String ARG_PARAM1 = "param1";
+@@ -124,7 +122,7 @@
+     public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                              Bundle savedInstanceState) {
+         View view = inflater.inflate(R.layout.activity_fourth_fragment, container, false);
+-        mLinearLayoutManager = new GridLayoutManager(getActivity(),2);
++        mLinearLayoutManager = new GridLayoutManager(getActivity(),1);
+         mLinearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+         rv = (RecyclerView) view.findViewById(R.id.recycleView);
+         rv.setHasFixedSize(true);
+@@ -136,6 +134,8 @@
+ //
+ //            }
+ //        });
++
++
+         new Thread(new Runnable() {
+             @Override
+             public void run() {
+@@ -148,8 +148,8 @@
+                         adapter.notifyDataSetChanged();
+                         for(int i=0;i<noticeList.size();i++){
+                             System.out.println("뭘까"+noticeList.get(i).get(TAG_URL));
+-                            JsoupAsyncTask jsoupAsyncTask = new JsoupAsyncTask(noticeList.get(i).get(TAG_URL));
+-                            jsoupAsyncTask.execute();
++//                            JsoupAsyncTask jsoupAsyncTask = new JsoupAsyncTask(noticeList.get(i).get(TAG_URL));
++//                            jsoupAsyncTask.execute();
+                         }
+                     }
+                 });
+@@ -238,51 +238,51 @@
+         System.out.println("디버깅3" + posts.get(TAG_TITLE));
+     }//getXmlData method....
+ 
+-    private class JsoupAsyncTask extends AsyncTask {
+-        String this_url;
+-        JsoupAsyncTask(String get_url) {
+-            this_url = get_url;
+-        }
+-
+-        @Override
+-        protected Object doInBackground(Object[] objects) {
+-            try {
+-                Connection con = Jsoup.connect(this_url);
+-                Document doc = con.get();
+-                Elements ogTags = doc.select("meta[property^=og:]");
+-                if (ogTags.size() <= 0) {
+-                    return null;
+-                }
+-                // 필요한 OGTag를 추려낸다
+-                for (int i = 0; i < ogTags.size(); i++) {
+-                    Element tag = ogTags.get(i);
+-
+-                    String text = tag.attr("property");
+-                    if ("og:image".equals(text)) {
+-                        img_url = tag.attr("content");
+-                        System.out.println("이미지 주소2"+img_url);
+-                        array.put(TAG_IMGURL,img_url);
+-                        arrayList.add(array);
+-                        array = new HashMap<>();
+-                        System.out.println("사진리스트2"+arrayList);
+-                    }
+-                }
+-            } catch (IOException e) {
+-                e.printStackTrace();
+-            }
+-            return null;
+-        }
+-
+-        @Override
+-        protected void onPreExecute() {
+-
+-        }
+-        @Override
+-        protected void onPostExecute(Object o) {
+-            System.out.println("사진리스트3"+arrayList);
+-            FourthAdapter adapter = new FourthAdapter(getActivity(), arrayList);
+-            rv.setAdapter(adapter);
+-//            adapter.notifyDataSetChanged();
+-        }
+-    }
++//    private class JsoupAsyncTask extends AsyncTask {
++//        String this_url;
++//        JsoupAsyncTask(String get_url) {
++//            this_url = get_url;
++//        }
++//
++//        @Override
++//        protected Object doInBackground(Object[] objects) {
++//            try {
++//                Connection con = Jsoup.connect(this_url);
++//                Document doc = con.get();
++//                Elements ogTags = doc.select("meta[property^=og:]");
++//                if (ogTags.size() <= 0) {
++//                    return null;
++//                }
++//                // 필요한 OGTag를 추려낸다
++//                for (int i = 0; i < ogTags.size(); i++) {
++//                    Element tag = ogTags.get(i);
++//
++//                    String text = tag.attr("property");
++//                    if ("og:image".equals(text)) {
++//                        img_url = tag.attr("content");
++//                        System.out.println("이미지 주소2"+img_url);
++//                        array.put(TAG_IMGURL,img_url);
++//                        arrayList.add(array);
++//                        array = new HashMap<>();
++//                        System.out.println("사진리스트2"+arrayList);
++//                    }
++//                }
++//            } catch (IOException e) {
++//                e.printStackTrace();
++//            }
++//            return null;
++//        }
++//
++//        @Override
++//        protected void onPreExecute() {
++//
++//        }
++//        @Override
++//        protected void onPostExecute(Object o) {
++//            System.out.println("사진리스트3"+arrayList);
++//            FourthAdapter adapter = new FourthAdapter(getActivity(), arrayList);
++//            rv.setAdapter(adapter);
++////            adapter.notifyDataSetChanged();
++//        }
++//    }
+ }
+\ No newline at end of file
+Index: app/src/main/java/com/example/knu_matching/main/FourthAdapter.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.knu_matching.main;\r\n\r\nimport android.content.Context;\r\nimport android.media.Image;\r\nimport android.os.AsyncTask;\r\nimport android.view.LayoutInflater;\r\nimport android.view.View;\r\nimport android.view.ViewGroup;\r\nimport android.widget.ImageView;\r\nimport android.widget.TextView;\r\n\r\nimport androidx.annotation.NonNull;\r\nimport androidx.cardview.widget.CardView;\r\nimport androidx.recyclerview.widget.RecyclerView;\r\n\r\nimport com.bumptech.glide.Glide;\r\nimport com.example.knu_matching.R;\r\nimport com.squareup.picasso.Picasso;\r\n\r\nimport org.jsoup.Connection;\r\nimport org.jsoup.Jsoup;\r\nimport org.jsoup.nodes.Document;\r\nimport org.jsoup.nodes.Element;\r\nimport org.jsoup.select.Elements;\r\n\r\nimport java.io.IOException;\r\nimport java.util.ArrayList;\r\nimport java.util.HashMap;\r\n\r\npublic class FourthAdapter extends RecyclerView.Adapter<FourthAdapter.ViewHolder> {\r\n    Context context;\r\n    ArrayList<HashMap<String, String>> noticeList; //공지사항 정보 담겨있음\r\n\r\n    String img_url;\r\n\r\n    public FourthAdapter(Context context, ArrayList<HashMap<String, String>> noticeList) {\r\n        this.context = context;\r\n        this.noticeList = noticeList;\r\n        System.out.println(\"리스트\"+noticeList);\r\n    }\r\n\r\n    @NonNull\r\n    @Override\r\n    public FourthAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {\r\n        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_notice, null);\r\n        return new ViewHolder(v);\r\n    }\r\n\r\n    @Override\r\n    public void onBindViewHolder(@NonNull FourthAdapter.ViewHolder holder, int position) {\r\n        HashMap<String, String> noticeItem = noticeList.get(position);\r\n        holder.tv_title.setText(noticeItem.get(\"title\")); //작성자\r\n        holder.tv_place.setText(noticeItem.get(\"place\")); //작성자\r\n        holder.tv_region.setText(noticeItem.get(\"region\")); //작성자\r\n        holder.tv_startDate.setText(noticeItem.get(\"startDate\")); //작성자\r\n        holder.tv_endDate.setText(noticeItem.get(\"endDate\")); //작성자\r\n        System.out.println(\"이미지 주소 추적\"+noticeItem.get(\"imgurl\"));\r\n//        Picasso.get().load(noticeItem.get(\"url\")).into(holder.iv_url);\r\n//        JsoupAsyncTask jsoupAsyncTask = new JsoupAsyncTask(noticeItem.get(\"url\"));\r\n//        jsoupAsyncTask.execute();\r\n//        System.out.println(\"이미지 주소3\"+img_url);\r\n//        System.out.println(\"사진리스트\"+arrayList);\r\n\r\n    }\r\n\r\n    @Override\r\n    public int getItemCount() {\r\n        return this.noticeList.size();\r\n    }\r\n\r\n    /**\r\n     * item layout 불러오기\r\n     **/\r\n    public class ViewHolder extends RecyclerView.ViewHolder {\r\n        TextView tv_title;\r\n        TextView tv_place;\r\n        TextView tv_region;\r\n        TextView tv_startDate;\r\n        TextView tv_endDate;\r\n        CardView cv;\r\n        ImageView iv_url;\r\n\r\n        public ViewHolder(View v) {\r\n            super(v);\r\n            tv_title = (TextView) v.findViewById(R.id.tv_title);\r\n            tv_place = (TextView) v.findViewById(R.id.tv_place);\r\n            tv_region = (TextView) v.findViewById(R.id.tv_region);\r\n            tv_startDate = (TextView) v.findViewById(R.id.tv_startDate);\r\n            tv_endDate = (TextView) v.findViewById(R.id.tv_endDate);\r\n            iv_url = (ImageView) v.findViewById(R.id.iv_url);\r\n            cv = (CardView) v.findViewById(R.id.cv);\r\n        }\r\n    }\r\n\r\n\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/knu_matching/main/FourthAdapter.java b/app/src/main/java/com/example/knu_matching/main/FourthAdapter.java
+--- a/app/src/main/java/com/example/knu_matching/main/FourthAdapter.java	(revision a8133d73b91b821139ddd7d32c1f583b303db1c7)
++++ b/app/src/main/java/com/example/knu_matching/main/FourthAdapter.java	(date 1633585576670)
+@@ -6,8 +6,10 @@
+ import android.view.LayoutInflater;
+ import android.view.View;
+ import android.view.ViewGroup;
++import android.widget.ImageButton;
+ import android.widget.ImageView;
+ import android.widget.TextView;
++import android.widget.Toast;
+ 
+ import androidx.annotation.NonNull;
+ import androidx.cardview.widget.CardView;
+@@ -27,7 +29,7 @@
+ import java.util.ArrayList;
+ import java.util.HashMap;
+ 
+-public class FourthAdapter extends RecyclerView.Adapter<FourthAdapter.ViewHolder> {
++public class FourthAdapter extends RecyclerView.Adapter<FourthAdapter.RecyclerViewHolders> {
+     Context context;
+     ArrayList<HashMap<String, String>> noticeList; //공지사항 정보 담겨있음
+ 
+@@ -41,20 +43,21 @@
+ 
+     @NonNull
+     @Override
+-    public FourthAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
++    public RecyclerViewHolders onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_notice, null);
+-        return new ViewHolder(v);
++        RecyclerViewHolders rcv = new RecyclerViewHolders(v);
++        return rcv;
+     }
+ 
+     @Override
+-    public void onBindViewHolder(@NonNull FourthAdapter.ViewHolder holder, int position) {
++    public void onBindViewHolder(RecyclerViewHolders holder, int position) {
+         HashMap<String, String> noticeItem = noticeList.get(position);
+         holder.tv_title.setText(noticeItem.get("title")); //작성자
+         holder.tv_place.setText(noticeItem.get("place")); //작성자
+         holder.tv_region.setText(noticeItem.get("region")); //작성자
+         holder.tv_startDate.setText(noticeItem.get("startDate")); //작성자
+         holder.tv_endDate.setText(noticeItem.get("endDate")); //작성자
+-        System.out.println("이미지 주소 추적"+noticeItem.get("imgurl"));
++//        System.out.println("이미지 주소 추적"+noticeItem.get("imgurl"));
+ //        Picasso.get().load(noticeItem.get("url")).into(holder.iv_url);
+ //        JsoupAsyncTask jsoupAsyncTask = new JsoupAsyncTask(noticeItem.get("url"));
+ //        jsoupAsyncTask.execute();
+@@ -71,7 +74,7 @@
+     /**
+      * item layout 불러오기
+      **/
+-    public class ViewHolder extends RecyclerView.ViewHolder {
++    public class RecyclerViewHolders extends RecyclerView.ViewHolder{
+         TextView tv_title;
+         TextView tv_place;
+         TextView tv_region;
+@@ -79,17 +82,31 @@
+         TextView tv_endDate;
+         CardView cv;
+         ImageView iv_url;
++        ImageButton btn_scrap, btn_recruit;
++
++        public RecyclerViewHolders(@NonNull View itemView) {
++            super(itemView);
++            tv_title = (TextView) itemView.findViewById(R.id.tv_title);
++            tv_place = (TextView) itemView.findViewById(R.id.tv_place);
++            tv_region = (TextView) itemView.findViewById(R.id.tv_region);
++            tv_startDate = (TextView) itemView.findViewById(R.id.tv_startDate);
++            tv_endDate = (TextView) itemView.findViewById(R.id.tv_endDate);
++//            iv_url = (ImageView) v.findViewById(R.id.iv_url);
++            cv = (CardView) itemView.findViewById(R.id.cv);
++            btn_scrap = (ImageButton) itemView.findViewById(R.id.btn_scrap);
++            btn_recruit = (ImageButton) itemView.findViewById(R.id.btn_recruit);
+ 
+-        public ViewHolder(View v) {
+-            super(v);
+-            tv_title = (TextView) v.findViewById(R.id.tv_title);
+-            tv_place = (TextView) v.findViewById(R.id.tv_place);
+-            tv_region = (TextView) v.findViewById(R.id.tv_region);
+-            tv_startDate = (TextView) v.findViewById(R.id.tv_startDate);
+-            tv_endDate = (TextView) v.findViewById(R.id.tv_endDate);
+-            iv_url = (ImageView) v.findViewById(R.id.iv_url);
+-            cv = (CardView) v.findViewById(R.id.cv);
++            btn_scrap.setOnClickListener(new View.OnClickListener() {
++                @Override
++                public void onClick(View view) {
++                    btn_scrap.setImageResource(R.drawable.ic_after_scrap);
++                    Toast.makeText(itemView.getContext(), "click position"+getLayoutPosition(), Toast.LENGTH_SHORT).show();
++                    Toast.makeText(itemView.getContext(), "click position"+getAdapterPosition(), Toast.LENGTH_SHORT).show();
++                }
++            });
+         }
++
++
+     }
+ 
+ 
+Index: app/src/main/res/layout/item_notice.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<LinearLayout xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    xmlns:card_view=\"http://schemas.android.com/apk/res-auto\"\r\n    android:layout_width=\"match_parent\"\r\n    android:layout_height=\"match_parent\">\r\n\r\n    <androidx.cardview.widget.CardView xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n        xmlns:card_view=\"http://schemas.android.com/apk/res-auto\"\r\n        android:id=\"@+id/cv\"\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"match_parent\"\r\n        android:layout_marginBottom=\"16dp\">\r\n\r\n        <LinearLayout\r\n            android:layout_width=\"match_parent\"\r\n            android:layout_height=\"wrap_content\"\r\n            android:orientation=\"horizontal\">\r\n\r\n            <LinearLayout\r\n                android:layout_width=\"match_parent\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:layout_marginLeft=\"10dp\"\r\n                android:layout_marginRight=\"10dp\"\r\n                android:layout_weight=\"1\"\r\n                android:orientation=\"vertical\">\r\n\r\n                <ImageView\r\n                    android:layout_width=\"match_parent\"\r\n                    android:layout_height=\"wrap_content\"\r\n                    android:id=\"@+id/iv_url\"\r\n                    android:src=\"@drawable/ic_before_scrap\"/>\r\n                <TextView\r\n                    android:id=\"@+id/tv_title\"\r\n                    android:layout_width=\"match_parent\"\r\n                    android:layout_height=\"wrap_content\"\r\n                    android:text=\"title\" />\r\n\r\n                <LinearLayout\r\n                    android:layout_width=\"match_parent\"\r\n                    android:layout_height=\"wrap_content\"\r\n                    android:orientation=\"horizontal\">\r\n\r\n                    <TextView\r\n                        android:id=\"@+id/tv_place\"\r\n                        android:layout_width=\"wrap_content\"\r\n                        android:layout_height=\"wrap_content\"\r\n                        android:layout_marginRight=\"20dp\"\r\n                        android:text=\"place\" />\r\n\r\n                    <TextView\r\n                        android:layout_width=\"wrap_content\"\r\n                        android:layout_height=\"wrap_content\"\r\n                        android:text=\"(\" />\r\n\r\n                    <TextView\r\n                        android:id=\"@+id/tv_region\"\r\n                        android:layout_width=\"wrap_content\"\r\n                        android:layout_height=\"wrap_content\"\r\n                        android:text=\"region\" />\r\n\r\n                    <TextView\r\n                        android:layout_width=\"wrap_content\"\r\n                        android:layout_height=\"wrap_content\"\r\n                        android:text=\")\" />\r\n                </LinearLayout>\r\n\r\n                <LinearLayout\r\n                    android:layout_width=\"match_parent\"\r\n                    android:layout_height=\"wrap_content\"\r\n                    android:orientation=\"horizontal\">\r\n\r\n                    <TextView\r\n                        android:id=\"@+id/tv_startDate\"\r\n                        android:layout_width=\"wrap_content\"\r\n                        android:layout_height=\"wrap_content\"\r\n                        android:text=\"startDate\" />\r\n\r\n                    <TextView\r\n                        android:layout_width=\"wrap_content\"\r\n                        android:layout_height=\"wrap_content\"\r\n                        android:text=\"~\" />\r\n\r\n                    <TextView\r\n                        android:id=\"@+id/tv_endDate\"\r\n                        android:layout_width=\"wrap_content\"\r\n                        android:layout_height=\"wrap_content\"\r\n                        android:text=\"endDate\" />\r\n                </LinearLayout>\r\n\r\n            </LinearLayout>\r\n\r\n            <!--            <LinearLayout-->\r\n            <!--                android:gravity=\"center|right\"-->\r\n            <!--                android:layout_weight=\"1\"-->\r\n            <!--                android:orientation=\"horizontal\"-->\r\n            <!--                android:layout_width=\"match_parent\"-->\r\n            <!--                android:layout_height=\"wrap_content\">-->\r\n            <!--                <ImageButton-->\r\n            <!--                    android:id=\"@+id/btn_scrap\"-->\r\n            <!--                    android:layout_width=\"wrap_content\"-->\r\n            <!--                    android:layout_height=\"wrap_content\"-->\r\n            <!--                    android:src=\"@drawable/ic_before_scrap\"-->\r\n            <!--                    android:background=\"@null\"/>-->\r\n            <!--                <Button-->\r\n            <!--                    android:layout_marginRight=\"10dp\"-->\r\n            <!--                    android:id=\"@+id/btn_post\"-->\r\n            <!--                    android:layout_width=\"wrap_content\"-->\r\n            <!--                    android:layout_height=\"wrap_content\"-->\r\n            <!--                    android:text=\"팀원\\n구하기\"/>-->\r\n\r\n            <!--            </LinearLayout>-->\r\n        </LinearLayout>\r\n\r\n    </androidx.cardview.widget.CardView>\r\n</LinearLayout>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/res/layout/item_notice.xml b/app/src/main/res/layout/item_notice.xml
+--- a/app/src/main/res/layout/item_notice.xml	(revision a8133d73b91b821139ddd7d32c1f583b303db1c7)
++++ b/app/src/main/res/layout/item_notice.xml	(date 1633583528762)
+@@ -24,11 +24,11 @@
+                 android:layout_weight="1"
+                 android:orientation="vertical">
+ 
+-                <ImageView
+-                    android:layout_width="match_parent"
+-                    android:layout_height="wrap_content"
+-                    android:id="@+id/iv_url"
+-                    android:src="@drawable/ic_before_scrap"/>
++                <!--                <ImageView-->
++                <!--                    android:layout_width="match_parent"-->
++                <!--                    android:layout_height="wrap_content"-->
++                <!--                    android:id="@+id/iv_url"-->
++                <!--                    android:src="@drawable/ic_before_scrap"/>-->
+                 <TextView
+                     android:id="@+id/tv_title"
+                     android:layout_width="match_parent"
+@@ -87,8 +87,33 @@
+                         android:text="endDate" />
+                 </LinearLayout>
+ 
++                <LinearLayout
++                    android:layout_width="match_parent"
++                    android:layout_height="wrap_content"
++                    android:gravity="center"
++                    android:orientation="horizontal">
++
++                    <ImageButton
++                        android:id="@+id/btn_scrap"
++                        android:layout_width="match_parent"
++                        android:layout_height="wrap_content"
++                        android:layout_gravity="center"
++                        android:layout_weight="1"
++                        android:background="#FFFFFFFF"
++                        android:src="@drawable/ic_before_scrap" />
++
++                    <ImageButton
++                        android:id="@+id/btn_recruit"
++                        android:layout_width="match_parent"
++                        android:layout_height="wrap_content"
++                        android:layout_gravity="center"
++                        android:layout_weight="1"
++                        android:background="#FFFFFFFF"
++                        android:src="@drawable/ic_baseline_people_24" />
++                </LinearLayout>
+             </LinearLayout>
+ 
++
+             <!--            <LinearLayout-->
+             <!--                android:gravity="center|right"-->
+             <!--                android:layout_weight="1"-->
+Index: app/src/main/java/com/example/knu_matching/main/ChangePassWord.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.knu_matching.main;\r\n\r\nimport static android.content.ContentValues.TAG;\r\n\r\nimport androidx.annotation.NonNull;\r\nimport androidx.annotation.Nullable;\r\nimport androidx.appcompat.app.AppCompatActivity;\r\n\r\nimport android.os.Bundle;\r\nimport android.util.Log;\r\nimport android.view.View;\r\nimport android.widget.Button;\r\nimport android.widget.EditText;\r\nimport android.widget.Toast;\r\n\r\nimport com.example.knu_matching.R;\r\nimport com.google.android.gms.tasks.OnCompleteListener;\r\nimport com.google.android.gms.tasks.OnFailureListener;\r\nimport com.google.android.gms.tasks.OnSuccessListener;\r\nimport com.google.android.gms.tasks.Task;\r\nimport com.google.firebase.auth.FirebaseAuth;\r\nimport com.google.firebase.auth.FirebaseUser;\r\nimport com.google.firebase.firestore.DocumentReference;\r\nimport com.google.firebase.firestore.FirebaseFirestore;\r\nimport com.google.firebase.firestore.FirebaseFirestoreException;\r\nimport com.google.firebase.firestore.Query;\r\nimport com.google.firebase.firestore.Transaction;\r\n\r\npublic class ChangePassWord extends AppCompatActivity {\r\n    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();\r\n    private FirebaseFirestore db = FirebaseFirestore.getInstance();\r\n    final DocumentReference dbRef = db.collection(\"Account\").document(user.getEmail().replace(\".\", \">\"));\r\n    private EditText edt_original_pwd, edt_new_pwd, edt_re_pwd;\r\n    Button btn_back, btn_change_pwd;\r\n    String original_Password, new_Password;\r\n\r\n    @Override\r\n    protected void onCreate(Bundle savedInstanceState) {\r\n        super.onCreate(savedInstanceState);\r\n        setContentView(R.layout.activity_change_pass_word);\r\n        init();\r\n        btn_back.setOnClickListener(new View.OnClickListener() {\r\n            @Override\r\n            public void onClick(View view) {\r\n                finish();\r\n            }\r\n        });\r\n        btn_change_pwd.setOnClickListener(new View.OnClickListener() {\r\n            @Override\r\n            public void onClick(View view) {\r\n                original_Password = edt_original_pwd.getText().toString();\r\n                new_Password = edt_new_pwd.getText().toString();\r\n                System.out.println(\"체인지\" + (((MainActivity) MainActivity.context).strPassword).equals(original_Password));\r\n                if (original_Password.equals(new_Password)) {\r\n                    Toast.makeText(ChangePassWord.this, \"기존 비밀번호와 같습니다.\", Toast.LENGTH_SHORT).show();\r\n                } else {\r\n                    if (new_Password.equals(edt_re_pwd.getText().toString()) == false) {\r\n                        Toast.makeText(ChangePassWord.this, \"새로운 비밀번호와 재입력 비밀번호가 일치하지않습니다.\", Toast.LENGTH_SHORT).show();\r\n                    } else {\r\n                        if ((((MainActivity) MainActivity.context).strPassword).equals(original_Password) == true) {\r\n                            change_password(original_Password, new_Password);\r\n                        } else {\r\n                            Toast.makeText(ChangePassWord.this, \"기존 비밀번호가 틀렸습니다.\", Toast.LENGTH_SHORT).show();\r\n                        }\r\n                    }\r\n                }\r\n            }\r\n        });\r\n    }\r\n\r\n    private void init() {\r\n        edt_original_pwd = findViewById(R.id.edt_original_pwd);\r\n        edt_new_pwd = findViewById(R.id.edt_new_pwd);\r\n        edt_re_pwd = findViewById(R.id.edt_re_pwd);\r\n        btn_back = findViewById(R.id.btn_back);\r\n        btn_change_pwd = findViewById(R.id.btn_change_pwd);\r\n    }\r\n// TODO: DB비밀번호도 같이 변경하게 하기 20210916_23_06\r\n    private void change_password(String original_Password, String new_Password) {\r\n\r\n        user.updatePassword(new_Password)\r\n                .addOnCompleteListener(new OnCompleteListener<Void>() {\r\n                    @Override\r\n                    public void onComplete(@NonNull Task<Void> task) {\r\n                        if (task.isSuccessful()) {\r\n                            db.runTransaction(new Transaction.Function<Void>() {\r\n                                @Nullable\r\n                                @Override\r\n                                public Void apply(@NonNull Transaction transaction) throws FirebaseFirestoreException {\r\n                                    transaction.update(dbRef,\"password\",edt_new_pwd.getText().toString());\r\n                                    return null;\r\n                                }\r\n                            }).addOnSuccessListener(new OnSuccessListener<Void>() {\r\n                                @Override\r\n                                public void onSuccess(Void unused) {\r\n                                    Log.d(TAG, \"비밀번호 변경 성공\");\r\n                                    finish();\r\n                                }\r\n                            }).addOnFailureListener(new OnFailureListener() {\r\n                                @Override\r\n                                public void onFailure(@NonNull Exception e) {\r\n                                    Log.w(TAG, \"비밀번호 변경 실패\", e);\r\n                                }\r\n                            });\r\n                        }\r\n                    }\r\n                });\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/knu_matching/main/ChangePassWord.java b/app/src/main/java/com/example/knu_matching/main/ChangePassWord.java
+--- a/app/src/main/java/com/example/knu_matching/main/ChangePassWord.java	(revision a8133d73b91b821139ddd7d32c1f583b303db1c7)
++++ b/app/src/main/java/com/example/knu_matching/main/ChangePassWord.java	(date 1633581703267)
+@@ -87,7 +87,7 @@
+                                 @Nullable
+                                 @Override
+                                 public Void apply(@NonNull Transaction transaction) throws FirebaseFirestoreException {
+-                                    transaction.update(dbRef,"password",edt_new_pwd.getText().toString());
++                                    transaction.update(dbRef,"pas sword",edt_new_pwd.getText().toString());
+                                     return null;
+                                 }
+                             }).addOnSuccessListener(new OnSuccessListener<Void>() {
+Index: .idea/misc.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"DesignSurface\">\r\n    <option name=\"filePathToZoomLevelMap\">\r\n      <map>\r\n        <entry key=\"..\\:/Users/Excellent_Summer/AndroidStudioProjects/Knu_Matching/app/src/main/res/drawable/edittext_box_design.xml\" value=\"0.13240740740740742\" />\r\n        <entry key=\"..\\:/Users/Excellent_Summer/AndroidStudioProjects/Knu_Matching/app/src/main/res/drawable/ic_baseline_person_pin_24.xml\" value=\"0.29270833333333335\" />\r\n        <entry key=\"..\\:/Users/Excellent_Summer/AndroidStudioProjects/Knu_Matching/app/src/main/res/drawable/ic_before_scrap.xml\" value=\"0.28020833333333334\" />\r\n        <entry key=\"..\\:/Users/Excellent_Summer/AndroidStudioProjects/Knu_Matching/app/src/main/res/drawable/tab_color_selector.xml\" value=\"0.28125\" />\r\n        <entry key=\"..\\:/Users/Excellent_Summer/AndroidStudioProjects/Knu_Matching/app/src/main/res/layout/activity_change_pass_word.xml\" value=\"0.24739583333333334\" />\r\n        <entry key=\"..\\:/Users/Excellent_Summer/AndroidStudioProjects/Knu_Matching/app/src/main/res/layout/activity_fifth_fragment.xml\" value=\"0.24739583333333334\" />\r\n        <entry key=\"..\\:/Users/Excellent_Summer/AndroidStudioProjects/Knu_Matching/app/src/main/res/layout/activity_find_idactivity.xml\" value=\"0.23697916666666666\" />\r\n        <entry key=\"..\\:/Users/Excellent_Summer/AndroidStudioProjects/Knu_Matching/app/src/main/res/layout/activity_first_fragment.xml\" value=\"0.26510416666666664\" />\r\n        <entry key=\"..\\:/Users/Excellent_Summer/AndroidStudioProjects/Knu_Matching/app/src/main/res/layout/activity_fourth_fragment.xml\" value=\"0.24739583333333334\" />\r\n        <entry key=\"..\\:/Users/Excellent_Summer/AndroidStudioProjects/Knu_Matching/app/src/main/res/layout/activity_info_modify.xml\" value=\"0.24427083333333333\" />\r\n        <entry key=\"..\\:/Users/Excellent_Summer/AndroidStudioProjects/Knu_Matching/app/src/main/res/layout/activity_item_post.xml\" value=\"0.2765625\" />\r\n        <entry key=\"..\\:/Users/Excellent_Summer/AndroidStudioProjects/Knu_Matching/app/src/main/res/layout/activity_login.xml\" value=\"0.1984375\" />\r\n        <entry key=\"..\\:/Users/Excellent_Summer/AndroidStudioProjects/Knu_Matching/app/src/main/res/layout/activity_main.xml\" value=\"0.26510416666666664\" />\r\n        <entry key=\"..\\:/Users/Excellent_Summer/AndroidStudioProjects/Knu_Matching/app/src/main/res/layout/activity_register.xml\" value=\"0.21770833333333334\" />\r\n        <entry key=\"..\\:/Users/Excellent_Summer/AndroidStudioProjects/Knu_Matching/app/src/main/res/layout/activity_second_fragment.xml\" value=\"0.26510416666666664\" />\r\n        <entry key=\"..\\:/Users/Excellent_Summer/AndroidStudioProjects/Knu_Matching/app/src/main/res/layout/activity_student_certificate.xml\" value=\"0.1\" />\r\n        <entry key=\"..\\:/Users/Excellent_Summer/AndroidStudioProjects/Knu_Matching/app/src/main/res/layout/activity_third_fragment.xml\" value=\"0.26510416666666664\" />\r\n        <entry key=\"..\\:/Users/bhyn9/Desktop/Knu_Matching - test1/app/src/main/res/layout/activity_chat.xml\" value=\"0.1796875\" />\r\n        <entry key=\"..\\:/Users/bhyn9/Desktop/Knu_Matching - test1/app/src/main/res/layout/activity_fifth_fragment.xml\" value=\"0.1\" />\r\n        <entry key=\"..\\:/Users/bhyn9/Desktop/Knu_Matching - test1/app/src/main/res/layout/activity_find_idactivity.xml\" value=\"0.1203125\" />\r\n        <entry key=\"..\\:/Users/bhyn9/Desktop/Knu_Matching - test1/app/src/main/res/layout/activity_find_password.xml\" value=\"0.1203125\" />\r\n        <entry key=\"..\\:/Users/bhyn9/Desktop/Knu_Matching - test1/app/src/main/res/layout/activity_peolpe_fragment.xml\" value=\"0.1796875\" />\r\n        <entry key=\"..\\:/Users/bhyn9/Desktop/Knu_Matching - test1/app/src/main/res/layout/activity_post.xml\" value=\"0.1\" />\r\n        <entry key=\"..\\:/Users/bhyn9/Desktop/Knu_Matching - test1/app/src/main/res/layout/activity_second_fragment.xml\" value=\"0.15833333333333333\" />\r\n        <entry key=\"..\\:/Users/bhyn9/Desktop/Knu_Matching - test1/app/src/main/res/layout/activity_third_fragment.xml\" value=\"0.1203125\" />\r\n        <entry key=\"..\\:/Users/bhyn9/Desktop/Knu_Matching - test1/app/src/main/res/layout/item_chat.xml\" value=\"0.264\" />\r\n        <entry key=\"..\\:/Users/bhyn9/Desktop/Knu_Matching - test1/app/src/main/res/layout/item_friend.xml\" value=\"0.1796875\" />\r\n        <entry key=\"..\\:/Users/bhyn9/Desktop/Knu_Matching - test1/app/src/main/res/layout/item_message.xml\" value=\"0.1\" />\r\n        <entry key=\"..\\:/Users/Excellent_Summer/AndroidStudioProjects/Knu_Matching/app/src/main/res/layout/item_notice.xml\" value=\"0.2640625\" />\r\n        <entry key=\"..\\:/Users/yulim/AndroidStudioProjects/Knu_Matching/app/src/main/res/layout/activity_find_idactivity.xml\" value=\"0.4\" />\r\n        <entry key=\"..\\:/Users/yulim/AndroidStudioProjects/Knu_Matching/app/src/main/res/layout/activity_find_password.xml\" value=\"0.2640625\" />\r\n        <entry key=\"..\\:/Users/yulim/AndroidStudioProjects/Knu_Matching/app/src/main/res/layout/activity_first_fragment.xml\" value=\"0.24974358974358973\" />\r\n        <entry key=\"..\\:/Users/yulim/AndroidStudioProjects/Knu_Matching/app/src/main/res/layout/activity_item_post.xml\" value=\"0.1359375\" />\r\n        <entry key=\"..\\:/Users/yulim/AndroidStudioProjects/Knu_Matching/app/src/main/res/layout/activity_login.xml\" value=\"0.22916666666666666\" />\r\n        <entry key=\"..\\:/Users/yulim/AndroidStudioProjects/Knu_Matching/app/src/main/res/layout/activity_main.xml\" value=\"0.24974358974358973\" />\r\n        <entry key=\"..\\:/Users/yulim/AndroidStudioProjects/Knu_Matching/app/src/main/res/layout/activity_post.xml\" value=\"0.24974358974358973\" />\r\n        <entry key=\"..\\:/Users/yulim/AndroidStudioProjects/Knu_Matching/app/src/main/res/layout/activity_post_register.xml\" value=\"0.4\" />\r\n        <entry key=\"..\\:/Users/yulim/AndroidStudioProjects/Knu_Matching/app/src/main/res/layout/activity_register.xml\" value=\"0.25364583333333335\" />\r\n        <entry key=\"..\\:/Users/yulim/AndroidStudioProjects/Knu_Matching/app/src/main/res/layout/activity_student_certificate.xml\" value=\"0.22864583333333333\" />\r\n        <entry key=\"..\\:/Users/yulim/AndroidStudioProjects/Knu_Matching/app/src/main/res/layout/activity_third_fragment.xml\" value=\"0.1359375\" />\r\n      </map>\r\n    </option>\r\n  </component>\r\n  <component name=\"ProjectRootManager\" version=\"2\" languageLevel=\"JDK_11\" default=\"true\" project-jdk-name=\"11\" project-jdk-type=\"JavaSDK\">\r\n    <output url=\"file://$PROJECT_DIR$/build/classes\" />\r\n  </component>\r\n  <component name=\"ProjectType\">\r\n    <option name=\"id\" value=\"Android\" />\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/misc.xml b/.idea/misc.xml
+--- a/.idea/misc.xml	(revision a8133d73b91b821139ddd7d32c1f583b303db1c7)
++++ b/.idea/misc.xml	(date 1633583805120)
+@@ -4,10 +4,13 @@
+     <option name="filePathToZoomLevelMap">
+       <map>
+         <entry key="..\:/Users/Excellent_Summer/AndroidStudioProjects/Knu_Matching/app/src/main/res/drawable/edittext_box_design.xml" value="0.13240740740740742" />
++        <entry key="..\:/Users/Excellent_Summer/AndroidStudioProjects/Knu_Matching/app/src/main/res/drawable/ic_after_scrap.xml" value="0.2203125" />
++        <entry key="..\:/Users/Excellent_Summer/AndroidStudioProjects/Knu_Matching/app/src/main/res/drawable/ic_baseline_people_24.xml" value="0.2203125" />
+         <entry key="..\:/Users/Excellent_Summer/AndroidStudioProjects/Knu_Matching/app/src/main/res/drawable/ic_baseline_person_pin_24.xml" value="0.29270833333333335" />
+         <entry key="..\:/Users/Excellent_Summer/AndroidStudioProjects/Knu_Matching/app/src/main/res/drawable/ic_before_scrap.xml" value="0.28020833333333334" />
+         <entry key="..\:/Users/Excellent_Summer/AndroidStudioProjects/Knu_Matching/app/src/main/res/drawable/tab_color_selector.xml" value="0.28125" />
+         <entry key="..\:/Users/Excellent_Summer/AndroidStudioProjects/Knu_Matching/app/src/main/res/layout/activity_change_pass_word.xml" value="0.24739583333333334" />
++        <entry key="..\:/Users/Excellent_Summer/AndroidStudioProjects/Knu_Matching/app/src/main/res/layout/activity_chat_fragment.xml" value="0.20416666666666666" />
+         <entry key="..\:/Users/Excellent_Summer/AndroidStudioProjects/Knu_Matching/app/src/main/res/layout/activity_fifth_fragment.xml" value="0.24739583333333334" />
+         <entry key="..\:/Users/Excellent_Summer/AndroidStudioProjects/Knu_Matching/app/src/main/res/layout/activity_find_idactivity.xml" value="0.23697916666666666" />
+         <entry key="..\:/Users/Excellent_Summer/AndroidStudioProjects/Knu_Matching/app/src/main/res/layout/activity_first_fragment.xml" value="0.26510416666666664" />
+@@ -20,33 +23,21 @@
+         <entry key="..\:/Users/Excellent_Summer/AndroidStudioProjects/Knu_Matching/app/src/main/res/layout/activity_second_fragment.xml" value="0.26510416666666664" />
+         <entry key="..\:/Users/Excellent_Summer/AndroidStudioProjects/Knu_Matching/app/src/main/res/layout/activity_student_certificate.xml" value="0.1" />
+         <entry key="..\:/Users/Excellent_Summer/AndroidStudioProjects/Knu_Matching/app/src/main/res/layout/activity_third_fragment.xml" value="0.26510416666666664" />
+-        <entry key="..\:/Users/bhyn9/Desktop/Knu_Matching - test1/app/src/main/res/layout/activity_chat.xml" value="0.1796875" />
+-        <entry key="..\:/Users/bhyn9/Desktop/Knu_Matching - test1/app/src/main/res/layout/activity_fifth_fragment.xml" value="0.1" />
+-        <entry key="..\:/Users/bhyn9/Desktop/Knu_Matching - test1/app/src/main/res/layout/activity_find_idactivity.xml" value="0.1203125" />
+-        <entry key="..\:/Users/bhyn9/Desktop/Knu_Matching - test1/app/src/main/res/layout/activity_find_password.xml" value="0.1203125" />
+-        <entry key="..\:/Users/bhyn9/Desktop/Knu_Matching - test1/app/src/main/res/layout/activity_peolpe_fragment.xml" value="0.1796875" />
+-        <entry key="..\:/Users/bhyn9/Desktop/Knu_Matching - test1/app/src/main/res/layout/activity_post.xml" value="0.1" />
+-        <entry key="..\:/Users/bhyn9/Desktop/Knu_Matching - test1/app/src/main/res/layout/activity_second_fragment.xml" value="0.15833333333333333" />
+-        <entry key="..\:/Users/bhyn9/Desktop/Knu_Matching - test1/app/src/main/res/layout/activity_third_fragment.xml" value="0.1203125" />
+-        <entry key="..\:/Users/bhyn9/Desktop/Knu_Matching - test1/app/src/main/res/layout/item_chat.xml" value="0.264" />
+-        <entry key="..\:/Users/bhyn9/Desktop/Knu_Matching - test1/app/src/main/res/layout/item_friend.xml" value="0.1796875" />
+-        <entry key="..\:/Users/bhyn9/Desktop/Knu_Matching - test1/app/src/main/res/layout/item_message.xml" value="0.1" />
+         <entry key="..\:/Users/Excellent_Summer/AndroidStudioProjects/Knu_Matching/app/src/main/res/layout/item_notice.xml" value="0.2640625" />
+         <entry key="..\:/Users/yulim/AndroidStudioProjects/Knu_Matching/app/src/main/res/layout/activity_find_idactivity.xml" value="0.4" />
+         <entry key="..\:/Users/yulim/AndroidStudioProjects/Knu_Matching/app/src/main/res/layout/activity_find_password.xml" value="0.2640625" />
+         <entry key="..\:/Users/yulim/AndroidStudioProjects/Knu_Matching/app/src/main/res/layout/activity_first_fragment.xml" value="0.24974358974358973" />
+-        <entry key="..\:/Users/yulim/AndroidStudioProjects/Knu_Matching/app/src/main/res/layout/activity_item_post.xml" value="0.1359375" />
++        <entry key="..\:/Users/yulim/AndroidStudioProjects/Knu_Matching/app/src/main/res/layout/activity_item_post.xml" value="0.4" />
+         <entry key="..\:/Users/yulim/AndroidStudioProjects/Knu_Matching/app/src/main/res/layout/activity_login.xml" value="0.22916666666666666" />
+         <entry key="..\:/Users/yulim/AndroidStudioProjects/Knu_Matching/app/src/main/res/layout/activity_main.xml" value="0.24974358974358973" />
+         <entry key="..\:/Users/yulim/AndroidStudioProjects/Knu_Matching/app/src/main/res/layout/activity_post.xml" value="0.24974358974358973" />
+         <entry key="..\:/Users/yulim/AndroidStudioProjects/Knu_Matching/app/src/main/res/layout/activity_post_register.xml" value="0.4" />
+         <entry key="..\:/Users/yulim/AndroidStudioProjects/Knu_Matching/app/src/main/res/layout/activity_register.xml" value="0.25364583333333335" />
+         <entry key="..\:/Users/yulim/AndroidStudioProjects/Knu_Matching/app/src/main/res/layout/activity_student_certificate.xml" value="0.22864583333333333" />
+-        <entry key="..\:/Users/yulim/AndroidStudioProjects/Knu_Matching/app/src/main/res/layout/activity_third_fragment.xml" value="0.1359375" />
+       </map>
+     </option>
+   </component>
+-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
++  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
+     <output url="file://$PROJECT_DIR$/build/classes" />
+   </component>
+   <component name="ProjectType">
+Index: app/src/main/java/com/example/knu_matching/postRegisterActivity.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.knu_matching;\r\nimport static android.content.ContentValues.TAG;\r\n\r\nimport android.app.Activity;\r\nimport android.content.Intent;\r\nimport android.os.Bundle;\r\nimport android.util.AttributeSet;\r\nimport android.util.Log;\r\nimport android.view.View;\r\nimport android.widget.Button;\r\nimport android.widget.EditText;\r\nimport android.widget.TextView;\r\nimport android.widget.Toast;\r\n\r\nimport androidx.annotation.NonNull;\r\nimport androidx.appcompat.app.AppCompatActivity;\r\n\r\nimport com.example.knu_matching.main.FirstFragment;\r\nimport com.example.knu_matching.main.MainActivity;\r\nimport com.example.knu_matching.membermanage.RegisterActivity;\r\nimport com.example.knu_matching.membermanage.Student_Certificate;\r\nimport com.google.android.gms.tasks.OnCompleteListener;\r\nimport com.google.android.gms.tasks.OnFailureListener;\r\nimport com.google.android.gms.tasks.OnSuccessListener;\r\nimport com.google.android.gms.tasks.Task;\r\nimport com.google.firebase.auth.FirebaseAuth;\r\nimport com.google.firebase.database.DataSnapshot;\r\nimport com.google.firebase.database.DatabaseError;\r\nimport com.google.firebase.database.DatabaseReference;\r\nimport com.google.firebase.database.FirebaseDatabase;\r\nimport com.google.firebase.database.ValueEventListener;\r\nimport com.google.firebase.firestore.DocumentReference;\r\nimport com.google.firebase.firestore.DocumentSnapshot;\r\nimport com.google.firebase.firestore.FirebaseFirestore;\r\nimport com.google.firebase.firestore.QueryDocumentSnapshot;\r\nimport com.google.firebase.firestore.QuerySnapshot;\r\n\r\nimport java.util.ArrayList;\r\n\r\n\r\npublic class postRegisterActivity extends AppCompatActivity {\r\n\r\n\r\n    private DatabaseReference mDatabaseRef;\r\n    private FirebaseFirestore db = FirebaseFirestore.getInstance();\r\n    private ArrayList<postInfo> mDataset;\r\n\r\n    private TextView tv_Title, tv_Number, tv_date, tv_post;\r\n    private Button btn_list, btn_change, btn_delete;\r\n    private String str_Title, str_date, str_Number, str_post, str_time, str_Id;\r\n    private ArrayList<postInfo> postInfo;\r\n\r\n\r\n\r\n    @Override\r\n    protected void onCreate(Bundle savedInstanceState) {\r\n        super.onCreate(savedInstanceState);\r\n        setContentView(R.layout.activity_post_register);\r\n\r\n\r\n        tv_date = findViewById(R.id.edt_date);\r\n        tv_Title = findViewById(R.id.edt_Title);\r\n        tv_Number = findViewById(R.id.edt_Number);\r\n        tv_post = findViewById(R.id.edt_post);\r\n\r\n        btn_change = findViewById(R.id.btn_change);\r\n        btn_list = findViewById(R.id.btn_list);\r\n        btn_delete = findViewById(R.id.btn_delete);\r\n\r\n        mDatabaseRef = FirebaseDatabase.getInstance().getReference(\"Knu_Matching\");\r\n\r\n        Intent intent = getIntent();\r\n        str_Title = intent.getStringExtra(\"Title\");\r\n        str_date = intent.getStringExtra(\"Date\");\r\n        str_Number = intent.getStringExtra(\"Number\");\r\n        str_post = intent.getStringExtra(\"Post\");\r\n        str_Id = intent.getStringExtra(\"Id\");\r\n\r\n        tv_Title.setText(str_Title);\r\n        tv_Number.setText(str_Number);\r\n        tv_date.setText(str_date);\r\n        tv_post.setText(str_post);\r\n\r\n\r\n        btn_list.setOnClickListener(new View.OnClickListener() {\r\n            @Override\r\n            public void onClick(View view) {\r\n                finish();\r\n            }\r\n        });\r\n\r\n        btn_delete.setOnClickListener(new View.OnClickListener() {\r\n            @Override\r\n            public void onClick(View view) {\r\n                db.collection(\"Post\").document(str_Id).delete().addOnSuccessListener(new OnSuccessListener<Void>() {\r\n                    @Override\r\n                    public void onSuccess(Void v) {\r\n                        Toast.makeText(postRegisterActivity.this, \"성공\", Toast.LENGTH_SHORT).show();\r\n                        finish();\r\n                    }\r\n                }).addOnFailureListener(new OnFailureListener() {\r\n                            @Override\r\n                            public void onFailure(@NonNull Exception e) {\r\n                                Toast.makeText(postRegisterActivity.this, \"실패\", Toast.LENGTH_SHORT).show();\r\n                            }\r\n                        });\r\n\r\n            }\r\n        });\r\n\r\n    }\r\n\r\n\r\n}\r\n\r\n\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/knu_matching/postRegisterActivity.java b/app/src/main/java/com/example/knu_matching/postRegisterActivity.java
+--- a/app/src/main/java/com/example/knu_matching/postRegisterActivity.java	(revision a8133d73b91b821139ddd7d32c1f583b303db1c7)
++++ b/app/src/main/java/com/example/knu_matching/postRegisterActivity.java	(date 1633581413095)
+@@ -15,7 +15,7 @@
+ import androidx.annotation.NonNull;
+ import androidx.appcompat.app.AppCompatActivity;
+ 
+-import com.example.knu_matching.main.FirstFragment;
++
+ import com.example.knu_matching.main.MainActivity;
+ import com.example.knu_matching.membermanage.RegisterActivity;
+ import com.example.knu_matching.membermanage.Student_Certificate;
+Index: app/src/main/res/drawable/ic_baseline_people_24.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/res/drawable/ic_baseline_people_24.xml b/app/src/main/res/drawable/ic_baseline_people_24.xml
+new file mode 100644
+--- /dev/null	(date 1633583123198)
++++ b/app/src/main/res/drawable/ic_baseline_people_24.xml	(date 1633583123198)
+@@ -0,0 +1,5 @@
++<vector android:height="24dp" android:tint="#90FF84"
++    android:viewportHeight="24" android:viewportWidth="24"
++    android:width="24dp" xmlns:android="http://schemas.android.com/apk/res/android">
++    <path android:fillColor="@android:color/white" android:pathData="M16,11c1.66,0 2.99,-1.34 2.99,-3S17.66,5 16,5c-1.66,0 -3,1.34 -3,3s1.34,3 3,3zM8,11c1.66,0 2.99,-1.34 2.99,-3S9.66,5 8,5C6.34,5 5,6.34 5,8s1.34,3 3,3zM8,13c-2.33,0 -7,1.17 -7,3.5L1,19h14v-2.5c0,-2.33 -4.67,-3.5 -7,-3.5zM16,13c-0.29,0 -0.62,0.02 -0.97,0.05 1.16,0.84 1.97,1.97 1.97,3.45L17,19h6v-2.5c0,-2.33 -4.67,-3.5 -7,-3.5z"/>
++</vector>
+Index: app/src/main/res/drawable/ic_after_scrap.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/res/drawable/ic_after_scrap.xml b/app/src/main/res/drawable/ic_after_scrap.xml
+new file mode 100644
+--- /dev/null	(date 1633583647880)
++++ b/app/src/main/res/drawable/ic_after_scrap.xml	(date 1633583647880)
+@@ -0,0 +1,5 @@
++<vector android:height="30dp" android:tint="#FFDC84"
++    android:viewportHeight="24" android:viewportWidth="24"
++    android:width="30dp" xmlns:android="http://schemas.android.com/apk/res/android">
++    <path android:fillColor="@android:color/white" android:pathData="M12,17.27L18.18,21l-1.64,-7.03L22,9.24l-7.19,-0.61L12,2 9.19,8.63 2,9.24l5.46,4.73L5.82,21z"/>
++</vector>

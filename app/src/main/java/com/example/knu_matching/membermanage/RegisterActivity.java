@@ -147,8 +147,16 @@ public class RegisterActivity extends AppCompatActivity {
                                     account.setNickName(strNick);
                                     account.setPassword(strPassword);
 
-                                    mDatabaseref.child("users").child(account.uid);
-                                    db.collection("Account")
+                                    UserAccount users = new UserAccount();
+                                    users.setUid(account.uid);
+                                    users.setNickName(account.getNickName());
+                                    FirebaseDatabase.getInstance().getReference().child("users").child(account.uid)
+                                            .setValue(users)
+                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void aVoid) {
+                                        }
+                                    });                                    db.collection("Account")
                                             .document(firebaseUser.getEmail().replace(".", ">"))
                                             .set(account)
                                             .addOnSuccessListener(new OnSuccessListener<Void>() {

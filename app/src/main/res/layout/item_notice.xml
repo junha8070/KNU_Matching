@@ -24,11 +24,11 @@
                 android:layout_weight="1"
                 android:orientation="vertical">
 
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/iv_url"
-                    android:src="@drawable/ic_before_scrap"/>
+                <!--                <ImageView-->
+                <!--                    android:layout_width="match_parent"-->
+                <!--                    android:layout_height="wrap_content"-->
+                <!--                    android:id="@+id/iv_url"-->
+                <!--                    android:src="@drawable/ic_before_scrap"/>-->
                 <TextView
                     android:id="@+id/tv_title"
                     android:layout_width="match_parent"
@@ -87,7 +87,32 @@
                         android:text="endDate" />
                 </LinearLayout>
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <ImageButton
+                        android:id="@+id/btn_scrap"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:background="#FFFFFFFF"
+                        android:src="@drawable/ic_before_scrap" />
+
+                    <ImageButton
+                        android:id="@+id/btn_recruit"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:background="#FFFFFFFF"
+                        android:src="@drawable/ic_baseline_people_24" />
+                </LinearLayout>
             </LinearLayout>
+
 
             <!--            <LinearLayout-->
             <!--                android:gravity="center|right"-->
