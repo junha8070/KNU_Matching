@@ -59,10 +59,10 @@ public class PeolpeFragment extends Fragment {
                         System.out.println("test getuid "+ userAccount.getUid());
 
                         System.out.println("test myUid "+ myUid);
-//
-//                        if(userAccount.uid.equals(myUid)){
-//                            continue;
-//                        }
+
+                        if(userAccount.uid.equals(myUid)){
+                            continue;
+                        }
                         userModels.add(userAccount);
                     }
                     notifyDataSetChanged();
