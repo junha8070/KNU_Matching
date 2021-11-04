@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -37,43 +38,73 @@ import java.util.TimeZone;
 
 public class ChatActivity extends AppCompatActivity {
     private String destinatonUid;
-    private Button button;
+    private Button button, chat_in;
     private EditText editText;
 
     private String uid;
     private String chatRoomUid;
-
+    private boolean chatIn;
     private RecyclerView recyclerView;
 
     private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy.MM.dd HH:mm");
 
+    // 입장 버튼 누르면 계속 새로운 채팅방 만들어짐
+    // 기존의 대화내용 다 사라져버리고
+    // 그냥 새로 만들어짐
+    // Model이 아마 계속 만들어지는거 같은데
+    // 이걸 확인해줄 방법이 필요해
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
         uid = FirebaseAuth.getInstance().getCurrentUser().getUid();  //채팅을 요구 하는 아아디 즉 단말기에 로그인된 UID
         destinatonUid = getIntent().getStringExtra("destinationUid"); // 채팅을 당하는 아이디
+        chatIn = getIntent().getExtras().getBoolean("chatIn");
         button = (Button) findViewById(R.id.messageActivity_button);
         editText = (EditText) findViewById(R.id.messageActivity_editText);
-
+        chat_in = (Button) findViewById(R.id.chat_in);
         recyclerView = (RecyclerView)findViewById(R.id.messageActivity_reclclerview);
+
+        if(chatIn){
+            FirebaseDatabase.getInstance().getReference().child("chatrooms").orderByChild("users/"+uid).equalTo(true).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    for(DataSnapshot item : dataSnapshot.getChildren()){
+                        ChatModel chatModel = item.getValue(ChatModel.class);
+                        if(chatModel.users.containsKey(destinatonUid)){
+                            chatRoomUid = item.getKey();
+                            button.setEnabled(true);
+                        }
+                    }
+                    ChatModel chatModel = new ChatModel();
+                    chatModel.users.put(uid,true);
+                    chatModel.users.put(destinatonUid,true);
+                    if(chatRoomUid == null){
+                        button.setEnabled(false);
+                        FirebaseDatabase.getInstance().getReference().child("chatrooms").push().setValue(chatModel).addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                checkChatRoom();
+                            }
+                        });
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+        }
+
+        //채팅방 내에서 메세지 전송 버튼
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ChatModel chatModel = new ChatModel();
-                chatModel.users.put(uid,true);
-                chatModel.users.put(destinatonUid,true);
-
-                if(chatRoomUid == null){
-                    button.setEnabled(false);
-                    FirebaseDatabase.getInstance().getReference().child("chatrooms").push().setValue(chatModel).addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
-                            checkChatRoom();
-                        }
-                    });
-
-                }else {
+                if(chatRoomUid == null) {
+                    checkChatRoom();
+                }
+                else {
                     ChatModel.Comment comment = new ChatModel.Comment();
                     comment.uid = uid;
                     comment.msg = editText.getText().toString();
@@ -90,7 +121,7 @@ public class ChatActivity extends AppCompatActivity {
         checkChatRoom();
     }
 
-    void  checkChatRoom(){
+    public void  checkChatRoom(){
         FirebaseDatabase.getInstance().getReference().child("chatrooms").orderByChild("users/"+uid).equalTo(true).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -112,8 +143,6 @@ public class ChatActivity extends AppCompatActivity {
         });
     }
     class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
-
-
         List<ChatModel.Comment> comments;
         UserAccount userModel;
         public RecyclerViewAdapter() {
@@ -133,21 +162,17 @@ public class ChatActivity extends AppCompatActivity {
             });
         }
         void getMessageList(){
-
             FirebaseDatabase.getInstance().getReference().child("chatrooms").child(chatRoomUid).child("comments").addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     comments.clear();
-
                     for(DataSnapshot item : dataSnapshot.getChildren()){
                         comments.add(item.getValue(ChatModel.Comment.class));
                     }
                     //메세지가 갱신
                     notifyDataSetChanged();
-
                     recyclerView.scrollToPosition(comments.size() - 1);
                 }
-
                 @Override
                 public void onCancelled(DatabaseError databaseError) {
 

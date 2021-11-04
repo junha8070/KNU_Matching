@@ -28,6 +28,7 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 
 public class MainActivity extends AppCompatActivity {
     public static Context context;
+
     public Button btn_register, btn_logout;
     private final String TAG = this.getClass().getSimpleName();
     private FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -43,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
     private TabLayout tabLayout;
 
     String code;
-    private String[] titles = new String[]{"최신글", "채팅", "친구", "모집\n상황", "활동\n게시판", "My\nPage"};
+    private String[] titles = new String[]{"최신글", "친구", "모집\n상황", "활동\n게시판", "My\nPage"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,7 +104,6 @@ public class MainActivity extends AppCompatActivity {
         Log.e(TAG, code);
 
         Fragment frag_post = new PostFragment().newInstance(code, "");
-        Fragment frag_chat = new Fragment();
         Fragment frag_people = new PeolpeFragment();
         Fragment frag_recruit = new RecruitmentFragment();
         Fragment frag_board = new BoardFragment().newInstance(code, "");
@@ -114,7 +114,6 @@ public class MainActivity extends AppCompatActivity {
 
         myPagerAdapter = new MyViewPagerAdapter(this);
         myPagerAdapter.addFrag(frag_post);
-        myPagerAdapter.addFrag(frag_chat);
         myPagerAdapter.addFrag(frag_people);
         myPagerAdapter.addFrag(frag_recruit);
         myPagerAdapter.addFrag(frag_board);
