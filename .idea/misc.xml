@@ -34,6 +34,7 @@
         <entry key="..\:/Users/bhyn9/StudioProjects/Knu_Matching/app/src/main/res/layout/item_chat.xml" value="0.24583333333333332" />
         <entry key="..\:/Users/bhyn9/StudioProjects/Knu_Matching/app/src/main/res/layout/item_friend.xml" value="0.26851851851851855" />
         <entry key="..\:/Users/bhyn9/StudioProjects/Knu_Matching/app/src/main/res/layout/item_message.xml" value="0.264" />
+        <entry key="..\:/Users/yulim/AndroidStudioProjects/Knu_Matching/app/src/main/res/drawable/edittext_box_design.xml" value="0.26979166666666665" />
         <entry key="..\:/Users/yulim/AndroidStudioProjects/Knu_Matching/app/src/main/res/layout/activity_find_idactivity.xml" value="0.4" />
         <entry key="..\:/Users/yulim/AndroidStudioProjects/Knu_Matching/app/src/main/res/layout/activity_find_password.xml" value="0.2640625" />
         <entry key="..\:/Users/yulim/AndroidStudioProjects/Knu_Matching/app/src/main/res/layout/activity_first_fragment.xml" value="0.24974358974358973" />
@@ -41,7 +42,8 @@
         <entry key="..\:/Users/yulim/AndroidStudioProjects/Knu_Matching/app/src/main/res/layout/activity_login.xml" value="0.22916666666666666" />
         <entry key="..\:/Users/yulim/AndroidStudioProjects/Knu_Matching/app/src/main/res/layout/activity_main.xml" value="0.24974358974358973" />
         <entry key="..\:/Users/yulim/AndroidStudioProjects/Knu_Matching/app/src/main/res/layout/activity_post.xml" value="0.24974358974358973" />
-        <entry key="..\:/Users/yulim/AndroidStudioProjects/Knu_Matching/app/src/main/res/layout/activity_post_register.xml" value="0.4" />
+        <entry key="..\:/Users/yulim/AndroidStudioProjects/Knu_Matching/app/src/main/res/layout/activity_post_fragment.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/yulim/AndroidStudioProjects/Knu_Matching/app/src/main/res/layout/activity_post_register.xml" value="0.264" />
         <entry key="..\:/Users/yulim/AndroidStudioProjects/Knu_Matching/app/src/main/res/layout/activity_post_register2.xml" value="0.264" />
         <entry key="..\:/Users/yulim/AndroidStudioProjects/Knu_Matching/app/src/main/res/layout/activity_register.xml" value="0.25364583333333335" />
         <entry key="..\:/Users/yulim/AndroidStudioProjects/Knu_Matching/app/src/main/res/layout/activity_student_certificate.xml" value="0.22864583333333333" />

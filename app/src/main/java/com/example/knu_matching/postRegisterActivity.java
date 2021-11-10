@@ -1,9 +1,11 @@
 package com.example.knu_matching;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,8 +20,10 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -34,9 +38,11 @@ public class postRegisterActivity extends AppCompatActivity {
     private ArrayList<postInfo> mDataset;
 
     private TextView tv_Title, tv_Number, tv_date, tv_post;
-    private Button btn_list, btn_change, btn_delete;
-    private String str_Title, str_date, str_Number, str_post, str_time, str_Id, str_email;
+    private Button btn_list, btn_change, btn_delete, btn_comment;
+    private EditText edt_comment;
+    private String str_Title, str_date, str_Number, str_post, str_time, str_Nickname, str_email, str_comment, str_Id;
     private ArrayList<postInfo> postInfo;
+    private FirebaseUser user;
 
 
 
@@ -44,7 +50,6 @@ public class postRegisterActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post_register);
-
 
         tv_date = findViewById(R.id.edt_date);
         tv_Title = findViewById(R.id.edt_Title);
@@ -54,16 +59,20 @@ public class postRegisterActivity extends AppCompatActivity {
         btn_change = findViewById(R.id.btn_change);
         btn_list = findViewById(R.id.btn_list);
         btn_delete = findViewById(R.id.btn_delete);
+        btn_comment = findViewById(R.id.btn_comment);
+
+        edt_comment = findViewById(R.id.edt_comment);
 
         mFirebaseAuth = FirebaseAuth.getInstance();
         mDatabaseRef = FirebaseDatabase.getInstance().getReference("Knu_Matching");
 
         Intent intent = getIntent();
+        str_Id = intent.getStringExtra("Id");
         str_Title = intent.getStringExtra("Title");
         str_date = intent.getStringExtra("Date");
         str_Number = intent.getStringExtra("Number");
         str_post = intent.getStringExtra("Post");
-        str_Id = intent.getStringExtra("Id");
+        str_Nickname = intent.getStringExtra("Nickname");
         str_email = intent.getStringExtra("Email");
         System.out.println("uid 출력"+str_email);
 
@@ -71,6 +80,20 @@ public class postRegisterActivity extends AppCompatActivity {
         tv_Number.setText(str_Number);
         tv_date.setText(str_date);
         tv_post.setText(str_post);
+
+
+        btn_comment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                str_comment = edt_comment.getText().toString();
+                user = FirebaseAuth.getInstance().getCurrentUser();
+                postInfo2 postInfo2 = new postInfo2(str_email, str_comment, str_Nickname);
+                update(postInfo2);
+                Intent intent = new Intent();
+                setResult(Activity.RESULT_OK, intent);
+            }
+        });
+
 
 
         btn_list.setOnClickListener(new View.OnClickListener() {
@@ -83,7 +106,7 @@ public class postRegisterActivity extends AppCompatActivity {
         btn_delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                db.collection("Post").document(str_Id).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                db.collection("Post").document(str_Nickname).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void v) {
                         Toast.makeText(postRegisterActivity.this, "성공", Toast.LENGTH_SHORT).show();
@@ -119,8 +142,18 @@ public class postRegisterActivity extends AppCompatActivity {
             btn_delete.setVisibility(View.GONE);
         }
 
+    }
 
-
+    private void update(postInfo2 postInfo2) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        db.collection("Post").document(str_Id).collection("Comment").add(postInfo2)
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        Toast.makeText(postRegisterActivity.this, "성공", Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 
 

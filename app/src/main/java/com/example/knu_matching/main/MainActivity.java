@@ -96,6 +96,8 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     Log.d(TAG, "Current data: null");
                 }Toast.makeText(MainActivity.this, "메인"+strNick, Toast.LENGTH_SHORT).show();
+
+
             }
         });
 
