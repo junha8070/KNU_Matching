@@ -72,8 +72,6 @@ public class postRegisterActivity extends AppCompatActivity {
         str_date = intent.getStringExtra("Date");
         str_Number = intent.getStringExtra("Number");
         str_post = intent.getStringExtra("Post");
-        str_Nickname = intent.getStringExtra("Nickname");
-        str_email = intent.getStringExtra("Email");
         System.out.println("uid 출력"+str_email);
 
         tv_Title.setText(str_Title);
@@ -87,10 +85,27 @@ public class postRegisterActivity extends AppCompatActivity {
             public void onClick(View view) {
                 str_comment = edt_comment.getText().toString();
                 user = FirebaseAuth.getInstance().getCurrentUser();
-                postInfo2 postInfo2 = new postInfo2(str_email, str_comment, str_Nickname);
-                update(postInfo2);
-                Intent intent = new Intent();
-                setResult(Activity.RESULT_OK, intent);
+                str_email = user.getEmail();
+
+                db.collection("Account").document(user.getEmail().replace(".",">"))
+                        .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if(task.isSuccessful()){
+                            UserAccount userAccount = task.getResult().toObject(UserAccount.class);
+                            str_Nickname = userAccount.getNickName();
+                            postInfo2 postInfo2 = new postInfo2(str_email, str_comment, str_Nickname);
+                            update(postInfo2);
+                            Intent intent = new Intent();
+                            setResult(Activity.RESULT_OK, intent);
+                        }
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(postRegisterActivity.this, "postActivity 오류",Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         });
 
