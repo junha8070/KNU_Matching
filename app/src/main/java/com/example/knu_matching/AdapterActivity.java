@@ -25,6 +25,7 @@ public class AdapterActivity extends RecyclerView.Adapter<AdapterActivity.Galler
     private ArrayList<postInfo> mDataset;
     private Activity activity;
 
+
     public static class GalleryViewHolder extends RecyclerView.ViewHolder{
         public CardView cardView;
         public GalleryViewHolder(CardView v){
