@@ -94,6 +94,9 @@ public class postRegisterActivity extends AppCompatActivity {
         tv_date.setText(str_date);
         tv_post.setText(str_post);
 
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        str_email = user.getEmail();
+
 
         db.collection("Post").document(str_Id).collection("Comment").get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -129,8 +132,6 @@ public class postRegisterActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 str_comment = edt_comment.getText().toString();
-                user = FirebaseAuth.getInstance().getCurrentUser();
-                str_email = user.getEmail();
 
                 db.collection("Account").document(user.getEmail().replace(".",">"))
                         .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -139,7 +140,7 @@ public class postRegisterActivity extends AppCompatActivity {
                         if(task.isSuccessful()){
                             UserAccount userAccount = task.getResult().toObject(UserAccount.class);
                             str_Nickname = userAccount.getNickName();
-                            postInfo2 postInfo2 = new postInfo2(str_email, str_comment, str_Nickname, str_time);
+                            postInfo2 postInfo2 = new postInfo2(str_email, str_comment, str_Nickname, formatedNow);
                             update(postInfo2);
                             Intent intent = new Intent();
                             setResult(Activity.RESULT_OK, intent);
@@ -155,7 +156,6 @@ public class postRegisterActivity extends AppCompatActivity {
         });
 
 
-
         btn_list.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -166,7 +166,7 @@ public class postRegisterActivity extends AppCompatActivity {
         btn_delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                db.collection("Post").document(str_Nickname).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                db.collection("Post").document(str_Id).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void v) {
                         Toast.makeText(postRegisterActivity.this, "성공", Toast.LENGTH_SHORT).show();
@@ -194,10 +194,11 @@ public class postRegisterActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
+        System.out.println("이메일6"+str_email);
         System.out.println("이메일2"+mFirebaseAuth.getCurrentUser().getEmail());
 
         if(mFirebaseAuth.getCurrentUser().getEmail().equals(str_email)==false){
+            System.out.println("이메일5"+mFirebaseAuth.getCurrentUser().getEmail());
             btn_change.setVisibility(View.GONE);
             btn_delete.setVisibility(View.GONE);
         }

@@ -22,6 +22,9 @@
             android:name=".postActivity"
             android:exported="true" />
         <activity
+            android:name=".PostRegisterActivity2"
+            android:exported="true" />
+        <activity
             android:name=".main.InfoModify"
             android:exported="true" />
         <activity

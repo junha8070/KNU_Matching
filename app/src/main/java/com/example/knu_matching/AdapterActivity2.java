@@ -44,20 +44,18 @@ public class AdapterActivity2 extends RecyclerView.Adapter<AdapterActivity2.Gall
     public void onBindViewHolder(@NonNull final AdapterActivity2.GalleryViewHolder holder, int position){
 
         CardView cardView = holder.cardView2;
+
         TextView textView = cardView.findViewById(R.id.NicknameView);
-        String nickname = Dataset.get(position).getStr_Nickname();
-        textView.setText(nickname);
-        System.out.println("test11" + Dataset.indexOf("str_Nickname"));
+        textView.setText(Dataset.get(position).getStr_Nickname());
+
 
         TextView textView1 = cardView.findViewById(R.id.commentView);
         textView1.setText(Dataset.get(position).getStr_comment());
 
         TextView dateView = cardView.findViewById(R.id.dateView);
         dateView.setText((Dataset.get(position).getStr_time().substring(0,12)));
+        System.out.println("test22" + dateView);
 
-
-//        TextView dateView = cardView.findViewById(R.id.dateView);
-//        dateView.setText((Dataset.get(position).getStr_time().substring(0,12)));
 
         cardView.setOnClickListener(new View.OnClickListener() {
             @Override
