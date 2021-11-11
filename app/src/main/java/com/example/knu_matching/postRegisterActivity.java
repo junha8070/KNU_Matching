@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.knu_matching.main.MainActivity;
 import com.example.knu_matching.membermanage.LoginActivity;
+import com.example.knu_matching.membermanage.RegisterActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -87,7 +88,6 @@ public class postRegisterActivity extends AppCompatActivity {
         str_date = intent.getStringExtra("Date");
         str_Number = intent.getStringExtra("Number");
         str_post = intent.getStringExtra("Post");
-        System.out.println("uid 출력"+str_email);
 
         tv_Title.setText(str_Title);
         tv_Number.setText(str_Number);
@@ -194,14 +194,13 @@ public class postRegisterActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        System.out.println("이메일6"+str_email);
-        System.out.println("이메일2"+mFirebaseAuth.getCurrentUser().getEmail());
 
-        if(mFirebaseAuth.getCurrentUser().getEmail().equals(str_email)==false){
-            System.out.println("이메일5"+mFirebaseAuth.getCurrentUser().getEmail());
-            btn_change.setVisibility(View.GONE);
-            btn_delete.setVisibility(View.GONE);
-        }
+//
+//        if(mFirebaseAuth.getCurrentUser().getEmail().equals(str_email)==false){
+//            System.out.println("이메일5"+mFirebaseAuth.getCurrentUser().getEmail());
+//            btn_change.setVisibility(View.GONE);
+//            btn_delete.setVisibility(View.GONE);
+//        }
 
     }
 

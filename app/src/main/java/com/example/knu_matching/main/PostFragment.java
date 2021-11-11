@@ -113,7 +113,6 @@ public class PostFragment extends Fragment {
                                         document.getData().get("str_email").toString(),
                                         document.getId()
                                 ));
-                                System.out.println("이메일 " +document.getData().get("str_email").toString());
                             }
                             RecyclerView recyclerView = v.findViewById(R.id.recycleView);
                             recyclerView.setHasFixedSize(true);

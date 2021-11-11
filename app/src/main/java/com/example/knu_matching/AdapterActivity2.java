@@ -68,7 +68,6 @@ public class AdapterActivity2 extends RecyclerView.Adapter<AdapterActivity2.Gall
 //                intent.putExtra("Nickname", dataset.get(temp).getStr_Nickname());
 //                intent.putExtra("Email", dataset.get(temp).getStr_email());
 //                intent.putExtra("Id", dataset.get(temp).getStr_Id());
-//                System.out.println("이메일3"+ dataset.get(temp).getStr_email());
 //                view.getContext().startActivity(intent);
 //                System.out.println("자리 확인"+dataset.get(temp).getStr_Title());
             }
