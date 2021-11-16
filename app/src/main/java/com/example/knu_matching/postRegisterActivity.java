@@ -51,7 +51,7 @@ public class postRegisterActivity extends AppCompatActivity {
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
 
-    private TextView tv_Title, tv_Number, tv_date, tv_post;
+    private TextView tv_Title, tv_Number, tv_date, tv_post, application;
     private Button btn_list, btn_change, btn_delete, btn_comment;
     private EditText edt_comment;
     private String str_Title, str_date, str_Number, str_post, str_time, str_Nickname, str_email, str_comment, str_Id;
@@ -76,6 +76,8 @@ public class postRegisterActivity extends AppCompatActivity {
         btn_list = findViewById(R.id.btn_list);
         btn_delete = findViewById(R.id.btn_delete);
         btn_comment = findViewById(R.id.btn_comment);
+
+        application = findViewById(R.id.application);
 
         edt_comment = findViewById(R.id.edt_comment);
 
