@@ -61,15 +61,6 @@ public class AdapterActivity2 extends RecyclerView.Adapter<AdapterActivity2.Gall
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(view.getContext(), postRegisterActivity.class);
-//                intent.putExtra("Title", dataset.get(temp).getStr_Title());
-//                intent.putExtra("Date", dataset.get(temp).getStr_date());
-//                intent.putExtra("Number", dataset.get(temp).getStr_Number());
-//                intent.putExtra("Post", dataset.get(temp).getStr_post());
-//                intent.putExtra("Nickname", dataset.get(temp).getStr_Nickname());
-//                intent.putExtra("Email", dataset.get(temp).getStr_email());
-//                intent.putExtra("Id", dataset.get(temp).getStr_Id());
-//                view.getContext().startActivity(intent);
-//                System.out.println("자리 확인"+dataset.get(temp).getStr_Title());
             }
         });
     }

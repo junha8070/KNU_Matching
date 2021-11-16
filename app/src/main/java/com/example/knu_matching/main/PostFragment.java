@@ -111,7 +111,8 @@ public class PostFragment extends Fragment {
                                         document.getData().get("str_time").toString(),
                                         document.getData().get("str_Nickname").toString(),
                                         document.getData().get("str_email").toString(),
-                                        document.getId()
+                                        document.getId(),
+                                        document.getData().get("str_application").toString()
                                 ));
                             }
                             RecyclerView recyclerView = v.findViewById(R.id.recycleView);

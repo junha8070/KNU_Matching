@@ -73,8 +73,8 @@ public class AdapterActivity extends RecyclerView.Adapter<AdapterActivity.Galler
                 intent.putExtra("Nickname", mDataset.get(temp).getStr_Nickname());
                 intent.putExtra("Email", mDataset.get(temp).getStr_email());
                 intent.putExtra("Id", mDataset.get(temp).getStr_Id());
+                intent.putExtra("application", mDataset.get(temp).getStr_application());
                 view.getContext().startActivity(intent);
-                System.out.println("자리 확인"+mDataset.get(temp).getStr_Title());
             }
         });
     }

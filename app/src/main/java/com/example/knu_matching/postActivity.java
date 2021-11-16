@@ -73,7 +73,7 @@ public class postActivity extends AppCompatActivity {
     private EditText edt_Title, edt_Number, edt_date, edt_post;
     private FirebaseAuth mFirebaseAuth;
     private DatabaseReference mDatabaseRef;
-    private String str_Title, str_date, str_Number, str_post, str_Nickname, str_email, str_Id;
+    private String str_Title, str_date, str_Number, str_post, str_Nickname, str_email, str_Id, str_application;
     private FirebaseUser user;
     private TextView application;
     private FirebaseStorage storage = FirebaseStorage.getInstance();
@@ -128,6 +128,7 @@ public class postActivity extends AppCompatActivity {
                 str_date = edt_date.getText().toString();
                 str_Number = edt_Number.getText().toString();
                 str_post = edt_post.getText().toString();
+                str_application = application.getText().toString();
 
                 if (str_Title.trim().equals("") || str_date.trim().equals("") || str_Number.trim().equals("") || str_post.trim().equals("")) {
                     Toast.makeText(postActivity.this, "빈칸을 채워주세요", Toast.LENGTH_SHORT).show();
@@ -146,7 +147,7 @@ public class postActivity extends AppCompatActivity {
                             if(task.isSuccessful()){
                                 UserAccount userAccount = task.getResult().toObject(UserAccount.class);
                                 str_Nickname = userAccount.getNickName();
-                                postInfo postInfo = new postInfo(str_Title, str_date, str_Number, str_post, formatedNow, str_Nickname, str_email, str_Id);
+                                postInfo postInfo = new postInfo(str_Title, str_date, str_Number, str_post, formatedNow, str_Nickname, str_email, str_Id, str_application);
                                 update(postInfo);
                                 Intent intent = new Intent();
                                 setResult(RESULT_OK, intent);
@@ -190,7 +191,6 @@ public class postActivity extends AppCompatActivity {
 
     private void uploadFile() {
         if (filePath != null) {
-
             StorageReference storageRef = storage.getReferenceFromUrl("gs://knu-matching.appspot.com").child( str_Title+ "/" + filename);
             storageRef.putFile(filePath)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {

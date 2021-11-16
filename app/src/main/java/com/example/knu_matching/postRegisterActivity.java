@@ -51,10 +51,11 @@ public class postRegisterActivity extends AppCompatActivity {
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
 
-    private TextView tv_Title, tv_Number, tv_date, tv_post, application;
-    private Button btn_list, btn_change, btn_delete, btn_comment;
+    private TextView tv_Title, tv_Number, tv_date, tv_post, tv_application;
+    private Button btn_list, btn_change, btn_delete, btn_comment, btn_down;
     private EditText edt_comment;
-    private String str_Title, str_date, str_Number, str_post, str_time, str_Nickname, str_email, str_comment, str_Id;
+    private String str_Title, str_date, str_Number, str_post, str_time, str_Nickname, str_email, str_comment, str_Id, str_application;
+    private String filename;
     private FirebaseUser user;
 
     LocalDateTime now = LocalDateTime.now();
@@ -71,13 +72,13 @@ public class postRegisterActivity extends AppCompatActivity {
         tv_Title = findViewById(R.id.edt_Title);
         tv_Number = findViewById(R.id.edt_Number);
         tv_post = findViewById(R.id.edt_post);
+        tv_application = findViewById(R.id.edt_application);
 
         btn_change = findViewById(R.id.btn_change);
         btn_list = findViewById(R.id.btn_list);
         btn_delete = findViewById(R.id.btn_delete);
         btn_comment = findViewById(R.id.btn_comment);
-
-        application = findViewById(R.id.application);
+        btn_down = findViewById(R.id.btn_down);
 
         edt_comment = findViewById(R.id.edt_comment);
 
@@ -90,14 +91,27 @@ public class postRegisterActivity extends AppCompatActivity {
         str_date = intent.getStringExtra("Date");
         str_Number = intent.getStringExtra("Number");
         str_post = intent.getStringExtra("Post");
+        str_application = intent.getStringExtra("application");
+
 
         tv_Title.setText(str_Title);
         tv_Number.setText(str_Number);
         tv_date.setText(str_date);
         tv_post.setText(str_post);
+        tv_application.setText(str_application);
+
 
         user = FirebaseAuth.getInstance().getCurrentUser();
         str_email = user.getEmail();
+
+
+        btn_down.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
 
 
         db.collection("Post").document(str_Id).collection("Comment").get()
