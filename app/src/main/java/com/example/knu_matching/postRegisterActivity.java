@@ -3,9 +3,18 @@ package com.example.knu_matching;
 import static android.content.ContentValues.TAG;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.os.StrictMode;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -37,7 +46,19 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLConnection;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -57,16 +78,20 @@ public class postRegisterActivity extends AppCompatActivity {
     private String str_Title, str_date, str_Number, str_post, str_time, str_Nickname, str_email, str_comment, str_Id, str_application;
     private String filename;
     private FirebaseUser user;
+    private FirebaseStorage storage = FirebaseStorage.getInstance();
+    private StorageReference storageRef = storage.getReference();
 
     LocalDateTime now = LocalDateTime.now();
     String formatedNow = now.format(DateTimeFormatter.ofPattern("yyyy_MM_dd_HH_mm_ss"));
-
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post_register);
+
+        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+        StrictMode.setVmPolicy(builder.build());
 
         tv_date = findViewById(R.id.edt_date);
         tv_Title = findViewById(R.id.edt_Title);
@@ -103,15 +128,6 @@ public class postRegisterActivity extends AppCompatActivity {
 
         user = FirebaseAuth.getInstance().getCurrentUser();
         str_email = user.getEmail();
-
-
-        btn_down.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
-
 
 
         db.collection("Post").document(str_Id).collection("Comment").get()
@@ -171,7 +187,6 @@ public class postRegisterActivity extends AppCompatActivity {
             }
         });
 
-
         btn_list.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -218,7 +233,25 @@ public class postRegisterActivity extends AppCompatActivity {
 //            btn_delete.setVisibility(View.GONE);
 //        }
 
+        btn_down.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                storageRef.child(str_Title + "/" + str_application).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        new ImageDownload().execute(uri.toString());
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception exception) {
+                    }
+                });
+            }
+        });
+
+
     }
+
 
     private void update(postInfo2 postInfo2) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -231,7 +264,66 @@ public class postRegisterActivity extends AppCompatActivity {
                     }
                 });
     }
+    private class ImageDownload extends AsyncTask<String, Void, Void> {
 
+        private String fileName= str_application;
+
+        private final String SAVE_FOLDER = "/save_folder";
+
+        @Override
+        protected Void doInBackground(String... params) {
+
+            String savePath = Environment.getExternalStorageDirectory().toString() + SAVE_FOLDER;
+
+            File dir = new File(savePath);
+
+            if (!dir.exists()) {
+                dir.mkdirs();
+            }
+
+            String fileUrl = params[0];
+
+            if (new File(savePath + "/" + fileName).exists() == false) {
+            } else {
+            }
+
+            String localPath = savePath + "/" + fileName + ".jpg";
+
+            try {
+                URL imgUrl = new URL(fileUrl);
+                HttpURLConnection conn = (HttpURLConnection)imgUrl.openConnection();
+                int len = conn.getContentLength();
+                byte[] tmpByte = new byte[len];
+                InputStream is = conn.getInputStream();
+                File file = new File(localPath);
+                FileOutputStream fos = new FileOutputStream(file);
+                int read;
+                for (;;) {
+                    read = is.read(tmpByte);
+                    if (read <= 0) {
+                        break;
+                    }
+                    fos.write(tmpByte, 0, read);
+                }
+                is.close();
+                fos.close();
+                conn.disconnect();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+        @Override
+        protected void onPostExecute(Void result) {
+            super.onPostExecute(result);
+            String targetDir = Environment.getExternalStorageDirectory().toString() + SAVE_FOLDER;
+            File file = new File(targetDir + "/" + fileName + ".jpg");
+            sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(file)));
+            Toast.makeText(postRegisterActivity.this, "갤러리에 저장되었습니다.", Toast.LENGTH_SHORT).show();
+            finish();
+        }
+    }
 
 }
 

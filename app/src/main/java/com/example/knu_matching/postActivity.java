@@ -199,7 +199,6 @@ public class postActivity extends AppCompatActivity {
                             Toast.makeText(getApplicationContext(), "업로드 완료!", Toast.LENGTH_SHORT).show();
                         }
                     })
-                    //실패시
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
