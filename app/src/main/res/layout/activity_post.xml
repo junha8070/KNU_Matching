@@ -93,12 +93,42 @@
                 android:hint="내용"
                 android:id="@+id/edt_post"/>
         </LinearLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="신청서 양식 "
+            android:layout_margin="10px"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_margin="10px"
+
+            tools:ignore="WebViewLayout">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:text=" 파일첨부 "
+                android:linksClickable="true"
+                android:autoLink="web"
+                android:id="@+id/application"/>
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="파일 선택"
+                android:layout_margin="10px"
+                android:id="@+id/btn_choice"/>
+        </LinearLayout>
+
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="글쓰기"
             android:layout_margin="10px"
             android:id="@+id/btn_write"/>
+
+
 
     </LinearLayout>
 

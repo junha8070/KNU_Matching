@@ -109,11 +109,11 @@ public class PostFragment extends Fragment {
                                         document.getData().get("str_Number").toString(),
                                         document.getData().get("str_post").toString(),
                                         document.getData().get("str_time").toString(),
+                                        document.getData().get("str_Nickname").toString(),
+                                        document.getData().get("str_email").toString(),
                                         document.getId(),
-                                        document.getData().get("str_email").toString()
-                                        //new Date(document.getDate("date_date").getTime())
+                                        document.getData().get("str_application").toString()
                                 ));
-                                System.out.println("이메일 " +document.getData().get("str_email").toString());
                             }
                             RecyclerView recyclerView = v.findViewById(R.id.recycleView);
                             recyclerView.setHasFixedSize(true);

@@ -25,6 +25,7 @@ public class AdapterActivity extends RecyclerView.Adapter<AdapterActivity.Galler
     private ArrayList<postInfo> mDataset;
     private Activity activity;
 
+
     public static class GalleryViewHolder extends RecyclerView.ViewHolder{
         public CardView cardView;
         public GalleryViewHolder(CardView v){
@@ -69,11 +70,11 @@ public class AdapterActivity extends RecyclerView.Adapter<AdapterActivity.Galler
                 intent.putExtra("Date", mDataset.get(temp).getStr_date());
                 intent.putExtra("Number", mDataset.get(temp).getStr_Number());
                 intent.putExtra("Post", mDataset.get(temp).getStr_post());
-                intent.putExtra("Id", mDataset.get(temp).getStr_Id());
+                intent.putExtra("Nickname", mDataset.get(temp).getStr_Nickname());
                 intent.putExtra("Email", mDataset.get(temp).getStr_email());
-                System.out.println("이메일3"+ mDataset.get(temp).getStr_email());
+                intent.putExtra("Id", mDataset.get(temp).getStr_Id());
+                intent.putExtra("application", mDataset.get(temp).getStr_application());
                 view.getContext().startActivity(intent);
-                System.out.println("자리 확인"+mDataset.get(temp).getStr_Title());
             }
         });
     }
