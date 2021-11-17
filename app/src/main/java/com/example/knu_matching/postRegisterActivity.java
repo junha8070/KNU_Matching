@@ -75,8 +75,7 @@ public class postRegisterActivity extends AppCompatActivity {
     private TextView tv_Title, tv_Number, tv_date, tv_post, tv_application;
     private Button btn_list, btn_change, btn_delete, btn_comment, btn_down;
     private EditText edt_comment;
-    private String str_Title, str_date, str_Number, str_post, str_time, str_Nickname, str_email, str_comment, str_Id, str_application;
-    private String filename;
+    private String str_Title, str_date, str_Number, str_post, str_time,str_email, str_Nickname2, str_email2, str_comment2, str_Id, str_application;
     private FirebaseUser user;
     private FirebaseStorage storage = FirebaseStorage.getInstance();
     private StorageReference storageRef = storage.getReference();
@@ -118,6 +117,7 @@ public class postRegisterActivity extends AppCompatActivity {
         str_post = intent.getStringExtra("Post");
         str_application = intent.getStringExtra("Application");
         str_time = intent.getStringExtra("Time");
+        str_email = intent.getStringExtra("Email");
 
 
 
@@ -127,8 +127,9 @@ public class postRegisterActivity extends AppCompatActivity {
         tv_post.setText(str_post);
         tv_application.setText(str_application);
 
-        user = FirebaseAuth.getInstance().getCurrentUser();
-        str_email = user.getEmail();
+//        user = FirebaseAuth.getInstance().getCurrentUser();
+//        str_email = user.getEmail();
+//        System.out.println("이메일확인" + str_email);
 
         db.collection("Post").document(str_Id).collection("Comment").get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -139,12 +140,12 @@ public class postRegisterActivity extends AppCompatActivity {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Log.d(TAG, document.getId() + "==>" + document.getData());
                                 postList2.add(new postInfo2(
-                                        document.getData().get("str_email").toString(),
-                                        document.getData().get("str_comment").toString(),
-                                        document.getData().get("str_Nickname").toString(),
+                                        document.getData().get("str_email2").toString(),
+                                        document.getData().get("str_comment2").toString(),
+                                        document.getData().get("str_Nickname2").toString(),
                                         document.getData().get("str_time").toString()
                                 ));
-                                System.out.println("이메일 " +document.getData().get("str_email").toString());
+                                System.out.println("이메일 " +document.getData().get("str_email2").toString());
                             }
                             RecyclerView recyclerView = postRegisterActivity.this.findViewById(R.id.recycleView);
                             recyclerView.setHasFixedSize(true);
@@ -163,16 +164,17 @@ public class postRegisterActivity extends AppCompatActivity {
         btn_comment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                str_comment = edt_comment.getText().toString();
-
+                str_comment2 = edt_comment.getText().toString();
+                user = FirebaseAuth.getInstance().getCurrentUser();
                 db.collection("Account").document(user.getEmail().replace(".",">"))
                         .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                         if(task.isSuccessful()){
                             UserAccount userAccount = task.getResult().toObject(UserAccount.class);
-                            str_Nickname = userAccount.getNickName();
-                            postInfo2 postInfo2 = new postInfo2(str_email, str_comment, str_Nickname, formatedNow);
+                            str_Nickname2 = userAccount.getNickName();
+                            str_email2 = userAccount.getEmailId();
+                            postInfo2 postInfo2 = new postInfo2(str_email2, str_comment2, str_Nickname2, formatedNow);
                             update(postInfo2);
                             Intent intent = new Intent();
                             setResult(Activity.RESULT_OK, intent);
@@ -228,12 +230,12 @@ public class postRegisterActivity extends AppCompatActivity {
             }
         });
 
-//
-//        if(mFirebaseAuth.getCurrentUser().getEmail().equals(str_email)==false){
-//            System.out.println("이메일5"+mFirebaseAuth.getCurrentUser().getEmail());
-//            btn_change.setVisibility(View.GONE);
-//            btn_delete.setVisibility(View.GONE);
-//        }
+
+        if(mFirebaseAuth.getCurrentUser().getEmail().equals(str_email)==false){
+            System.out.println("이메일5"+str_email);
+            btn_change.setVisibility(View.GONE);
+            btn_delete.setVisibility(View.GONE);
+        }
 
         btn_down.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -46,11 +46,11 @@ public class AdapterActivity2 extends RecyclerView.Adapter<AdapterActivity2.Gall
         CardView cardView = holder.cardView2;
 
         TextView textView = cardView.findViewById(R.id.NicknameView);
-        textView.setText(Dataset.get(position).getStr_Nickname());
+        textView.setText(Dataset.get(position).getStr_Nickname2());
 
 
         TextView textView1 = cardView.findViewById(R.id.commentView);
-        textView1.setText(Dataset.get(position).getStr_comment());
+        textView1.setText(Dataset.get(position).getStr_comment2());
 
         TextView dateView = cardView.findViewById(R.id.dateView);
         dateView.setText((Dataset.get(position).getStr_time().substring(0,12)));
