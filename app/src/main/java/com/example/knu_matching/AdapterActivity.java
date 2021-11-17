@@ -72,8 +72,9 @@ public class AdapterActivity extends RecyclerView.Adapter<AdapterActivity.Galler
                 intent.putExtra("Post", mDataset.get(temp).getStr_post());
                 intent.putExtra("Nickname", mDataset.get(temp).getStr_Nickname());
                 intent.putExtra("Email", mDataset.get(temp).getStr_email());
+                intent.putExtra("Time", mDataset.get(temp).getStr_time());
                 intent.putExtra("Id", mDataset.get(temp).getStr_Id());
-                intent.putExtra("application", mDataset.get(temp).getStr_application());
+                intent.putExtra("Application", mDataset.get(temp).getStr_application());
                 view.getContext().startActivity(intent);
             }
         });

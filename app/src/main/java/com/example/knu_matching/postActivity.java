@@ -85,9 +85,9 @@ public class postActivity extends AppCompatActivity {
     // 포맷팅
     String formatedNow = Now.format(DateTimeFormatter.ofPattern("yyyy_MM_dd_HH_mm_ss"));
 
-    SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMHH_mmss");
+    SimpleDateFormat formatter = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss");
     Date now = new Date();
-    String filename = formatter.format(now) + ".png";
+    String filename = formatter.format(now);
 
 
 

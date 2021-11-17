@@ -116,7 +116,9 @@ public class postRegisterActivity extends AppCompatActivity {
         str_date = intent.getStringExtra("Date");
         str_Number = intent.getStringExtra("Number");
         str_post = intent.getStringExtra("Post");
-        str_application = intent.getStringExtra("application");
+        str_application = intent.getStringExtra("Application");
+        str_time = intent.getStringExtra("Time");
+
 
 
         tv_Title.setText(str_Title);
@@ -125,10 +127,8 @@ public class postRegisterActivity extends AppCompatActivity {
         tv_post.setText(str_post);
         tv_application.setText(str_application);
 
-
         user = FirebaseAuth.getInstance().getCurrentUser();
         str_email = user.getEmail();
-
 
         db.collection("Post").document(str_Id).collection("Comment").get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -221,7 +221,9 @@ public class postRegisterActivity extends AppCompatActivity {
                 intent.putExtra("Date", str_date.toString());
                 intent.putExtra("Number", str_Number.toString());
                 intent.putExtra("Post", str_post.toString());
+                intent.putExtra("Time", str_time.toString());
                 intent.putExtra("Id", str_Id.toString());
+                intent.putExtra("Application", str_application.toString());
                 startActivity(intent);
             }
         });
@@ -248,11 +250,7 @@ public class postRegisterActivity extends AppCompatActivity {
                 });
             }
         });
-
-
     }
-
-
     private void update(postInfo2 postInfo2) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         user = FirebaseAuth.getInstance().getCurrentUser();
