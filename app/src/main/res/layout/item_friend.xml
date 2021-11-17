@@ -29,12 +29,12 @@
             android:layout_height="wrap_content"
             android:gravity="right"
             android:layout_gravity="center_vertical">
-        <Button
-            android:id="@+id/chat_in"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="10dp"
-            android:text="입장" />
+            <CheckBox
+                android:id="@+id/cbox_invite"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="20dp"
+                android:text="초대"/>
         </LinearLayout>
 
     </LinearLayout>

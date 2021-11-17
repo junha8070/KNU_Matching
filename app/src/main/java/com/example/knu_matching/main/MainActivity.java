@@ -12,8 +12,10 @@ import android.util.Log;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.example.knu_matching.People.PeolpeFragment;
 import com.example.knu_matching.R;
 import com.example.knu_matching.UserAccount;
+import com.example.knu_matching.chatting.ChatFragment;
 import com.example.knu_matching.main.board.BoardFragment;
 import com.example.knu_matching.main.recruit.RecruitmentFragment;
 import com.google.android.material.tabs.TabLayout;
@@ -26,9 +28,10 @@ import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 
+import java.util.ArrayList;
+
 public class MainActivity extends AppCompatActivity {
     public static Context context;
-
     public Button btn_register, btn_logout;
     private final String TAG = this.getClass().getSimpleName();
     private FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -44,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
     private TabLayout tabLayout;
 
     String code;
-    private String[] titles = new String[]{"최신글", "친구", "모집\n상황", "활동\n게시판", "My\nPage"};
+    private String[] titles = new String[]{"최신글", "친구", "채팅", "모집\n상황", "활동\n게시판", "My\nPage"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,6 +108,7 @@ public class MainActivity extends AppCompatActivity {
 
         Fragment frag_post = new PostFragment().newInstance(code, "");
         Fragment frag_people = new PeolpeFragment();
+        Fragment frag_chat = new ChatFragment();
         Fragment frag_recruit = new RecruitmentFragment();
         Fragment frag_board = new BoardFragment().newInstance(code, "");
         Fragment frag_mypage = new MypageFragment().newInstance(code, "");
@@ -115,6 +119,7 @@ public class MainActivity extends AppCompatActivity {
         myPagerAdapter = new MyViewPagerAdapter(this);
         myPagerAdapter.addFrag(frag_post);
         myPagerAdapter.addFrag(frag_people);
+        myPagerAdapter.addFrag(frag_chat);
         myPagerAdapter.addFrag(frag_recruit);
         myPagerAdapter.addFrag(frag_board);
         myPagerAdapter.addFrag(frag_mypage);

@@ -27,13 +27,23 @@
         <entry key="..\:/Users/Excellent_Summer/AndroidStudioProjects/Knu_Matching/app/src/main/res/layout/activity_student_certificate.xml" value="0.1" />
         <entry key="..\:/Users/Excellent_Summer/AndroidStudioProjects/Knu_Matching/app/src/main/res/layout/activity_third_fragment.xml" value="0.26510416666666664" />
         <entry key="..\:/Users/Excellent_Summer/AndroidStudioProjects/Knu_Matching/app/src/main/res/layout/item_notice.xml" value="0.2640625" />
-        <entry key="..\:/Users/bhyn9/StudioProjects/Knu_Matching/app/src/main/res/layout/activity_chat.xml" value="0.24583333333333332" />
-        <entry key="..\:/Users/bhyn9/StudioProjects/Knu_Matching/app/src/main/res/layout/activity_main.xml" value="0.1265625" />
+        <entry key="..\:/Users/bhyn9/StudioProjects/Knu_Matching/app/src/main/res/layout/activity_chat.xml" value="0.21509433962264152" />
+        <entry key="..\:/Users/bhyn9/StudioProjects/Knu_Matching/app/src/main/res/layout/activity_chat_fragment.xml" value="0.15989583333333332" />
+        <entry key="..\:/Users/bhyn9/StudioProjects/Knu_Matching/app/src/main/res/layout/activity_info_modify.xml" value="0.264" />
+        <entry key="..\:/Users/bhyn9/StudioProjects/Knu_Matching/app/src/main/res/layout/activity_item_post.xml" value="0.128125" />
+        <entry key="..\:/Users/bhyn9/StudioProjects/Knu_Matching/app/src/main/res/layout/activity_login.xml" value="0.128125" />
+        <entry key="..\:/Users/bhyn9/StudioProjects/Knu_Matching/app/src/main/res/layout/activity_main.xml" value="0.264" />
         <entry key="..\:/Users/bhyn9/StudioProjects/Knu_Matching/app/src/main/res/layout/activity_mypage_fragment.xml" value="0.24583333333333332" />
-        <entry key="..\:/Users/bhyn9/StudioProjects/Knu_Matching/app/src/main/res/layout/activity_peolpe_fragment.xml" value="0.176" />
+        <entry key="..\:/Users/bhyn9/StudioProjects/Knu_Matching/app/src/main/res/layout/activity_peolpe_fragment.xml" value="0.136" />
+        <entry key="..\:/Users/bhyn9/StudioProjects/Knu_Matching/app/src/main/res/layout/activity_post_register.xml" value="0.24947916666666667" />
+        <entry key="..\:/Users/bhyn9/StudioProjects/Knu_Matching/app/src/main/res/layout/activity_post_register2.xml" value="0.24947916666666667" />
+        <entry key="..\:/Users/bhyn9/StudioProjects/Knu_Matching/app/src/main/res/layout/activity_register.xml" value="0.128125" />
+        <entry key="..\:/Users/bhyn9/StudioProjects/Knu_Matching/app/src/main/res/layout/fragment_chat.xml" value="0.1" />
         <entry key="..\:/Users/bhyn9/StudioProjects/Knu_Matching/app/src/main/res/layout/item_chat.xml" value="0.24583333333333332" />
-        <entry key="..\:/Users/bhyn9/StudioProjects/Knu_Matching/app/src/main/res/layout/item_friend.xml" value="0.26851851851851855" />
+        <entry key="..\:/Users/bhyn9/StudioProjects/Knu_Matching/app/src/main/res/layout/item_chatlist.xml" value="0.13177083333333334" />
+        <entry key="..\:/Users/bhyn9/StudioProjects/Knu_Matching/app/src/main/res/layout/item_friend.xml" value="0.4" />
         <entry key="..\:/Users/bhyn9/StudioProjects/Knu_Matching/app/src/main/res/layout/item_message.xml" value="0.264" />
+        <entry key="..\:/Users/bhyn9/StudioProjects/Knu_Matching/app/src/main/res/layout/item_notice.xml" value="0.536" />
         <entry key="..\:/Users/yulim/AndroidStudioProjects/Knu_Matching/app/src/main/res/layout/activity_find_idactivity.xml" value="0.4" />
         <entry key="..\:/Users/yulim/AndroidStudioProjects/Knu_Matching/app/src/main/res/layout/activity_find_password.xml" value="0.2640625" />
         <entry key="..\:/Users/yulim/AndroidStudioProjects/Knu_Matching/app/src/main/res/layout/activity_first_fragment.xml" value="0.24974358974358973" />
