@@ -72,17 +72,18 @@ public class postRegisterActivity extends AppCompatActivity {
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
 
-    private TextView tv_Title, tv_Number, tv_date, tv_post, tv_application;
-    private Button btn_list, btn_change, btn_delete, btn_comment, btn_down;
+    private TextView tv_Title, tv_Number, tv_date, tv_post, tv_application, tv_count;
+    private Button btn_list, btn_change, btn_delete, btn_comment, btn_down, btn_participate;
     private EditText edt_comment;
+    private String str_participate_Nickname, str_participate_Major, str_participate_StudentId;
     private String str_Title, str_date, str_Number, str_post, str_time,str_email, str_Nickname2, str_email2, str_comment2, str_Id, str_application;
     private FirebaseUser user;
     private FirebaseStorage storage = FirebaseStorage.getInstance();
     private StorageReference storageRef = storage.getReference();
+    private int count = 0;
 
     LocalDateTime now = LocalDateTime.now();
     String formatedNow = now.format(DateTimeFormatter.ofPattern("yyyy_MM_dd_HH_mm_ss"));
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,12 +98,15 @@ public class postRegisterActivity extends AppCompatActivity {
         tv_Number = findViewById(R.id.edt_Number);
         tv_post = findViewById(R.id.edt_post);
         tv_application = findViewById(R.id.edt_application);
+        tv_count = findViewById(R.id.tv_count);
+        tv_count.setText(count + "");
 
         btn_change = findViewById(R.id.btn_change);
         btn_list = findViewById(R.id.btn_list);
         btn_delete = findViewById(R.id.btn_delete);
         btn_comment = findViewById(R.id.btn_comment);
         btn_down = findViewById(R.id.btn_down);
+        btn_participate = findViewById(R.id.btn_participate);
 
         edt_comment = findViewById(R.id.edt_comment);
 
@@ -119,17 +123,11 @@ public class postRegisterActivity extends AppCompatActivity {
         str_time = intent.getStringExtra("Time");
         str_email = intent.getStringExtra("Email");
 
-
-
         tv_Title.setText(str_Title);
         tv_Number.setText(str_Number);
         tv_date.setText(str_date);
         tv_post.setText(str_post);
         tv_application.setText(str_application);
-
-//        user = FirebaseAuth.getInstance().getCurrentUser();
-//        str_email = user.getEmail();
-//        System.out.println("이메일확인" + str_email);
 
         db.collection("Post").document(str_Id).collection("Comment").get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -159,7 +157,25 @@ public class postRegisterActivity extends AppCompatActivity {
                 });
 
 
-
+        db.collection("Post").document(str_Id).collection("Participate").get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            ArrayList<ParticipateUser> participateUser = new ArrayList<>();
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.d(TAG, document.getId() + "==>" + document.getData());
+                                participateUser.add(new ParticipateUser(
+                                        document.getData().get("str_participate_Nickname").toString(),
+                                        document.getData().get("str_participate_Major").toString(),
+                                        document.getData().get("str_participate_StudentId").toString()
+                                ));
+                            }
+                        } else {
+                            Log.d(TAG, "error", task.getException());
+                        }
+                    }
+                });
 
         btn_comment.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -230,13 +246,6 @@ public class postRegisterActivity extends AppCompatActivity {
             }
         });
 
-
-        if(mFirebaseAuth.getCurrentUser().getEmail().equals(str_email)==false){
-            System.out.println("이메일5"+str_email);
-            btn_change.setVisibility(View.GONE);
-            btn_delete.setVisibility(View.GONE);
-        }
-
         btn_down.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -252,11 +261,70 @@ public class postRegisterActivity extends AppCompatActivity {
                 });
             }
         });
+
+        btn_participate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(mFirebaseAuth.getCurrentUser().getEmail().equals(str_email)==false){
+                    count++;
+                    tv_count.setText(count + "");
+
+                    user = FirebaseAuth.getInstance().getCurrentUser();
+                    db.collection("Account").document(user.getEmail().replace(".",">"))
+                            .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            if(task.isSuccessful()){
+                                UserAccount userAccount = task.getResult().toObject(UserAccount.class);
+                                str_participate_Nickname = userAccount.getNickName();
+                                str_participate_Major = userAccount.getMajor();
+                                str_participate_StudentId = userAccount.getStudentId();
+                                ParticipateUser participateUser = new ParticipateUser(str_participate_Nickname, str_participate_Major, str_participate_StudentId);
+                                update2(participateUser);
+                                Intent intent = new Intent();
+                                setResult(Activity.RESULT_OK, intent);
+                            }
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(postRegisterActivity.this, "postActivity 오류",Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }else{
+
+                }
+
+
+            }
+        });
+
+
+
+        if(mFirebaseAuth.getCurrentUser().getEmail().equals(str_email)==false){
+            System.out.println("이메일5"+str_email);
+            btn_change.setVisibility(View.GONE);
+            btn_delete.setVisibility(View.GONE);
+        }
+
+
     }
     private void update(postInfo2 postInfo2) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         user = FirebaseAuth.getInstance().getCurrentUser();
         db.collection("Post").document(str_Id).collection("Comment").add(postInfo2)
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        Toast.makeText(postRegisterActivity.this, "성공", Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+    private void update2(ParticipateUser participateUser) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        db.collection("Post").document(str_Id).collection("Participate").add(participateUser)
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
