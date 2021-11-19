@@ -1,7 +1,12 @@
 package com.example.knu_matching.main;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -9,13 +14,21 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.knu_matching.Nav.Edit_profile_Activity;
+import com.example.knu_matching.Nav.Scrap_Activity;
+import com.example.knu_matching.Nav.SettingActivity;
 import com.example.knu_matching.R;
 import com.example.knu_matching.UserAccount;
 import com.example.knu_matching.main.board.BoardFragment;
-import com.example.knu_matching.main.recruit.RecruitmentFragment;
+import com.example.knu_matching.main.Recruitment.RecruitmentFragment;
+import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.google.firebase.auth.FirebaseAuth;
@@ -35,10 +48,18 @@ public class MainActivity extends AppCompatActivity {
     private String uid = user != null ? user.getUid() : null;
     private FirebaseAuth mFirebaseAuth = FirebaseAuth.getInstance();
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
-    final DocumentReference dbRef = db.collection("Account").document(user.getEmail().replace(".", ">"));
+    DocumentReference dbRef = db.collection("Account").document(user.getEmail().replace(".", ">"));
     Context mContext;
     public String strEmail, strPassword, strNick, strMaojr, strStudentId, strPhoneNumber, strStudentName;
 
+    // DrawerLayout
+    private Toolbar toolbar;
+    private DrawerLayout drawerLayout;
+    private NavigationView navigationView;
+    private ImageView iv_profile;
+    private TextView tv_name, tv_nickname, tv_major, tv_rate;
+
+    private Intent intent;
     private ViewPager2 mViewPager;
     private MyViewPagerAdapter myPagerAdapter;
     private TabLayout tabLayout;
@@ -52,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         context = MainActivity.this;
-        getSupportActionBar().hide();
+//        getSupportActionBar().hide();
 
 
 //        dbRef.get()
@@ -92,10 +113,11 @@ public class MainActivity extends AppCompatActivity {
                     strStudentId = userAccount.getStudentId();
                     strPhoneNumber = userAccount.getPhoneNumber();
 
-                    Toast.makeText(MainActivity.this, "메인2"+strNick, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "메인2" + strNick, Toast.LENGTH_SHORT).show();
                 } else {
                     Log.d(TAG, "Current data: null");
-                }Toast.makeText(MainActivity.this, "메인"+strNick, Toast.LENGTH_SHORT).show();
+                }
+                Toast.makeText(MainActivity.this, "메인" + strNick, Toast.LENGTH_SHORT).show();
 
 
             }
@@ -124,14 +146,109 @@ public class MainActivity extends AppCompatActivity {
 
         //displaying tabs
         new TabLayoutMediator(tabLayout, mViewPager, (tab, position) -> tab.setText(titles[position])).attach();
+
+        //displaying tabs
+        new TabLayoutMediator(tabLayout, mViewPager, (tab, position) -> tab.setText(titles[position])).attach();
+
+        toolbar = findViewById(R.id.toolBar);
+        setSupportActionBar(toolbar);
+
+        // 액션바 객체
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+
+        //뒤로가기버튼 이미지 적용
+        actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
+
+
+        drawerLayout = findViewById(R.id.drawer_layout);
+
+        navigationView = findViewById(R.id.navigationView);
+        View nav_header_view = navigationView.getHeaderView(0);
+        tv_name = nav_header_view.findViewById(R.id.tv_name);
+        tv_nickname = nav_header_view.findViewById(R.id.tv_nickname);
+        tv_major = nav_header_view.findViewById(R.id.tv_major);
+
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+
+                switch (menuItem.getItemId()) {
+
+                    case R.id.nav_scrap:
+                        menuItem.setChecked(true);
+                        intent = new Intent(MainActivity.context, Scrap_Activity.class);
+                        startActivity(intent);
+                        drawerLayout.closeDrawers();
+                        return true;
+
+                    case R.id.nav_edit_profile:
+                        menuItem.setChecked(true);
+                        intent = new Intent(MainActivity.context, Edit_profile_Activity.class);
+                        intent.putExtra("nickname", strNick);
+                        intent.putExtra("studentId", strStudentId);
+                        intent.putExtra("major", strMaojr);
+                        intent.putExtra("phoneNumber", strPhoneNumber);
+                        intent.putExtra("studentName", strStudentName);
+                        startActivity(intent);
+                        drawerLayout.closeDrawers();
+                        return true;
+
+                    case R.id.nav_setting:
+                        menuItem.setChecked(true);
+                        intent = new Intent(MainActivity.context, SettingActivity.class);
+                        startActivity(intent);
+                        drawerLayout.closeDrawers();
+                        return true;
+                }
+
+                return false;
+            }
+        });
+
+        dbRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot snapshot, @Nullable FirebaseFirestoreException e) {
+                if (e != null) {
+                    Log.w(TAG, "Listen failed.", e);
+                    return;
+                }
+                if (snapshot != null && snapshot.exists()) {
+                    Log.d(TAG, "Current data: " + snapshot.getData());
+                    UserAccount userAccount = snapshot.toObject(UserAccount.class);
+                    strStudentName = userAccount.getStudentName();
+                    strEmail = userAccount.getEmailId();
+                    strPassword = userAccount.getPassword();
+                    strNick = userAccount.getNickName();
+                    strMaojr = userAccount.getMajor();
+                    strStudentId = userAccount.getStudentId();
+                    strPhoneNumber = userAccount.getPhoneNumber();
+
+                    tv_name.setText(strStudentName);
+                    tv_nickname.setText(strNick);
+                    tv_major.setText(strMaojr);
+
+                } else {
+                    Log.d(TAG, "Current data: null");
+                }
+            }
+        });
     }
 
-    public void refresh(){
-        Intent intent = getIntent();
-        finish(); //현재 액티비티 종료 실시
-        overridePendingTransition(0, 0); //인텐트 애니메이션 없애기
-        startActivity(intent); //현재 액티비티 재실행 실시
-        overridePendingTransition(0, 0);
+    private void displayMessage(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
 
+    //메뉴 선택시 네비게이션 호출
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                drawerLayout.openDrawer(GravityCompat.START);
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }

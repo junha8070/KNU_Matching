@@ -84,27 +84,25 @@ public class RegisterActivity extends AppCompatActivity {
                             @Override
                             public void onComplete(@NonNull Task<QuerySnapshot> task) {
 //                                System.out.println("회원가입 디버깅"+QuerySnapshot document:task.getResult());
-                                if(task.isSuccessful()){
-                                    for(QueryDocumentSnapshot document : task.getResult()){
+                                if (task.isSuccessful()) {
+                                    for (QueryDocumentSnapshot document : task.getResult()) {
                                         UserAccount userAccount = document.toObject(UserAccount.class);
-                                        Log.d("db디버깅",userAccount.getNickName());
-                                        if(strNick.equals(userAccount.getNickName())){
-                                            Toast.makeText(RegisterActivity.this,"중복됨",Toast.LENGTH_SHORT).show();
+                                        Log.d("db디버깅", userAccount.getNickName());
+                                        if (strNick.equals(userAccount.getNickName())) {
+                                            Toast.makeText(RegisterActivity.this, "중복됨", Toast.LENGTH_SHORT).show();
                                             nickname_state = false;
                                             return;
                                         }
                                     }
                                     nickname_state = true;
-                                    Toast.makeText(RegisterActivity.this,"중복안됨",Toast.LENGTH_SHORT).show();
-                                }
-                                else{
+                                    Toast.makeText(RegisterActivity.this, "중복안됨", Toast.LENGTH_SHORT).show();
+                                } else {
 
                                 }
                             }
                         });
             }
         });
-
 
 
         btn_knuID.setOnClickListener(new View.OnClickListener() {
@@ -123,7 +121,7 @@ public class RegisterActivity extends AppCompatActivity {
                 strNick = edt_Nickname.getText().toString();
                 System.out.println("test" + strNick + " " + strEmail + " " + strStudentId);
 
-                if (strStudentName.trim().equals("")||strEmail.trim().equals("") || strPassword.trim().equals("") || strNick.trim().equals("") || strStudentId.trim().equals("") || strMaojr.trim().equals("") ||strPhoneNumber.trim().equals("") ) {
+                if (strStudentName.trim().equals("") || strEmail.trim().equals("") || strPassword.trim().equals("") || strNick.trim().equals("") || strStudentId.trim().equals("") || strMaojr.trim().equals("") || strPhoneNumber.trim().equals("")) {
                     Toast.makeText(RegisterActivity.this, "빈칸을 채워주세요:(", Toast.LENGTH_SHORT).show();
                 } else {
                     if (nickname_state == false) {
@@ -153,10 +151,11 @@ public class RegisterActivity extends AppCompatActivity {
                                     FirebaseDatabase.getInstance().getReference().child("users").child(account.uid)
                                             .setValue(users)
                                             .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                        @Override
-                                        public void onSuccess(Void aVoid) {
-                                        }
-                                    });                                    db.collection("Account")
+                                                @Override
+                                                public void onSuccess(Void aVoid) {
+                                                }
+                                            });
+                                    db.collection("Account")
                                             .document(firebaseUser.getEmail().replace(".", ">"))
                                             .set(account)
                                             .addOnSuccessListener(new OnSuccessListener<Void>() {

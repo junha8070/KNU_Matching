@@ -1,17 +1,22 @@
 package com.example.knu_matching.main.board;
 
+import android.app.Activity;
+import android.content.Context;
+import android.graphics.drawable.ColorDrawable;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.os.Parcelable;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.Activity;
-import android.content.Context;
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
 
 import com.example.knu_matching.R;
 
@@ -24,13 +29,15 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * A simple {@link Fragment} subclass.
+ * Use the {@link BoardFragment#newInstance} factory method to
+ * create an instance of this fragment.
+ */
 public class BoardFragment extends Fragment {
-    private String ParsingUrl = "https://adst.jobaba.net/jobabaApi/v1.do?authKey=32BMWQNO5SCJE5AY9J07P0FTBFTKJ98D&type=C";
-    HashMap<String, String> posts = new HashMap<String, String>();
-    HashMap<String, String> array = new HashMap<String, String>();
-    ArrayList<HashMap<String, String>> arrayList = new ArrayList<HashMap<String, String>>();
-    ArrayList<HashMap<String, String>> noticeList = new ArrayList<HashMap<String, String>>();
-    FourthAdapter adapter = new FourthAdapter(getActivity(), noticeList);
+    ProgressDialog customProgressDialog;
+    private Parcelable recyclerViewState;
+    private String apiUrl = "https://adst.jobaba.net/jobabaApi/v1.do?authKey=32BMWQNO5SCJE5AY9J07P0FTBFTKJ98D&type=C";
     private static final String TAG_TITLE = "title";
     private static final String TAG_PLACE = "place";
     private static final String TAG_STARTDATE = "startDate";
@@ -39,16 +46,13 @@ public class BoardFragment extends Fragment {
     private static final String TAG_REGION = "region";
     private static final String TAG_URL = "url";
     private static final String TAG_IMGURL = "imgurl";
-    XmlPullParser xpp;
-    private Context mContext;
-    Activity activity;
     private RecyclerView rv;
+    int num = 1;
     private LinearLayoutManager mLinearLayoutManager;
-    ParsingActivity parsingActivity = new ParsingActivity();
-    String data, title, place, region, startDate, endDate, site, img_url;
-
-    private Button btn_test;
-
+    ArrayList<HashMap<String, String>> noticeList = new ArrayList<HashMap<String, String>>();
+    HashMap<String, String> posts = new HashMap<String, String>();
+    Activity activity;
+    BoardAdapter adapter;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -62,21 +66,13 @@ public class BoardFragment extends Fragment {
         // Required empty public constructor
     }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-
-        if (context instanceof Activity)
-            activity = (Activity) context;
-    }
-
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment Fragment4.
+     * @return A new instance of fragment BoardFragment.
      */
     // TODO: Rename and change types and number of parameters
     public static BoardFragment newInstance(String param1, String param2) {
@@ -86,6 +82,14 @@ public class BoardFragment extends Fragment {
         args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        if (context instanceof Activity)
+            activity = (Activity) context;
     }
 
     @Override
@@ -100,168 +104,137 @@ public class BoardFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.activity_fourth_fragment, container, false);
-        mLinearLayoutManager = new GridLayoutManager(getActivity(),1);
+        // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.fragment_board, container, false);
+//로딩창 객체 생성
+        customProgressDialog = new ProgressDialog(getContext());
+        //로딩창을 투명하게
+        customProgressDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        customProgressDialog.show();
+
+//        noticeList = parsing.noticeList;
+
+        mLinearLayoutManager = new GridLayoutManager(getActivity(), 1);
         mLinearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        rv = (RecyclerView) view.findViewById(R.id.recycleView);
+        rv = (RecyclerView) view.findViewById(R.id.rv);
         rv.setHasFixedSize(true);
         rv.setLayoutManager(mLinearLayoutManager);
-//        btn_test = (Button) view.findViewById(R.id.btn_test);
-//        btn_test.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//
-//            }
-//        });
 
+        BackThread thread = new BackThread();
+        thread.setDaemon(true);
+        thread.start();
 
-        new Thread(new Runnable() {
+        rv.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
-            public void run() {
-                getXmlData();
-
-                activity.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        rv.setAdapter(adapter);
-                        adapter.notifyDataSetChanged();
-                        for(int i=0;i<noticeList.size();i++){
-                            System.out.println("뭘까"+noticeList.get(i).get(TAG_URL));
-//                            JsoupAsyncTask jsoupAsyncTask = new JsoupAsyncTask(noticeList.get(i).get(TAG_URL));
-//                            jsoupAsyncTask.execute();
-                        }
-                    }
-                });
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                int lastVisibleItemPosition = ((LinearLayoutManager) recyclerView.getLayoutManager()).findLastCompletelyVisibleItemPosition();
+                int itemTotalCount = recyclerView.getAdapter().getItemCount() - 1;
+                System.out.println("마지막이다 이놈아아아아아아아아"+lastVisibleItemPosition+"|||"+itemTotalCount);
+                if (lastVisibleItemPosition == itemTotalCount) {
+                    customProgressDialog = new ProgressDialog(getContext());
+                    //로딩창을 투명하게
+                    customProgressDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+                    customProgressDialog.show();
+                    BackThread thread = new BackThread();
+                    thread.setDaemon(true);
+                    thread.start();
+                }
             }
-        }).start();
+        });
 
-
-
-        // Inflate the layout for this fragment
         return view;
-
     }
 
-    void getXmlData() {
-        try {
-            URL url = new URL(ParsingUrl);//문자열로 된 요청 url을 URL 객체로 생성.
-            InputStream is = url.openStream(); //url위치로 입력스트림 연결
-            XmlPullParserFactory factory = XmlPullParserFactory.newInstance();//xml파싱을 위한
-            XmlPullParser xpp = factory.newPullParser();
-            xpp.setInput(new InputStreamReader(is, "UTF-8")); //inputstream 으로부터 xml 입력받기
-            String tag;
-            xpp.next();
-            int eventType = xpp.getEventType();
+    class BackThread extends Thread{
+        @Override
+        public void run() {
+            try {
+                num = num+1;
+                //url과 관련된 부분
+                URL url = new URL(apiUrl + "&startPage=" + String.valueOf(num));
+                InputStream is = url.openStream();
 
-            while (eventType != XmlPullParser.END_DOCUMENT) {
+                //xmlParser 생성
+                XmlPullParserFactory xmlFactory = XmlPullParserFactory.newInstance();
+                XmlPullParser xpp = xmlFactory.newPullParser();
+                xpp.setInput(new InputStreamReader(is, "UTF-8"));
+                int eventType = xpp.getEventType();
+                String tag;
 
-                switch (eventType) {
+                //본격적으로 파싱
+                while (eventType != XmlPullParser.END_DOCUMENT) {
 
-                    case XmlPullParser.START_DOCUMENT:
-                        break;
-                    case XmlPullParser.START_TAG:
-                        tag = xpp.getName();//테그 이름 얻어오기
+                    switch (eventType) {
 
-                        if (tag.equals("data")) ;// 첫번째 검색결과
-                        else if (tag.equals("title")) {
-                            xpp.next();
-                            posts.put(TAG_TITLE, xpp.getText());
-                            System.out.println("파싱:" + xpp.getText());
-                        } else if (tag.equals("place")) {
-                            xpp.next();
-                            posts.put(TAG_PLACE, xpp.getText());
-                            System.out.println("파싱:" + xpp.getText());
-                        } else if (tag.equals("startDate")) {
-                            xpp.next();
-                            posts.put(TAG_STARTDATE, xpp.getText());
-                            System.out.println("파싱:" + xpp.getText());
-                        } else if (tag.equals("endDate")) {
-                            xpp.next();
-                            posts.put(TAG_ENDDATE, xpp.getText());
-                            System.out.println("파싱:" + xpp.getText());
-                        } else if (tag.equals("clCd")) {
-                            xpp.next();
-                            posts.put(TAG_CATEGORY, xpp.getText());
-                            System.out.println("파싱:" + xpp.getText());
-                        } else if (tag.equals("legalCd")) {
-                            xpp.next();
-                            posts.put(TAG_REGION, xpp.getText());
-                            System.out.println("파싱:" + xpp.getText());
-                        } else if (tag.equals("jobabaUrl")) {
-                            xpp.next();
-                            posts.put(TAG_URL, xpp.getText());
+                        case XmlPullParser.START_DOCUMENT:
+                            break;
+                        case XmlPullParser.START_TAG:
+                            tag = xpp.getName();//테그 이름 얻어오기
 
-                            System.out.println("파싱:" + xpp.getText());
-                            System.out.println("hash 출력" + posts);
-                            System.out.println("post출력" + posts);
-                            noticeList.add(posts);
-                            posts = new HashMap<>();//메모리 주소를 다시 생성하고 다시 생성한것에 값을 넣어줘야 된다.
-                        }
-                        break;
+                            if (tag.equals("data")) ;// 첫번째 검색결과
+                            else if (tag.equals("title")) {
+                                xpp.next();
+                                posts.put(TAG_TITLE, xpp.getText());
+                                System.out.println("파싱:" + xpp.getText());
+                            } else if (tag.equals("place")) {
+                                xpp.next();
+                                posts.put(TAG_PLACE, xpp.getText());
+                                System.out.println("파싱:" + xpp.getText());
+                            } else if (tag.equals("startDate")) {
+                                xpp.next();
+                                posts.put(TAG_STARTDATE, xpp.getText());
+                                System.out.println("파싱:" + xpp.getText());
+                            } else if (tag.equals("endDate")) {
+                                xpp.next();
+                                posts.put(TAG_ENDDATE, xpp.getText());
+                                System.out.println("파싱:" + xpp.getText());
+                            } else if (tag.equals("clCd")) {
+                                xpp.next();
+                                posts.put(TAG_CATEGORY, xpp.getText());
+                                System.out.println("파싱:" + xpp.getText());
+                            } else if (tag.equals("legalCd")) {
+                                xpp.next();
+                                posts.put(TAG_REGION, xpp.getText());
+                                System.out.println("파싱:" + xpp.getText());
+                            } else if (tag.equals("jobabaUrl")) {
+                                xpp.next();
+                                posts.put(TAG_URL, xpp.getText());
 
-                    case XmlPullParser.TEXT:
-                        break;
+                                System.out.println("파싱:" + xpp.getText());
+                                System.out.println("hash 출력" + posts);
+                                System.out.println("post출력" + posts);
+                                noticeList.add(posts);
+                                posts = new HashMap<>();//메모리 주소를 다시 생성하고 다시 생성한것에 값을 넣어줘야 된다.
+                            }
+                            break;
 
-                    case XmlPullParser.END_TAG:
-                        break;
+                        case XmlPullParser.TEXT:
+                            break;
+
+                        case XmlPullParser.END_TAG:
+                            break;
+
+                    }
+                    eventType = xpp.next();
 
                 }
-                eventType = xpp.next();
-
+                handler.sendEmptyMessage(0);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        } catch (Exception e) {
-            e.printStackTrace();
         }
+    }
 
-        System.out.println("리스트 출력23" + noticeList.toString());
-        System.out.println("디버깅3" + posts.get(TAG_TITLE));
-    }//getXmlData method....
-
-//    private class JsoupAsyncTask extends AsyncTask {
-//        String this_url;
-//        JsoupAsyncTask(String get_url) {
-//            this_url = get_url;
-//        }
-//
-//        @Override
-//        protected Object doInBackground(Object[] objects) {
-//            try {
-//                Connection con = Jsoup.connect(this_url);
-//                Document doc = con.get();
-//                Elements ogTags = doc.select("meta[property^=og:]");
-//                if (ogTags.size() <= 0) {
-//                    return null;
-//                }
-//                // 필요한 OGTag를 추려낸다
-//                for (int i = 0; i < ogTags.size(); i++) {
-//                    Element tag = ogTags.get(i);
-//
-//                    String text = tag.attr("property");
-//                    if ("og:image".equals(text)) {
-//                        img_url = tag.attr("content");
-//                        System.out.println("이미지 주소2"+img_url);
-//                        array.put(TAG_IMGURL,img_url);
-//                        arrayList.add(array);
-//                        array = new HashMap<>();
-//                        System.out.println("사진리스트2"+arrayList);
-//                    }
-//                }
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//            return null;
-//        }
-//
-//        @Override
-//        protected void onPreExecute() {
-//
-//        }
-//        @Override
-//        protected void onPostExecute(Object o) {
-//            System.out.println("사진리스트3"+arrayList);
-//            FourthAdapter adapter = new FourthAdapter(getActivity(), arrayList);
-//            rv.setAdapter(adapter);
-////            adapter.notifyDataSetChanged();
-//        }
-//    }
+    Handler handler = new Handler(){
+        @Override
+        public void handleMessage(Message msg){
+            recyclerViewState = rv.getLayoutManager().onSaveInstanceState();
+            adapter = new BoardAdapter(getActivity(), noticeList);
+            rv.setAdapter(adapter);
+            rv.getLayoutManager().onRestoreInstanceState(recyclerViewState);
+            adapter.notifyDataSetChanged();
+            customProgressDialog.cancel();
+        }
+    };
 }
