@@ -2,6 +2,7 @@ package com.example.knu_matching;
 
 import static android.content.ContentValues.TAG;
 
+import android.accounts.Account;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -75,8 +76,8 @@ public class postRegisterActivity extends AppCompatActivity {
     private TextView tv_Title, tv_Number, tv_date, tv_post, tv_application, tv_count;
     private Button btn_list, btn_change, btn_delete, btn_comment, btn_down, btn_participate;
     private EditText edt_comment;
-    private String str_participate_Nickname, str_participate_Major, str_participate_StudentId;
-    private String str_Title, str_date, str_Number, str_post, str_time,str_email, str_Nickname2, str_email2, str_comment2, str_Id, str_application;
+    private String str_participate_Nickname, str_participate_Major, str_participate_StudentId, str_participate_EmailId, str_participate_EmailId2;
+    private String str_Title, str_date, str_Number, str_post, str_time, str_email, str_Nickname2, str_email2, str_comment2, str_Id, str_application;
     private FirebaseUser user;
     private FirebaseStorage storage = FirebaseStorage.getInstance();
     private StorageReference storageRef = storage.getReference();
@@ -129,6 +130,7 @@ public class postRegisterActivity extends AppCompatActivity {
         tv_post.setText(str_post);
         tv_application.setText(str_application);
 
+
         db.collection("Post").document(str_Id).collection("Comment").get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -143,7 +145,6 @@ public class postRegisterActivity extends AppCompatActivity {
                                         document.getData().get("str_Nickname2").toString(),
                                         document.getData().get("str_time").toString()
                                 ));
-                                System.out.println("이메일 " +document.getData().get("str_email2").toString());
                             }
                             RecyclerView recyclerView = postRegisterActivity.this.findViewById(R.id.recycleView);
                             recyclerView.setHasFixedSize(true);
@@ -161,6 +162,7 @@ public class postRegisterActivity extends AppCompatActivity {
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
+
                         if (task.isSuccessful()) {
                             ArrayList<ParticipateUser> participateUser = new ArrayList<>();
                             for (QueryDocumentSnapshot document : task.getResult()) {
@@ -168,7 +170,8 @@ public class postRegisterActivity extends AppCompatActivity {
                                 participateUser.add(new ParticipateUser(
                                         document.getData().get("str_participate_Nickname").toString(),
                                         document.getData().get("str_participate_Major").toString(),
-                                        document.getData().get("str_participate_StudentId").toString()
+                                        document.getData().get("str_participate_StudentId").toString(),
+                                        document.getData().get("str_participate_EmailId").toString()
                                 ));
                             }
                         } else {
@@ -177,16 +180,17 @@ public class postRegisterActivity extends AppCompatActivity {
                     }
                 });
 
+
         btn_comment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 str_comment2 = edt_comment.getText().toString();
                 user = FirebaseAuth.getInstance().getCurrentUser();
-                db.collection("Account").document(user.getEmail().replace(".",">"))
+                db.collection("Account").document(user.getEmail().replace(".", ">"))
                         .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if(task.isSuccessful()){
+                        if (task.isSuccessful()) {
                             UserAccount userAccount = task.getResult().toObject(UserAccount.class);
                             str_Nickname2 = userAccount.getNickName();
                             str_email2 = userAccount.getEmailId();
@@ -199,7 +203,7 @@ public class postRegisterActivity extends AppCompatActivity {
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(postRegisterActivity.this, "postActivity 오류",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(postRegisterActivity.this, "postActivity 오류", Toast.LENGTH_SHORT).show();
                     }
                 });
             }
@@ -222,11 +226,11 @@ public class postRegisterActivity extends AppCompatActivity {
                         finish();
                     }
                 }).addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Toast.makeText(postRegisterActivity.this, "실패", Toast.LENGTH_SHORT).show();
-                            }
-                        });
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(postRegisterActivity.this, "실패", Toast.LENGTH_SHORT).show();
+                    }
+                });
 
             }
         });
@@ -235,7 +239,7 @@ public class postRegisterActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(postRegisterActivity.this, PostRegisterActivity2.class);
-                intent.putExtra("Title",str_Title.toString());
+                intent.putExtra("Title", str_Title.toString());
                 intent.putExtra("Date", str_date.toString());
                 intent.putExtra("Number", str_Number.toString());
                 intent.putExtra("Post", str_post.toString());
@@ -262,24 +266,28 @@ public class postRegisterActivity extends AppCompatActivity {
             }
         });
 
+
         btn_participate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(mFirebaseAuth.getCurrentUser().getEmail().equals(str_email)==false){
+                if (mFirebaseAuth.getCurrentUser().getEmail().equals(str_email) == false) {
                     count++;
                     tv_count.setText(count + "");
+                    btn_participate.setEnabled(false);
+                    btn_participate.setText("참여 완료");
 
                     user = FirebaseAuth.getInstance().getCurrentUser();
-                    db.collection("Account").document(user.getEmail().replace(".",">"))
+                    db.collection("Account").document(user.getEmail().replace(".", ">"))
                             .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                            if(task.isSuccessful()){
+                            if (task.isSuccessful()) {
                                 UserAccount userAccount = task.getResult().toObject(UserAccount.class);
                                 str_participate_Nickname = userAccount.getNickName();
                                 str_participate_Major = userAccount.getMajor();
                                 str_participate_StudentId = userAccount.getStudentId();
-                                ParticipateUser participateUser = new ParticipateUser(str_participate_Nickname, str_participate_Major, str_participate_StudentId);
+                                str_participate_EmailId = userAccount.getEmailId();
+                                ParticipateUser participateUser = new ParticipateUser(str_participate_Nickname, str_participate_Major, str_participate_StudentId, str_participate_EmailId);
                                 update2(participateUser);
                                 Intent intent = new Intent();
                                 setResult(Activity.RESULT_OK, intent);
@@ -288,27 +296,42 @@ public class postRegisterActivity extends AppCompatActivity {
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(postRegisterActivity.this, "postActivity 오류",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(postRegisterActivity.this, "postActivity 오류", Toast.LENGTH_SHORT).show();
                         }
                     });
-                }else{
-
+                } else {
+                    // 게시글 작성자가 참여가 확인하는 곳
                 }
+            }
+        });
+        System.out.println("Email" + str_participate_EmailId2);
+        System.out.println("Email" + str_participate_Nickname);
 
 
+        db.collection("Post").document(str_Id).collection("Participate")
+                .whereEqualTo("str_participate_EmailId", str_participate_EmailId).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                btn_participate.setEnabled(false);
+                btn_participate.setText("참여 완료");
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(postRegisterActivity.this,"오류가 발생하였습니다.",Toast.LENGTH_SHORT).show();
             }
         });
 
 
-
-        if(mFirebaseAuth.getCurrentUser().getEmail().equals(str_email)==false){
-            System.out.println("이메일5"+str_email);
+        if (mFirebaseAuth.getCurrentUser().getEmail().equals(str_email) == false) {
+            System.out.println("이메일5" + str_email);
             btn_change.setVisibility(View.GONE);
             btn_delete.setVisibility(View.GONE);
         }
 
 
     }
+
     private void update(postInfo2 postInfo2) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         user = FirebaseAuth.getInstance().getCurrentUser();
@@ -324,17 +347,24 @@ public class postRegisterActivity extends AppCompatActivity {
     private void update2(ParticipateUser participateUser) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         user = FirebaseAuth.getInstance().getCurrentUser();
-        db.collection("Post").document(str_Id).collection("Participate").add(participateUser)
-                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                    @Override
-                    public void onSuccess(DocumentReference documentReference) {
-                        Toast.makeText(postRegisterActivity.this, "성공", Toast.LENGTH_SHORT).show();
-                    }
-                });
+        db.collection("Post").document(str_Id).collection("Participate")
+                .document(str_Id).set(participateUser).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+                Toast.makeText(postRegisterActivity.this, "참여신청됨", Toast.LENGTH_SHORT).show();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(postRegisterActivity.this, "오류", Toast.LENGTH_SHORT).show();
+
+            }
+        });
     }
+
     private class ImageDownload extends AsyncTask<String, Void, Void> {
 
-        private String fileName= str_application;
+        private String fileName = str_application;
 
         private final String SAVE_FOLDER = "/save_folder";
 
@@ -359,14 +389,14 @@ public class postRegisterActivity extends AppCompatActivity {
 
             try {
                 URL imgUrl = new URL(fileUrl);
-                HttpURLConnection conn = (HttpURLConnection)imgUrl.openConnection();
+                HttpURLConnection conn = (HttpURLConnection) imgUrl.openConnection();
                 int len = conn.getContentLength();
                 byte[] tmpByte = new byte[len];
                 InputStream is = conn.getInputStream();
                 File file = new File(localPath);
                 FileOutputStream fos = new FileOutputStream(file);
                 int read;
-                for (;;) {
+                for (; ; ) {
                     read = is.read(tmpByte);
                     if (read <= 0) {
                         break;
@@ -382,6 +412,7 @@ public class postRegisterActivity extends AppCompatActivity {
 
             return null;
         }
+
         @Override
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
