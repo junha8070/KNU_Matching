@@ -1,4 +1,4 @@
-package com.example.knu_matching.main.board;
+package com.example.knu_matching.board;
 
 import android.content.Context;
 import android.content.Intent;
@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.knu_matching.R;
 import com.example.knu_matching.WebView;
-import com.example.knu_matching.main.GetSet.Board;
+import com.example.knu_matching.GetSet.Board;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;

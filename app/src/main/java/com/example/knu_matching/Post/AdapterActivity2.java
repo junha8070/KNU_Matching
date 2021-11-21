@@ -1,4 +1,4 @@
-package com.example.knu_matching;
+package com.example.knu_matching.Post;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -10,6 +10,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.knu_matching.R;
 
 import java.util.ArrayList;
 

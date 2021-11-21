@@ -1,4 +1,4 @@
-package com.example.knu_matching;
+package com.example.knu_matching.Post;
 
 public class ParticipateUser {
     private String str_participate_Nickname;

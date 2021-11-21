@@ -22,7 +22,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.knu_matching.R;
 import com.example.knu_matching.UserAccount;
-import com.example.knu_matching.main.MainActivity;
+import com.example.knu_matching.MainActivity;
 import com.example.knu_matching.membermanage.Student_Certificate;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;

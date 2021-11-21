@@ -1,4 +1,4 @@
-package com.example.knu_matching.main.Recruitment;
+package com.example.knu_matching;
 
 import android.os.Bundle;
 
@@ -8,14 +8,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.knu_matching.R;
-
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link RecruitmentFragment#newInstance} factory method to
+ * Use the {@link MypageFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class RecruitmentFragment extends Fragment {
+public class MypageFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -26,7 +24,7 @@ public class RecruitmentFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public RecruitmentFragment() {
+    public MypageFragment() {
         // Required empty public constructor
     }
 
@@ -36,11 +34,11 @@ public class RecruitmentFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment RecruitmentFragment.
+     * @return A new instance of fragment MypageFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static RecruitmentFragment newInstance(String param1, String param2) {
-        RecruitmentFragment fragment = new RecruitmentFragment();
+    public static MypageFragment newInstance(String param1, String param2) {
+        MypageFragment fragment = new MypageFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -61,6 +59,6 @@ public class RecruitmentFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_recruitment, container, false);
+        return inflater.inflate(R.layout.fragment_mypage, container, false);
     }
 }

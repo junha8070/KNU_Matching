@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.knu_matching.R;
 import com.example.knu_matching.WebView;
-import com.example.knu_matching.main.board.RegionCode;
+import com.example.knu_matching.board.RegionCode;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;

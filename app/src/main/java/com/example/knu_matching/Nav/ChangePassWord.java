@@ -1,4 +1,4 @@
-package com.example.knu_matching.main;
+package com.example.knu_matching.Nav;
 
 import static android.content.ContentValues.TAG;
 
@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.knu_matching.R;
+import com.example.knu_matching.MainActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -23,7 +24,6 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.Transaction;
 
 public class ChangePassWord extends AppCompatActivity {

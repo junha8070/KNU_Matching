@@ -1,4 +1,4 @@
-package com.example.knu_matching.main;
+package com.example.knu_matching.Post;
 
 import static android.content.ContentValues.TAG;
 
@@ -21,10 +21,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import com.example.knu_matching.AdapterActivity;
 import com.example.knu_matching.R;
-import com.example.knu_matching.postActivity;
-import com.example.knu_matching.postInfo;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -87,8 +84,6 @@ public class PostFragment extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.activity_post_fragment, container, false);
         Button btn_Recent = v.findViewById(R.id.btn_Recent);
-        Button btn_next = v.findViewById(R.id.btn_next);
-        Button btn_back = v.findViewById(R.id.btn_back);
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         user = FirebaseAuth.getInstance().getCurrentUser();
@@ -130,20 +125,6 @@ public class PostFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 moveSubActivity();
-            }
-        });
-
-        btn_back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
-
-        btn_next.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
             }
         });
 

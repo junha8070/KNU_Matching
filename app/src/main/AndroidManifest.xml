@@ -23,15 +23,15 @@
             android:name=".Nav.Scrap_Activity"
             android:exported="true"/>
         <activity
-            android:name=".main.ChangePassWord"
+            android:name=".Nav.ChangePassWord"
             android:exported="true" />
-        <activity android:name=".postRegisterActivity"
-            android:exported="true" />
-        <activity
-            android:name=".postActivity"
+        <activity android:name=".Post.postRegisterActivity"
             android:exported="true" />
         <activity
-            android:name=".main.InfoModify"
+            android:name=".Post.postActivity"
+            android:exported="true" />
+        <activity
+            android:name=".Nav.InfoModify"
             android:exported="true" />
         <activity
             android:name=".chatting.ChatActivity"
@@ -49,7 +49,7 @@
             android:name=".membermanage.Student_Certificate"
             android:exported="true" />
         <activity
-            android:name=".main.MainActivity"
+            android:name=".MainActivity"
             android:exported="true" />
         <activity
             android:name=".membermanage.RegisterActivity"

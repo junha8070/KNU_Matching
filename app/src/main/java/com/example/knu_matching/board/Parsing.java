@@ -1,4 +1,4 @@
-package com.example.knu_matching.main.board;
+package com.example.knu_matching.board;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;

@@ -1,4 +1,4 @@
-package com.example.knu_matching.main;
+package com.example.knu_matching;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -24,10 +24,11 @@ import android.widget.Toast;
 import com.example.knu_matching.Nav.Edit_profile_Activity;
 import com.example.knu_matching.Nav.Scrap_Activity;
 import com.example.knu_matching.Nav.SettingActivity;
-import com.example.knu_matching.R;
+import com.example.knu_matching.Post.PostFragment;
 import com.example.knu_matching.UserAccount;
-import com.example.knu_matching.main.board.BoardFragment;
-import com.example.knu_matching.main.Recruitment.RecruitmentFragment;
+import com.example.knu_matching.board.BoardFragment;
+import com.example.knu_matching.Recruitment.RecruitmentFragment;
+import com.example.knu_matching.chatting.PeolpeFragment;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;

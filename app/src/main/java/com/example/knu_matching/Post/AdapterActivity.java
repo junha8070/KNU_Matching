@@ -1,25 +1,19 @@
-package com.example.knu_matching;
+package com.example.knu_matching.Post;
 
 import android.app.Activity;
-import android.app.LauncherActivity;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.text.Format;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import com.example.knu_matching.R;
+
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.Locale;
 
 public class AdapterActivity extends RecyclerView.Adapter<AdapterActivity.GalleryViewHolder> {
     private ArrayList<postInfo> mDataset;

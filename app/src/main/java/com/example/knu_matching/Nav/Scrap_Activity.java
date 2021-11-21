@@ -14,8 +14,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.knu_matching.R;
-import com.example.knu_matching.main.board.ProgressDialog;
-import com.example.knu_matching.main.GetSet.Board;
+import com.example.knu_matching.board.ProgressDialog;
+import com.example.knu_matching.GetSet.Board;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.EventListener;

@@ -1,4 +1,4 @@
-package com.example.knu_matching;
+package com.example.knu_matching.GetSet;
 
 public class UserNickList {
     public String getNickname() {

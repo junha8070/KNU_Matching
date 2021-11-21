@@ -1,4 +1,4 @@
-package com.example.knu_matching.main.GetSet;
+package com.example.knu_matching.GetSet;
 
 public class Board {
     String str_title;

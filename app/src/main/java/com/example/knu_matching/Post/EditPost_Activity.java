@@ -1,4 +1,4 @@
-package com.example.knu_matching;
+package com.example.knu_matching.Post;
 
 import static android.content.ContentValues.TAG;
 
@@ -17,8 +17,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.knu_matching.main.MainActivity;
-import com.example.knu_matching.main.PostFragment;
+import com.example.knu_matching.R;
+import com.example.knu_matching.MainActivity;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseUser;
@@ -34,7 +34,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 @RequiresApi(api = Build.VERSION_CODES.O)
-public class PostRegisterActivity2 extends AppCompatActivity {
+public class EditPost_Activity extends AppCompatActivity {
 
     private DatabaseReference mDatabaseRef;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -119,7 +119,7 @@ public class PostRegisterActivity2 extends AppCompatActivity {
                 str_application = tv_application.getText().toString();
 
                 if (str_Title.trim().equals("") || str_date.trim().equals("") || str_Number.trim().equals("") || str_post.trim().equals("")) {
-                    Toast.makeText(PostRegisterActivity2.this, "빈칸을 채워주세요", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(EditPost_Activity.this, "빈칸을 채워주세요", Toast.LENGTH_SHORT).show();
                 } else {
 
                     db.collection("Post").document(str_Id)
@@ -131,8 +131,8 @@ public class PostRegisterActivity2 extends AppCompatActivity {
                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void v) {
-                            Toast.makeText(PostRegisterActivity2.this, "성공", Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(PostRegisterActivity2.this, MainActivity.class);
+                            Toast.makeText(EditPost_Activity.this, "성공", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(EditPost_Activity.this, MainActivity.class);
                             startActivity(intent);
                             uploadFile();
                             finish();
@@ -140,7 +140,7 @@ public class PostRegisterActivity2 extends AppCompatActivity {
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(PostRegisterActivity2.this, "실패", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(EditPost_Activity.this, "실패", Toast.LENGTH_SHORT).show();
                         }
                     });
                 }

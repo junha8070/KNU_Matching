@@ -1,4 +1,4 @@
-package com.example.knu_matching.main;
+package com.example.knu_matching;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;

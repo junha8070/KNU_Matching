@@ -1,4 +1,4 @@
-package com.example.knu_matching.main.board;
+package com.example.knu_matching.board;
 
 import java.util.HashMap;
 import java.util.Map;
