@@ -267,6 +267,8 @@ public class postRegisterActivity extends AppCompatActivity {
         });
 
 
+
+
         btn_participate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -304,14 +306,14 @@ public class postRegisterActivity extends AppCompatActivity {
                 }
             }
         });
-        System.out.println("Email" + str_participate_EmailId2);
-        System.out.println("Email" + str_participate_Nickname);
 
 
         db.collection("Post").document(str_Id).collection("Participate")
-                .whereEqualTo("str_participate_EmailId", str_participate_EmailId).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                .whereEqualTo("str_participate_EmailId", mFirebaseAuth.getCurrentUser().getEmail()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
-            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                System.out.println("현재 이메일"+mFirebaseAuth.getCurrentUser().getEmail());
+                Toast.makeText(postRegisterActivity.this,"2222.",Toast.LENGTH_SHORT).show();
                 btn_participate.setEnabled(false);
                 btn_participate.setText("참여 완료");
             }
@@ -321,6 +323,19 @@ public class postRegisterActivity extends AppCompatActivity {
                 Toast.makeText(postRegisterActivity.this,"오류가 발생하였습니다.",Toast.LENGTH_SHORT).show();
             }
         });
+//        .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+//            @Override
+//            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+//
+//                btn_participate.setEnabled(false);
+//                btn_participate.setText("참여 완료");
+//            }
+//        }).addOnFailureListener(new OnFailureListener() {
+//            @Override
+//            public void onFailure(@NonNull Exception e) {
+//                Toast.makeText(postRegisterActivity.this,"오류가 발생하였습니다.",Toast.LENGTH_SHORT).show();
+//            }
+//        });
 
 
         if (mFirebaseAuth.getCurrentUser().getEmail().equals(str_email) == false) {
