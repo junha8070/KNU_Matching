@@ -69,7 +69,13 @@ public class Post_Owner_Acticity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post_owner_acticity);
-        //TODO: 첨부파일 작업하기
+        /**
+         TODO: 첨부파일 작업하기
+         TODO: 수정하기 버튼 연결
+         TODO: 모집인원 수
+         TODO: 대댓글
+         **/
+
 
         init();     // 요소 초기화 작업
         // ArrayList 초기화
@@ -171,12 +177,14 @@ public class Post_Owner_Acticity extends AppCompatActivity {
         MenuInflater mln = getMenuInflater();
         mln.inflate(R.menu.toolbar_post_menu, menu);
         return true;
-
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
+            case android.R.id.home:
+                finish();
+                break;
             case R.id.btn_edit:
                 Toast.makeText(getApplicationContext(), "수정하기", Toast.LENGTH_SHORT).show();
                 break;

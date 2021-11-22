@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -109,7 +110,8 @@ public class PostFragment extends Fragment {
                                         document.getData().get("str_Nickname").toString(),
                                         document.getData().get("str_email").toString(),
                                         document.getId(),
-                                        document.getData().get("str_application").toString()
+                                        document.getData().get("str_filename").toString(),
+                                        (Uri) document.getData().get("uri")
                                 ));
                             }
                             RecyclerView recyclerView = v.findViewById(R.id.recycleView);
