@@ -25,9 +25,8 @@ import com.example.knu_matching.Nav.Edit_profile_Activity;
 import com.example.knu_matching.Nav.Scrap_Activity;
 import com.example.knu_matching.Nav.SettingActivity;
 import com.example.knu_matching.Post.PostFragment;
-import com.example.knu_matching.UserAccount;
-import com.example.knu_matching.board.BoardFragment;
 import com.example.knu_matching.Recruitment.RecruitmentFragment;
+import com.example.knu_matching.board.BoardFragment;
 import com.example.knu_matching.chatting.PeolpeFragment;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
@@ -47,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
     private final String TAG = this.getClass().getSimpleName();
     private FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     private String uid = user != null ? user.getUid() : null;
-    private FirebaseAuth mFirebaseAuth = FirebaseAuth.getInstance();
+    public FirebaseAuth mFirebaseAuth = FirebaseAuth.getInstance();
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     DocumentReference dbRef = db.collection("Account").document(user.getEmail().replace(".", ">"));
     Context mContext;
@@ -66,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
     private TabLayout tabLayout;
 
     String code;
-    private String[] titles = new String[]{"최신글", "친구", "모집\n상황", "활동\n게시판", "My\nPage"};
+    private String[] titles = new String[]{"최신글", "친구", "모집\n상황", "My\nPage", "활동\n게시판"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -140,9 +139,9 @@ public class MainActivity extends AppCompatActivity {
         myPagerAdapter = new MyViewPagerAdapter(this);
         myPagerAdapter.addFrag(frag_post);
         myPagerAdapter.addFrag(frag_people);
+        myPagerAdapter.addFrag(frag_mypage);
         myPagerAdapter.addFrag(frag_recruit);
         myPagerAdapter.addFrag(frag_board);
-        myPagerAdapter.addFrag(frag_mypage);
         mViewPager.setAdapter(myPagerAdapter);
 
         //displaying tabs

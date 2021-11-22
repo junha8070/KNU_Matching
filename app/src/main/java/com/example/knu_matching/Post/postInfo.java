@@ -5,6 +5,7 @@ import java.util.Date;
 public class postInfo {
     private String str_Title;
     private String str_date;
+    private String str_EndDate;
     private String str_Number;
     private String str_post;
     private String str_time;
@@ -13,9 +14,12 @@ public class postInfo {
     private String str_Id;
     private String str_application;
 
-    public postInfo(String str_Title, String str_date, String str_Number, String str_post, String str_time, String str_Nickname, String str_email, String str_Id, String str_application){
+
+
+    public postInfo(String str_Title, String str_date, String str_EndDate, String str_Number, String str_post, String str_time, String str_Nickname, String str_email, String str_Id, String str_application){
         this.str_Title = str_Title;
         this.str_date = str_date;
+        this.str_EndDate = str_EndDate;
         this.str_Number = str_Number;
         this.str_post = str_post;
         this.str_time = str_time;
@@ -25,6 +29,15 @@ public class postInfo {
         this.str_application = str_application;
 
     }
+
+    public String getStr_EndDate() {
+        return str_EndDate;
+    }
+
+    public void setStr_EndDate(String str_EndDate) {
+        this.str_EndDate = str_EndDate;
+    }
+
     public String getStr_Title(){return this.str_Title;}
 
     public String getStr_email() {

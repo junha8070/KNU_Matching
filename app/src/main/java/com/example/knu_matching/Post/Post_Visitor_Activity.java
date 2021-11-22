@@ -52,7 +52,7 @@ import java.util.ArrayList;
 
 
 @RequiresApi(api = Build.VERSION_CODES.O)
-public class postRegisterActivity extends AppCompatActivity {
+public class Post_Visitor_Activity extends AppCompatActivity {
 
     private FirebaseAuth mFirebaseAuth;
     private DatabaseReference mDatabaseRef;
@@ -70,7 +70,7 @@ public class postRegisterActivity extends AppCompatActivity {
     private int count = 0;
 
     LocalDateTime now = LocalDateTime.now();
-    String formatedNow = now.format(DateTimeFormatter.ofPattern("yyyy_MM_dd_HH_mm_ss"));
+    String formatedNow = now.format(DateTimeFormatter.ofPattern("yyyy_MM_dd_HH_mm_ss_SSS"));
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -132,10 +132,10 @@ public class postRegisterActivity extends AppCompatActivity {
                                         document.getData().get("str_time").toString()
                                 ));
                             }
-                            RecyclerView recyclerView = postRegisterActivity.this.findViewById(R.id.recycleView);
+                            RecyclerView recyclerView = Post_Visitor_Activity.this.findViewById(R.id.recycleView);
                             recyclerView.setHasFixedSize(true);
-                            recyclerView.setLayoutManager(new LinearLayoutManager(postRegisterActivity.this));
-                            RecyclerView.Adapter mAdapter2 = new AdapterActivity2(postRegisterActivity.this, postList2);
+                            recyclerView.setLayoutManager(new LinearLayoutManager(Post_Visitor_Activity.this));
+                            RecyclerView.Adapter mAdapter2 = new AdapterActivity2(Post_Visitor_Activity.this, postList2);
                             recyclerView.setAdapter(mAdapter2);
                         } else {
                             Log.d(TAG, "error", task.getException());
@@ -189,7 +189,7 @@ public class postRegisterActivity extends AppCompatActivity {
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(postRegisterActivity.this, "postActivity 오류", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(Post_Visitor_Activity.this, "postActivity 오류", Toast.LENGTH_SHORT).show();
                     }
                 });
             }
@@ -208,13 +208,13 @@ public class postRegisterActivity extends AppCompatActivity {
                 db.collection("Post").document(str_Id).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void v) {
-                        Toast.makeText(postRegisterActivity.this, "성공", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(Post_Visitor_Activity.this, "성공", Toast.LENGTH_SHORT).show();
                         finish();
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(postRegisterActivity.this, "실패", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(Post_Visitor_Activity.this, "실패", Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -224,7 +224,7 @@ public class postRegisterActivity extends AppCompatActivity {
         btn_change.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(postRegisterActivity.this, EditPost_Activity.class);
+                Intent intent = new Intent(Post_Visitor_Activity.this, EditPost_Activity.class);
                 intent.putExtra("Title", str_Title.toString());
                 intent.putExtra("Date", str_date.toString());
                 intent.putExtra("Number", str_Number.toString());
@@ -252,77 +252,12 @@ public class postRegisterActivity extends AppCompatActivity {
             }
         });
 
-
-
-
         btn_participate.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                if (mFirebaseAuth.getCurrentUser().getEmail().equals(str_email) == false) {
-                    count++;
-                    tv_count.setText(count + "");
-                    btn_participate.setEnabled(false);
-                    btn_participate.setText("참여 완료");
+            public void onClick(View v) {
 
-                    user = FirebaseAuth.getInstance().getCurrentUser();
-                    db.collection("Account").document(user.getEmail().replace(".", ">"))
-                            .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                            if (task.isSuccessful()) {
-                                UserAccount userAccount = task.getResult().toObject(UserAccount.class);
-                                str_participate_Nickname = userAccount.getNickName();
-                                str_participate_Major = userAccount.getMajor();
-                                str_participate_StudentId = userAccount.getStudentId();
-                                str_participate_EmailId = userAccount.getEmailId();
-                                ParticipateUser participateUser = new ParticipateUser(str_participate_Nickname, str_participate_Major, str_participate_StudentId, str_participate_EmailId);
-                                update2(participateUser);
-                                Intent intent = new Intent();
-                                setResult(Activity.RESULT_OK, intent);
-                            }
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(postRegisterActivity.this, "postActivity 오류", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                } else {
-                    // 게시글 작성자가 참여가 확인하는 곳
-                }
             }
         });
-
-
-        db.collection("Post").document(str_Id).collection("Participate")
-                .whereEqualTo("str_participate_EmailId", mFirebaseAuth.getCurrentUser().getEmail()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                System.out.println("현재 이메일"+mFirebaseAuth.getCurrentUser().getEmail());
-                Toast.makeText(postRegisterActivity.this,"2222.",Toast.LENGTH_SHORT).show();
-                btn_participate.setEnabled(false);
-                btn_participate.setText("참여 완료");
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(postRegisterActivity.this,"오류가 발생하였습니다.",Toast.LENGTH_SHORT).show();
-            }
-        });
-//        .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-//            @Override
-//            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-//
-//                btn_participate.setEnabled(false);
-//                btn_participate.setText("참여 완료");
-//            }
-//        }).addOnFailureListener(new OnFailureListener() {
-//            @Override
-//            public void onFailure(@NonNull Exception e) {
-//                Toast.makeText(postRegisterActivity.this,"오류가 발생하였습니다.",Toast.LENGTH_SHORT).show();
-//            }
-//        });
-
 
         if (mFirebaseAuth.getCurrentUser().getEmail().equals(str_email) == false) {
             System.out.println("이메일5" + str_email);
@@ -340,7 +275,7 @@ public class postRegisterActivity extends AppCompatActivity {
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
-                        Toast.makeText(postRegisterActivity.this, "성공", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(Post_Visitor_Activity.this, "성공", Toast.LENGTH_SHORT).show();
                     }
                 });
     }
@@ -352,12 +287,12 @@ public class postRegisterActivity extends AppCompatActivity {
                 .document(str_Id).set(participateUser).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
-                Toast.makeText(postRegisterActivity.this, "참여신청됨", Toast.LENGTH_SHORT).show();
+                Toast.makeText(Post_Visitor_Activity.this, "참여신청됨", Toast.LENGTH_SHORT).show();
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Toast.makeText(postRegisterActivity.this, "오류", Toast.LENGTH_SHORT).show();
+                Toast.makeText(Post_Visitor_Activity.this, "오류", Toast.LENGTH_SHORT).show();
 
             }
         });
@@ -420,7 +355,7 @@ public class postRegisterActivity extends AppCompatActivity {
             String targetDir = Environment.getExternalStorageDirectory().toString() + SAVE_FOLDER;
             File file = new File(targetDir + "/" + fileName + ".jpg");
             sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(file)));
-            Toast.makeText(postRegisterActivity.this, "갤러리에 저장되었습니다.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(Post_Visitor_Activity.this, "갤러리에 저장되었습니다.", Toast.LENGTH_SHORT).show();
             finish();
         }
     }

@@ -45,7 +45,7 @@ public class PostFragment extends Fragment {
     private String mParam2;
     private Button btn_Recent;
     private Button btn_next;
-    private Button btn_back;
+    private Button btn_back, btn_test;
     private FirebaseUser user;
 
     public PostFragment() {
@@ -84,6 +84,7 @@ public class PostFragment extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.activity_post_fragment, container, false);
         Button btn_Recent = v.findViewById(R.id.btn_Recent);
+        Button btn_test = v.findViewById(R.id.btn_test);
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         user = FirebaseAuth.getInstance().getCurrentUser();
@@ -101,6 +102,7 @@ public class PostFragment extends Fragment {
                                 postList.add(new postInfo(
                                         document.getData().get("str_Title").toString(),
                                         document.getData().get("str_date").toString(),
+                                        document.getData().get("str_EndDate").toString(),
                                         document.getData().get("str_Number").toString(),
                                         document.getData().get("str_post").toString(),
                                         document.getData().get("str_time").toString(),
@@ -113,7 +115,7 @@ public class PostFragment extends Fragment {
                             RecyclerView recyclerView = v.findViewById(R.id.recycleView);
                             recyclerView.setHasFixedSize(true);
                             recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-                            RecyclerView.Adapter mAdapter = new AdapterActivity(getActivity(), postList);
+                            RecyclerView.Adapter mAdapter = new PostAdapter(getActivity(), postList);
                             recyclerView.setAdapter(mAdapter);
                         } else {
                             Log.d(TAG, "error", task.getException());
@@ -125,6 +127,13 @@ public class PostFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 moveSubActivity();
+            }
+        });
+        btn_test.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(),Post_Owner_Acticity.class);
+                startActivity(intent);
             }
         });
 

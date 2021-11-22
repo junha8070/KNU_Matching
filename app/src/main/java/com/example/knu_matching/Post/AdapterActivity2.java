@@ -62,7 +62,7 @@ public class AdapterActivity2 extends RecyclerView.Adapter<AdapterActivity2.Gall
         cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(view.getContext(), postRegisterActivity.class);
+                Intent intent = new Intent(view.getContext(), Post_Visitor_Activity.class);
             }
         });
     }

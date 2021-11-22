@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
@@ -13,6 +14,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,6 +37,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
@@ -42,18 +45,21 @@ import java.util.Date;
 @RequiresApi(api = Build.VERSION_CODES.O)
 public class postActivity extends AppCompatActivity {
     private Button btn_write, btn_choice;
-    private EditText edt_Title, edt_Number, edt_date, edt_post;
+    private EditText edt_Title, edt_Number, edt_post;
     private FirebaseAuth mFirebaseAuth;
     private DatabaseReference mDatabaseRef;
-    private String str_Title, str_date, str_Number, str_post, str_Nickname, str_email, str_Id, str_application;
+    private String str_Title, str_date, str_Number, str_post, str_Nickname, str_email, str_Id, str_application, str_EndDate;
     private FirebaseUser user;
-    private TextView application;
+    private TextView application, edt_date, tv_EndDate;
     private FirebaseStorage storage = FirebaseStorage.getInstance();
     private StorageReference storageRef = storage.getReference();
     private Uri filePath;
-
+    int year;
+    int month;
+    int datOfMonth;
     // 현재 날짜/시간
     LocalDateTime Now = LocalDateTime.now();
+    private DatePickerDialog.OnDateSetListener callbackMethod, callbackMethod2;
     // 포맷팅
     String formatedNow = Now.format(DateTimeFormatter.ofPattern("yyyy_MM_dd_HH_mm_ss"));
 
@@ -71,6 +77,7 @@ public class postActivity extends AppCompatActivity {
         btn_write = findViewById(R.id.btn_write);
         edt_date = findViewById(R.id.edt_date);
         edt_Title = findViewById(R.id.edt_Title);
+        tv_EndDate = findViewById(R.id.tv_EndDate);
         edt_Number = findViewById(R.id.edt_Number);
         edt_post = findViewById(R.id.edt_post);
 
@@ -80,6 +87,23 @@ public class postActivity extends AppCompatActivity {
         mDatabaseRef = FirebaseDatabase.getInstance().getReference("Knu_Matching");
         mFirebaseAuth = FirebaseAuth.getInstance();
 
+        this.InitializeListener();
+
+        edt_date.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DatePickerDialog dialog = new DatePickerDialog(postActivity.this, callbackMethod, Now.getYear()-1,Now.getDayOfMonth(), now.getDate());
+                dialog.show();
+            }
+        });
+
+        tv_EndDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DatePickerDialog dialog = new DatePickerDialog(postActivity.this, callbackMethod2, Now.getYear()-1,Now.getDayOfMonth(), now.getDate());
+                dialog.show();
+            }
+        });
 
         btn_choice.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -98,6 +122,7 @@ public class postActivity extends AppCompatActivity {
             public void onClick(View view) {
                 str_Title = edt_Title.getText().toString();
                 str_date = edt_date.getText().toString();
+                str_EndDate = tv_EndDate.getText().toString();
                 str_Number = edt_Number.getText().toString();
                 str_post = edt_post.getText().toString();
                 str_application = application.getText().toString();
@@ -119,7 +144,7 @@ public class postActivity extends AppCompatActivity {
                             if(task.isSuccessful()){
                                 UserAccount userAccount = task.getResult().toObject(UserAccount.class);
                                 str_Nickname = userAccount.getNickName();
-                                postInfo postInfo = new postInfo(str_Title, str_date, str_Number, str_post, formatedNow, str_Nickname, str_email, str_Id, str_application);
+                                postInfo postInfo = new postInfo(str_Title, str_date, str_EndDate, str_Number, str_post, formatedNow, str_Nickname, str_email, str_Id, str_application);
                                 update(postInfo);
                                 Intent intent = new Intent();
                                 setResult(RESULT_OK, intent);
@@ -181,6 +206,25 @@ public class postActivity extends AppCompatActivity {
         } else {
             Toast.makeText(getApplicationContext(), "파일을 먼저 선택하세요.", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    public void InitializeListener()
+    {
+        callbackMethod = new DatePickerDialog.OnDateSetListener()
+        {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                month++;
+                edt_date.setText(year + ". " + month + ". " + dayOfMonth + ". ");
+            }
+        };
+        callbackMethod2 = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                month++;
+                tv_EndDate.setText(year + ". " + month + ". " + dayOfMonth + ". ");
+            }
+        };
     }
 
 }

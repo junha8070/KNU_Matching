@@ -66,13 +66,20 @@
                 android:layout_height="wrap_content"
                 android:text="모집기간 "
                 android:layout_margin="10px"/>
-            <EditText
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:layout_margin="10px"
                 android:hint="기간"
                 android:id="@+id/edt_date"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:layout_margin="10px"
+                android:hint="기간"
+                android:id="@+id/tv_EndDate"/>
         </LinearLayout>
 
         <LinearLayout
