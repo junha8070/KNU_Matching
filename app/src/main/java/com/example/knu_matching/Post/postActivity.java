@@ -22,6 +22,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.knu_matching.GetSet.Post;
+import com.example.knu_matching.MainActivity;
 import com.example.knu_matching.R;
 import com.example.knu_matching.UserAccount;
 import com.google.android.gms.tasks.Continuation;
@@ -53,27 +55,22 @@ import io.grpc.Context;
 public class postActivity extends AppCompatActivity {
     private Button btn_write, btn_choice;
     private EditText edt_Title, edt_Number, edt_post;
-    private FirebaseAuth mFirebaseAuth;
+    private FirebaseAuth mFirebaseAuth=FirebaseAuth.getInstance();
     private DatabaseReference mDatabaseRef;
-    private String str_Title, str_date, str_Number, str_post, str_Nickname, str_email, str_Id, str_application, str_EndDate, str_filename;
+    private String str_Title, str_StartDate, str_Number, str_post, str_Nickname, str_email, str_EndDate, str_filename, str_Id;
     private FirebaseUser user;
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
     private TextView application, edt_date, tv_EndDate;
     private FirebaseStorage storage = FirebaseStorage.getInstance();
     private StorageReference storageRef = storage.getReference();
     private Uri filePath, downloadUri;
-    int year;
-    int month;
-    int datOfMonth;
     // 현재 날짜/시간
     LocalDateTime Now = LocalDateTime.now();
     private DatePickerDialog.OnDateSetListener callbackMethod, callbackMethod2;
     // 포맷팅
-    String formatedNow = Now.format(DateTimeFormatter.ofPattern("yyyy_MM_dd_HH_mm_ss"));
-
+    String formatedNow = Now.format(DateTimeFormatter.ofPattern("yyyy_MM_dd_HH_mm_ss_SSS"));
     SimpleDateFormat formatter = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss");
     Date now = new Date();
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,9 +86,6 @@ public class postActivity extends AppCompatActivity {
 
         application = findViewById(R.id.application);
         btn_choice = findViewById(R.id.btn_choice);
-
-        mDatabaseRef = FirebaseDatabase.getInstance().getReference("Knu_Matching");
-        mFirebaseAuth = FirebaseAuth.getInstance();
 
         this.InitializeListener();
 
@@ -127,59 +121,68 @@ public class postActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 str_Title = edt_Title.getText().toString();
-                str_date = edt_date.getText().toString();
+                str_StartDate = edt_date.getText().toString();
                 str_EndDate = tv_EndDate.getText().toString();
                 str_Number = edt_Number.getText().toString();
                 str_post = edt_post.getText().toString();
-                str_application = application.getText().toString();
+                str_filename = application.getText().toString();
+                str_Nickname = ((MainActivity)MainActivity.context).strNick;
+                str_email = mFirebaseAuth.getCurrentUser().getEmail();
 
-                if (str_Title.trim().equals("") || str_date.trim().equals("") || str_Number.trim().equals("") || str_post.trim().equals("")) {
-                    Toast.makeText(postActivity.this, "빈칸을 채워주세요", Toast.LENGTH_SHORT).show();
+                Uri file = filePath;
+                StorageReference riversRef = storageRef.child(mFirebaseAuth.getUid()).child(getFileName(file));
+                UploadTask uploadTask = riversRef.putFile(file);
 
-                }
-                else {
-                    FirebaseFirestore db = FirebaseFirestore.getInstance();
-                    user = FirebaseAuth.getInstance().getCurrentUser();
-                    str_email = user.getEmail();
-                    str_Id = user.getUid();
-
-                    db.collection("Account").document(user.getEmail().replace(".",">"))
-                            .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                            if(task.isSuccessful()){
-                                UserAccount userAccount = task.getResult().toObject(UserAccount.class);
-                                str_Nickname = userAccount.getNickName();
-                                System.out.println("유얼아이"+uploadFile());
-                                postInfo postInfo = new postInfo(str_Title, str_date, str_EndDate, str_Number, str_post, formatedNow, str_Nickname, str_email, str_Id, str_filename, downloadUri);
-                                update(postInfo);
-                                Intent intent = new Intent();
-                                setResult(RESULT_OK, intent);
-                                finish();
-                            }
-                        }
-                        }).addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Toast.makeText(postActivity.this, "postActivity 오류",Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                }
-            }
-        });
-    }
-
-
-    private void update(postInfo postInfo) {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        user = FirebaseAuth.getInstance().getCurrentUser();
-        db.collection("Post").add(postInfo)
-                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                Task<Uri> urlTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
                     @Override
-                    public void onSuccess(DocumentReference document) {
-                        Toast.makeText(postActivity.this, "성공", Toast.LENGTH_SHORT).show();
+                    public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                        if (!task.isSuccessful()) {
+                            throw task.getException();
+                        }
+                        // Continue with the task to get the download URL
+                        return riversRef.getDownloadUrl();
+                    }
+                }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Uri> task) {
+                        if (task.isSuccessful()) {
+                            downloadUri = task.getResult();
+                            Post post = new Post();
+                            post.setStr_Title(str_Title);
+                            post.setStr_Number(str_Number);
+                            post.setStr_StartDate(str_StartDate);
+                            post.setStr_EndDate(str_EndDate);
+                            post.setStr_post(str_post);
+                            post.setStr_filename(str_filename);
+                            post.setStr_time(formatedNow);
+                            post.setUri(downloadUri.toString());
+                            post.setStr_email(str_email);
+                            post.setStr_Nickname(str_Nickname);
+
+                            db.collection("Post").add(post).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                @Override
+                                public void onSuccess(DocumentReference documentReference) {
+                                    db.collection("Post").document(documentReference.getId()).update("str_Id",documentReference.getId()).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void unused) {
+                                            finish();
+                                            Toast.makeText(getApplicationContext(),"게시물을 올렸습니다.",Toast.LENGTH_SHORT).show();
+                                        }
+                                    }).addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            Toast.makeText(getApplicationContext(),"오류가 발생하였습니다.",Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+                                }
+                            });
+                        }
                     }
                 });
+
+
+            }
+        });
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -191,37 +194,6 @@ public class postActivity extends AppCompatActivity {
             System.out.println("파일명 : " + filePath.getLastPathSegment());
             application.setText(str_filename);
         }
-    }
-
-    private Uri uploadFile() {
-        Uri file = filePath;
-        Uri temp;
-        StorageReference riversRef = storageRef.child(str_Id).child(getFileName(file));
-        UploadTask uploadTask = riversRef.putFile(file);
-
-        Task<Uri> urlTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
-            @Override
-            public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
-                if (!task.isSuccessful()) {
-                    throw task.getException();
-                }
-                System.out.println("경로1:"+riversRef.getDownloadUrl());
-                // Continue with the task to get the download URL
-                return riversRef.getDownloadUrl();
-            }
-        }).addOnCompleteListener(new OnCompleteListener<Uri>() {
-            @Override
-            public void onComplete(@NonNull Task<Uri> task) {
-                if (task.isSuccessful()) {
-                    downloadUri = task.getResult();
-                    System.out.println("경로2:"+downloadUri);
-                } else {
-                    // Handle failures
-                    // ...
-                }
-            }
-        });
-        return downloadUri;
     }
 
     public void InitializeListener()
@@ -242,22 +214,6 @@ public class postActivity extends AppCompatActivity {
             }
         };
     }
-
-    // URI에서 파일명 얻기
-//    private String getFileNameFromUri(Uri uri) {
-//        String fileName = "";
-//
-//        Cursor cursor = getContentResolver().query(uri, null, null, null, null);
-//
-//        if (cursor != null && cursor.moveToFirst()) {
-//            fileName = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
-//            Log.i(TAG, "Display Name: " + fileName);
-//
-//        }
-//        cursor.close();
-//
-//        return fileName;
-//    }
 
     @SuppressLint("Range")
     public String getFileName(Uri uri) {

@@ -22,6 +22,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.example.knu_matching.GetSet.Post;
 import com.example.knu_matching.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -97,22 +98,36 @@ public class PostFragment extends Fragment {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
-                            ArrayList<postInfo> postList = new ArrayList<>();
+                            ArrayList<Post> postList = new ArrayList<>();
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Log.d(TAG, document.getId() + "==>" + document.getData());
-                                postList.add(new postInfo(
-                                        document.getData().get("str_Title").toString(),
-                                        document.getData().get("str_date").toString(),
-                                        document.getData().get("str_EndDate").toString(),
-                                        document.getData().get("str_Number").toString(),
-                                        document.getData().get("str_post").toString(),
-                                        document.getData().get("str_time").toString(),
-                                        document.getData().get("str_Nickname").toString(),
-                                        document.getData().get("str_email").toString(),
-                                        document.getId(),
-                                        document.getData().get("str_filename").toString(),
-                                        (Uri) document.getData().get("uri")
-                                ));
+                                Post post = document.toObject(Post.class);
+                                post.getStr_Title();
+                                post.getStr_Title();
+                                post.getStr_Number();
+                                post.getUri();
+                                post.getStr_post();
+                                post.getStr_email();
+                                post.getStr_filename();
+                                post.getStr_EndDate();
+                                post.getStr_StartDate();
+                                post.getStr_Id();
+                                post.getStr_Nickname();
+                                post.getStr_time();
+                                postList.add(post);
+//                                postList.add(new postInfo(
+//                                        document.getData().get("str_Title").toString(),
+//                                        document.getData().get("str_StartDate").toString(),
+//                                        document.getData().get("str_EndDate").toString(),
+//                                        document.getData().get("str_Number").toString(),
+//                                        document.getData().get("str_post").toString(),
+//                                        document.getData().get("str_time").toString(),
+//                                        document.getData().get("str_Nickname").toString(),
+//                                        document.getData().get("str_email").toString(),
+//                                        document.getId(),
+//                                        document.getData().get("str_filename").toString(),
+//                                        (Uri) document.getData().get("uri")
+//                                ));
                             }
                             RecyclerView recyclerView = v.findViewById(R.id.recycleView);
                             recyclerView.setHasFixedSize(true);

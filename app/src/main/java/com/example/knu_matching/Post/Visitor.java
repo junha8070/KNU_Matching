@@ -32,6 +32,7 @@ import com.example.knu_matching.GetSet.CommentItem;
 import com.example.knu_matching.MainActivity;
 import com.example.knu_matching.R;
 import com.example.knu_matching.UserAccount;
+import com.example.knu_matching.membermanage.RegisterActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -219,22 +220,25 @@ public class Visitor extends AppCompatActivity {
             }
         });
 
+        db.collection("Post").document(str_Id).collection("Participate")
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        Log.d("Visitor", document.getId() + " => " + document.getData());
+                        if (document.getId().equals(auth.getCurrentUser().getEmail().replace(".", ">"))) {
+                            btn_participate.setEnabled(false);
+                            btn_participate.setText("참여 완료");
+                        }
+                    }
+                } else {
+                    Log.d("Visitor", "Error getting documents: ", task.getException());
+                }
+            }
 
-//        db.collection("Post").document(str_Id).collection("Participate")
-//                .whereEqualTo("str_participate_EmailId", auth.getCurrentUser().getEmail()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-//            @Override
-//            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-//                System.out.println("현재 이메일"+ auth.getCurrentUser().getEmail());
-//                Toast.makeText(Visitor.this,"2222.",Toast.LENGTH_SHORT).show();
-//                btn_participate.setEnabled(false);
-//                btn_participate.setText("참여 완료");
-//            }
-//        }).addOnFailureListener(new OnFailureListener() {
-//            @Override
-//            public void onFailure(@NonNull Exception e) {
-//                Toast.makeText(Visitor.this,"오류가 발생하였습니다.",Toast.LENGTH_SHORT).show();
-//            }
-//        });
+        });
+
     }
 
     // 댓글 추가
@@ -293,7 +297,7 @@ public class Visitor extends AppCompatActivity {
 
         // intent 값 받아오기
         intent = getIntent();
-        str_Id = intent.getStringExtra("Id");
+        str_Id = intent.getStringExtra("Str_Id");
         str_title = intent.getStringExtra("Title");
         str_StartDate = intent.getStringExtra("Date");
         str_EndDate = intent.getStringExtra("EndDate");
@@ -311,7 +315,7 @@ public class Visitor extends AppCompatActivity {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         user = FirebaseAuth.getInstance().getCurrentUser();
         db.collection("Post").document(str_Id).collection("Participate")
-                .document(auth.getCurrentUser().getEmail().replace(".",">")).set(participateUser).addOnSuccessListener(new OnSuccessListener<Void>() {
+                .document(auth.getCurrentUser().getEmail().replace(".", ">")).set(participateUser).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
                 Toast.makeText(Visitor.this, "참여신청됨", Toast.LENGTH_SHORT).show();

@@ -11,13 +11,14 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.knu_matching.GetSet.Post;
 import com.example.knu_matching.MainActivity;
 import com.example.knu_matching.R;
 
 import java.util.ArrayList;
 
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.GalleryViewHolder> {
-    private ArrayList<postInfo> mDataset;
+    private ArrayList<Post> mDataset;
     private Activity activity;
 
 
@@ -29,7 +30,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.GalleryViewHol
         }
     }
 
-    public PostAdapter(Activity activity, ArrayList<postInfo> myData){
+    public PostAdapter(Activity activity, ArrayList<Post> myData){
         mDataset = myData;
         this.activity = activity;
     }
@@ -64,29 +65,31 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.GalleryViewHol
                 if(mDataset.get(temp).getStr_email().equals(((MainActivity)MainActivity.context).mFirebaseAuth.getCurrentUser().getEmail())){
                     Intent intent = new Intent(view.getContext(), Post_Owner_Acticity.class);
                     intent.putExtra("Title", mDataset.get(temp).getStr_Title());
-                    intent.putExtra("Date", mDataset.get(temp).getStr_date());
+                    intent.putExtra("StartDate", mDataset.get(temp).getStr_StartDate());
                     intent.putExtra("EndDate", mDataset.get(temp).getStr_EndDate());
                     intent.putExtra("Number", mDataset.get(temp).getStr_Number());
                     intent.putExtra("Post", mDataset.get(temp).getStr_post());
                     intent.putExtra("Nickname", mDataset.get(temp).getStr_Nickname());
                     intent.putExtra("Email", mDataset.get(temp).getStr_email());
                     intent.putExtra("Time", mDataset.get(temp).getStr_time());
-                    intent.putExtra("Id", mDataset.get(temp).getStr_Id());
-                    intent.putExtra("Application", mDataset.get(temp).getStr_filename());
+                    intent.putExtra("Str_Id", mDataset.get(temp).getStr_Id());
+                    intent.putExtra("Uri",mDataset.get(temp).getUri());
+                    intent.putExtra("Filename", mDataset.get(temp).getStr_filename());
                     view.getContext().startActivity(intent);
                 }
                 else{
                     Intent intent = new Intent(view.getContext(), Visitor.class);
                     intent.putExtra("Title", mDataset.get(temp).getStr_Title());
-                    intent.putExtra("Date", mDataset.get(temp).getStr_date());
+                    intent.putExtra("StartDate", mDataset.get(temp).getStr_StartDate());
                     intent.putExtra("EndDate", mDataset.get(temp).getStr_EndDate());
                     intent.putExtra("Number", mDataset.get(temp).getStr_Number());
                     intent.putExtra("Post", mDataset.get(temp).getStr_post());
                     intent.putExtra("Nickname", mDataset.get(temp).getStr_Nickname());
                     intent.putExtra("Email", mDataset.get(temp).getStr_email());
                     intent.putExtra("Time", mDataset.get(temp).getStr_time());
-                    intent.putExtra("Id", mDataset.get(temp).getStr_Id());
-                    intent.putExtra("Application", mDataset.get(temp).getStr_filename());
+                    intent.putExtra("Str_Id", mDataset.get(temp).getStr_Id());
+                    intent.putExtra("Uri",mDataset.get(temp).getUri());
+                    intent.putExtra("Filename", mDataset.get(temp).getStr_filename());
                     view.getContext().startActivity(intent);
                 }
 

@@ -52,7 +52,7 @@ public class Post_Owner_Acticity extends AppCompatActivity {
     RecyclerView rv_comment;
     CommentAdapter commentAdapter = null;
     EditText edt_comment;
-    String str_title, str_count, str_total, str_StartDate, str_EndDate, str_filename, str_content, str_comment, str_email, str_Id, str_time, str_application;
+    String str_title, str_count, str_total, str_StartDate, str_EndDate, str_filename, str_content, str_comment, str_email, str_Id, str_time;
     public String str_Current_Email;
     Intent intent;
     ArrayList<CommentItem> comment_list;
@@ -92,6 +92,7 @@ public class Post_Owner_Acticity extends AppCompatActivity {
         tv_StartDate.setText(str_StartDate);    // 모집 시작기간
         tv_EndDate.setText(str_EndDate);        // 모집 끝나는기간
         tv_content.setText(str_content);        // 내용
+        tv_file.setText(str_filename);          // 첨부파일 이름
 
         btn_comment.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -260,13 +261,13 @@ public class Post_Owner_Acticity extends AppCompatActivity {
 
         // intent 값 받아오기
         intent = getIntent();
-        str_Id = intent.getStringExtra("Id");
+        str_Id = intent.getStringExtra("Str_Id");
         str_title = intent.getStringExtra("Title");
-        str_StartDate = intent.getStringExtra("Date");
+        str_StartDate = intent.getStringExtra("StartDate");
         str_EndDate = intent.getStringExtra("EndDate");
         str_total = intent.getStringExtra("Number");
         str_content = intent.getStringExtra("Post");
-        str_application = intent.getStringExtra("Application");
+        str_filename = intent.getStringExtra("Filename");
         str_time = intent.getStringExtra("Time");
         str_email = intent.getStringExtra("Email");
 
