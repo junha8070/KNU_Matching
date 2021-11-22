@@ -18,6 +18,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -104,8 +105,6 @@ public class Visitor extends AppCompatActivity {
         rv_comment.setAdapter(commentAdapter);
         rv_comment.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
 
-
-
         tv_title.setText(str_title);            // 제목
         tv_total.setText(str_total);            // 모집 인원
         tv_StartDate.setText(str_StartDate);    // 모집 시작기간
@@ -164,7 +163,6 @@ public class Visitor extends AppCompatActivity {
                     }
                 });
 
-
         tv_file.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -220,6 +218,23 @@ public class Visitor extends AppCompatActivity {
                 }
             }
         });
+
+
+//        db.collection("Post").document(str_Id).collection("Participate")
+//                .whereEqualTo("str_participate_EmailId", auth.getCurrentUser().getEmail()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//            @Override
+//            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                System.out.println("현재 이메일"+ auth.getCurrentUser().getEmail());
+//                Toast.makeText(Visitor.this,"2222.",Toast.LENGTH_SHORT).show();
+//                btn_participate.setEnabled(false);
+//                btn_participate.setText("참여 완료");
+//            }
+//        }).addOnFailureListener(new OnFailureListener() {
+//            @Override
+//            public void onFailure(@NonNull Exception e) {
+//                Toast.makeText(Visitor.this,"오류가 발생하였습니다.",Toast.LENGTH_SHORT).show();
+//            }
+//        });
     }
 
     // 댓글 추가
@@ -246,7 +261,6 @@ public class Visitor extends AppCompatActivity {
         comment_list.remove(item);
     }
 
-
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
@@ -256,7 +270,6 @@ public class Visitor extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-
 
     private void init() {
         // 상단 툴바 셋팅
@@ -298,7 +311,7 @@ public class Visitor extends AppCompatActivity {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         user = FirebaseAuth.getInstance().getCurrentUser();
         db.collection("Post").document(str_Id).collection("Participate")
-                .document(str_Id).set(participateUser).addOnSuccessListener(new OnSuccessListener<Void>() {
+                .document(auth.getCurrentUser().getEmail().replace(".",">")).set(participateUser).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
                 Toast.makeText(Visitor.this, "참여신청됨", Toast.LENGTH_SHORT).show();
