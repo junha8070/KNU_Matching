@@ -13,6 +13,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Knu_Matching"
         android:usesCleartextTraffic="true">
+        <activity android:name=".Post.EditPost_Activity"
+            android:exported="true"/>
         <activity
             android:name=".Post.Visitor"
             android:exported="true" />

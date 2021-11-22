@@ -14,6 +14,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -31,6 +32,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.EventListener;
@@ -58,6 +60,7 @@ public class Post_Owner_Acticity extends AppCompatActivity {
     Intent intent;
     ArrayList<CommentItem> comment_list;
     Context context = this;
+    int count = 0;
 
     LocalDateTime now = LocalDateTime.now();
     String formatedNow = now.format(DateTimeFormatter.ofPattern("yyyy_MM_dd_HH_mm_ss_SSS"));
@@ -65,6 +68,8 @@ public class Post_Owner_Acticity extends AppCompatActivity {
     // Firebase
     FirebaseAuth auth = FirebaseAuth.getInstance();
     FirebaseFirestore db = FirebaseFirestore.getInstance();
+    FirebaseAuth mFirebaseAuth;
+    DatabaseReference mDatabaseRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,6 +99,26 @@ public class Post_Owner_Acticity extends AppCompatActivity {
         tv_content.setText(str_content);        // 내용
         tv_file.setText(str_filename);          // 첨부파일 이름
 
+        db.collection("Post").document(str_Id).collection("Participate")
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                int i = 0;
+                int j = 0;
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        Log.d("Visitor", document.getId() + " => " + document.getData());
+                        j = i+1;
+                        i++;
+                    }
+                    count = j;
+                    tv_count.setText(count + "");
+                } else {
+                    Log.d("Visitor", "Error getting documents: ", task.getException());
+                }
+            }
+
+        });
 
         btn_comment.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -189,6 +214,14 @@ public class Post_Owner_Acticity extends AppCompatActivity {
                 break;
             case R.id.btn_edit:
                 Toast.makeText(getApplicationContext(), "수정하기", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(Post_Owner_Acticity.this,EditPost_Activity.class);
+                intent.putExtra("Title", str_title);
+                intent.putExtra("StartDate", str_StartDate);
+                intent.putExtra("EndDate", str_EndDate);
+                intent.putExtra("Number", str_total);
+                intent.putExtra("Post", str_content);
+                intent.putExtra("Filename", str_filename);
+                startActivity(intent);
                 break;
             case R.id.btn_del:
 
