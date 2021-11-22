@@ -53,7 +53,7 @@ public class Post_Owner_Acticity extends AppCompatActivity {
     RecyclerView rv_comment;
     CommentAdapter commentAdapter = null;
     EditText edt_comment;
-    String str_title, str_count, str_total, str_StartDate, str_EndDate, str_filename, str_content, str_comment, str_email, str_Id, str_time;
+    String str_title, str_count, str_total, str_StartDate, str_EndDate, str_filename, str_content, str_comment, str_email, str_Id, str_time, str_uri;
     public String str_Current_Email;
     Intent intent;
     ArrayList<CommentItem> comment_list;
@@ -94,14 +94,6 @@ public class Post_Owner_Acticity extends AppCompatActivity {
         tv_content.setText(str_content);        // 내용
         tv_file.setText(str_filename);          // 첨부파일 이름
 
-        db.collection("Post").document(str_Id).collection("Participate").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if(task.isSuccessful()){
-
-                }
-            }
-        });
 
         btn_comment.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -279,6 +271,7 @@ public class Post_Owner_Acticity extends AppCompatActivity {
         str_filename = intent.getStringExtra("Filename");
         str_time = intent.getStringExtra("Time");
         str_email = intent.getStringExtra("Email");
+        str_uri = intent.getStringExtra("Uri");
 
         // 접속 계정 정보
         str_Current_Email = auth.getCurrentUser().getEmail();
