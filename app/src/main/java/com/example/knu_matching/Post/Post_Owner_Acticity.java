@@ -28,6 +28,7 @@ import com.example.knu_matching.MainActivity;
 import com.example.knu_matching.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentChange;
@@ -72,7 +73,6 @@ public class Post_Owner_Acticity extends AppCompatActivity {
         /**
          TODO: 첨부파일 작업하기
          TODO: 수정하기 버튼 연결
-         TODO: 모집인원 수
          TODO: 대댓글
          **/
 
@@ -93,6 +93,15 @@ public class Post_Owner_Acticity extends AppCompatActivity {
         tv_EndDate.setText(str_EndDate);        // 모집 끝나는기간
         tv_content.setText(str_content);        // 내용
         tv_file.setText(str_filename);          // 첨부파일 이름
+
+        db.collection("Post").document(str_Id).collection("Participate").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if(task.isSuccessful()){
+
+                }
+            }
+        });
 
         btn_comment.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -186,7 +186,6 @@ public class Visitor extends AppCompatActivity {
                 mFirebaseAuth = FirebaseAuth.getInstance();
                 mDatabaseRef = FirebaseDatabase.getInstance().getReference("Knu_Matching");
                 if (mFirebaseAuth.getCurrentUser().getEmail().equals(str_email) == false) {
-                    count++;
                     tv_count.setText(count + "");
                     btn_participate.setEnabled(false);
                     btn_participate.setText("참여 완료");
