@@ -111,6 +111,7 @@ public class Visitor extends AppCompatActivity {
         tv_StartDate.setText(str_StartDate);    // 모집 시작기간
         tv_EndDate.setText(str_EndDate);        // 모집 끝나는기간
         tv_content.setText(str_content);        // 내용
+        tv_file.setText(str_application);       // 파일이름
 
         btn_comment.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -320,11 +321,11 @@ public class Visitor extends AppCompatActivity {
         intent = getIntent();
         str_Id = intent.getStringExtra("Str_Id");
         str_title = intent.getStringExtra("Title");
-        str_StartDate = intent.getStringExtra("Date");
+        str_StartDate = intent.getStringExtra("StartDate");
         str_EndDate = intent.getStringExtra("EndDate");
         str_total = intent.getStringExtra("Number");
         str_content = intent.getStringExtra("Post");
-        str_application = intent.getStringExtra("Application");
+        str_application = intent.getStringExtra("Filename");
         str_time = intent.getStringExtra("Time");
         str_email = intent.getStringExtra("Email");
 
