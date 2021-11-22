@@ -220,6 +220,28 @@ public class Visitor extends AppCompatActivity {
             }
         });
 
+
+        db.collection("Post").document(str_Id).collection("Participate")
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                int i = 0;
+                int j = 0;
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        Log.d("Visitor", document.getId() + " => " + document.getData());
+                        j = i+1;
+                        i++;
+                        }
+                    count = j;
+                    tv_count.setText(count + "");
+                } else {
+                    Log.d("Visitor", "Error getting documents: ", task.getException());
+                }
+            }
+
+        });
+
         db.collection("Post").document(str_Id).collection("Participate")
                 .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
