@@ -1,6 +1,9 @@
 package com.example.knu_matching.chatting;
 
+import android.content.DialogInterface;
+import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,136 +13,193 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.knu_matching.R;
 import com.example.knu_matching.UserAccount;
+import com.example.knu_matching.membermanage.FindIDActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.api.SystemParameterRule;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.auth.User;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.TimeZone;
 
 
 public class ChatActivity extends AppCompatActivity {
     private ArrayList<String> user_arrayList;
+    private Map<String, String> arr_Nick;
     private Button button, chat_in;
     private EditText editText;
     private ArrayList<String> arrayList = new ArrayList<>();
-    private String uid, chatRoomUid, chatRoomUidd, chatRoomName;
-    private Integer chatIn;
+    private ArrayList<String> arrNick = new ArrayList<>();
+    private String uid, chatRoomUid, chatRoomUidd, chatRoomName, nickname;
+    private Integer listTagNum, roomNum;
     private Boolean boo;
     private Boolean chat_list;
     private RecyclerView recyclerView;
     private Boolean first_chat;
+    private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
 
 
     private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy.MM.dd HH:mm");
 
-    // 입장 버튼 누르면 계속 새로운 채팅방 만들어짐
-    // 기존의 대화내용 다 사라져버리고
-    // 그냥 새로 만들어짐
-    // Model이 아마 계속 만들어지는거 같은데
-    // 이걸 확인해줄 방법이 필요해
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
         uid = FirebaseAuth.getInstance().getCurrentUser().getUid();  //채팅을 요구 하는 아아디 즉 단말기에 로그인된 UID
         arrayList = getIntent().getStringArrayListExtra("invited_List");    //나 제외
-        chatIn = getIntent().getExtras().getInt("chatIn");
         chat_list = getIntent().getExtras().getBoolean("chat_list");
         chatRoomName = getIntent().getExtras().getString("chatRoom_name");
+        arrNick = getIntent().getStringArrayListExtra("arrNick");
+        listTagNum = getIntent().getExtras().getInt("listTagNum");
         button = (Button) findViewById(R.id.messageActivity_button);
         editText = (EditText) findViewById(R.id.messageActivity_editText);
         recyclerView = (RecyclerView)findViewById(R.id.messageActivity_reclclerview);
         final String myUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        FirebaseDatabase.getInstance().getReference().child("chatrooms").orderByChild("users/"+uid)
-                .equalTo(true).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for(DataSnapshot item : dataSnapshot.getChildren()) {
-                    ChatModel chatModel = item.getValue(ChatModel.class);
-                    int i = 0;
-                    //chatModel의 users랑 arrayList의 값들이 모두 같으면
-                    //이미 존재하는 채팅방이라고봐야
-                    user_arrayList = new ArrayList<String>();
-                    for(String key : chatModel.users.keySet()){
-                        user_arrayList.add(key);
+        System.out.println("test chat_list "+ chat_list);
+        user_arrayList = new ArrayList<String>();
+        roomNum=0;
+        System.out.println("test oncreate arrNick "+arrNick);
+        if(chat_list == false){
+            FirebaseDatabase.getInstance().getReference().child("chatrooms").orderByChild("users/"+uid)
+                    .equalTo(true).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    for(DataSnapshot item : dataSnapshot.getChildren()) {
+                        ChatModel chatModel = item.getValue(ChatModel.class);
+                        roomNum++;
+
+                        for(String key : chatModel.users.keySet()){
+                            user_arrayList.add(key);
+                        }
+                        if ((user_arrayList.containsAll(arrayList) == true) && (user_arrayList.size() == arrayList.size())){
+                            first_chat = false;
+                            chatRoomUid = item.getKey();
+                            System.out.println("test chatlist false roomNum "+ roomNum);
+                            System.out.println("test4 chatlist false chatRoomUid "+chatRoomUid);
+
+                            button.setEnabled(true);
+                            break;
+                        }
+                        else {
+                            continue;
+                        }
                     }
-                    user_arrayList.containsAll(arrayList);
-                    boo = user_arrayList.size() == arrayList.size();
-                    System.out.println("test boolean "+ boo);
-                    System.out.println("test0 " + chatModel.users + " arr " + arrayList + " 비교 " + user_arrayList.containsAll(arrayList));
-                    if ((user_arrayList.containsAll(arrayList) == true) && (user_arrayList.size() == arrayList.size())){
-                        first_chat = false;
-                        chatRoomUid = item.getKey();
-                        System.out.println("test4 chatRoomUid "+chatRoomUid);
-                        button.setEnabled(true);
-                        break;
+                    ChatModel chatModel = new ChatModel();
+                    for(String element: arrayList){
+                        //user uid
+                        System.out.println("test arralist element " + element);
+                        chatModel.users.put(element, true);
                     }
-                    else{
-                        continue;
+                    chatModel.setChatRoomUid(chatRoomUid);
+                    chatModel.setRoomName(chatRoomName);
+                    chatModel.setRoomNum(roomNum);
+                    System.out.println("test chatModel chatModel users "+chatModel.users);
+                    System.out.println("test chatModel arrayList "+arrayList);
+                    System.out.println("test chatModel chatRoomUid "+chatRoomUid);
+
+                    if(chatRoomUid == null){
+
+                        button.setEnabled(false);
+                        first_chat =true;
+
+                        FirebaseDatabase.getInstance().getReference().child("chatrooms")
+                                .push().setValue(chatModel)
+                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+
+                                        checkChatRoom();
+                                    }
+                                });
+                    }
+                    checkChatRoom();
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+        }
+        else{
+            FirebaseDatabase.getInstance().getReference().child("chatrooms").orderByChild("roomNum").equalTo(listTagNum)
+                    .addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            for(DataSnapshot item : dataSnapshot.getChildren()) {
+                                ChatModel chatModel = item.getValue(ChatModel.class);
+                                chatRoomUid = item.getKey();
+                                System.out.println("test dataSnapshot 666  " + dataSnapshot);
+                                System.out.println("test item 666  " + item);
+                                System.out.println("test listTagNum 666  " + listTagNum);
+                                System.out.println("test chatRoomUid 666  " + chatRoomUid);
+                                first_chat = false;
+                                recyclerView.setLayoutManager(new LinearLayoutManager(ChatActivity.this));
+                                recyclerView.setAdapter(new RecyclerViewAdapter());
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+            FirebaseDatabase.getInstance().getReference().child("chatrooms").orderByChild("users/"+uid)
+                    .equalTo(true).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    for (DataSnapshot item : dataSnapshot.getChildren()) {
+                        ChatModel chatModel = item.getValue(ChatModel.class);
+                        roomNum++;
+
+                        //chatModel의 users랑 arrayList의 값들이 모두 같으면
+                        //이미 존재하는 채팅방이라고봐야
+                        for (String key : chatModel.users.keySet()) {
+                            user_arrayList.add(key);
+                        }//이건 chatroom 안에 같이 있는 users arrayList
+
+
+                        System.out.println("test userarrayList "+ user_arrayList);
                     }
                 }
 
-                ChatModel chatModel = new ChatModel();
-                for(String element: arrayList){
-                    //user uid
-                    System.out.println("test2 element " + element);
-                    chatModel.users.put(element, true);
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
                 }
-                chatModel.setChatRoomUid(chatRoomUid);
-                chatModel.setRoomName(chatRoomName);
-                System.out.println("test3 chatModel users "+chatModel.users);
-                System.out.println("test3 arrayList "+arrayList);
-                System.out.println("test3 chatRoomUid "+chatRoomUid);
+            });
 
-                if(chatRoomUid == null){
-
-                    button.setEnabled(false);
-                    first_chat =true;
-
-                    FirebaseDatabase.getInstance().getReference().child("chatrooms")
-                            .push().setValue(chatModel)
-                            .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void aVoid) {
-
-                                    System.out.println("test3 chatRoomUid "+chatModel.getChatRoomUid());
-                                    checkChatRoom();
-                                }
-                            });
-                }
-                checkChatRoom();
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-//        FirebaseDatabase.getInstance().getReference().child("chatrooms").child(chatRoomUid).push().setValue(chatRoomName).addOnCompleteListener(new OnCompleteListener<Void>() {
-//            @Override
-//            public void onComplete(@NonNull Task<Void> task) {
-//                System.out.println("test roomnameset success");
-//            }
-//        });
+        }
 
         //채팅방 내에서 메세지 전송 버튼
         button.setOnClickListener(new View.OnClickListener() {
@@ -149,18 +209,49 @@ public class ChatActivity extends AppCompatActivity {
                     checkChatRoom();
                 }
                 else {
-                    ChatModel.Comment comment = new ChatModel.Comment();
-                    comment.uid = uid;
-                    comment.msg = editText.getText().toString();
-                    comment.timestamp = ServerValue.TIMESTAMP;
+                    arr_Nick = new HashMap<>();
 
-                    FirebaseDatabase.getInstance().getReference().child("chatrooms").child(chatRoomUid).child("comments").push().setValue(comment).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    FirebaseDatabase.getInstance().getReference().child("users").addValueEventListener(new ValueEventListener() {
                         @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            editText.setText("");
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            for (DataSnapshot item : snapshot.getChildren()) {
+                                UserAccount userAccount = item.getValue(UserAccount.class);
+                                System.out.println("userAccount " +userAccount.getNickName());
+                                arr_Nick.put(userAccount.getNickName(), userAccount.getUid());
+                            }
+                            ChatModel.Comment comment = new ChatModel.Comment();
+                            comment.uid = uid;
+                            comment.msg = editText.getText().toString();
+                            comment.timestamp = ServerValue.TIMESTAMP;
+                            for (String key : arr_Nick.keySet()) {
+                                String value = arr_Nick.get(key);
+                                System.out.println("Iterating, key: " + key);
+                                System.out.println("Iterating, uid: " + uid);
+                                System.out.println("Iterating, value: " + value);
+
+                                if (value.equals(uid)) {
+                                    System.out.println("ttest key : " + key);
+                                    System.out.println("ttest key : " + key);
+                                    System.out.println("ttest value : " + value);
+                                    comment.nickname = key;
+                                }
+                                else{
+                                    System.out.println("ttest wrong");
+                                }
+                            }
+
+                            FirebaseDatabase.getInstance().getReference().child("chatrooms").child(chatRoomUid).child("comments").push().setValue(comment).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    editText.setText("");
+                                }
+                            });
+                        }
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
                         }
                     });
-
                 }
             }
         });
@@ -168,30 +259,29 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     public void  checkChatRoom(){
-        FirebaseDatabase.getInstance().getReference().child("chatrooms").orderByChild("users/"+uid).equalTo(true).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for(DataSnapshot item : dataSnapshot.getChildren()){
-                    ChatModel chatModel = item.getValue(ChatModel.class);
-                    chatRoomUidd = item.getKey();
-                    System.out.println("test chatRoomUid 44  "+chatRoomUidd);
-                    System.out.println("test chatRoomUid 5  "+chatRoomUid);
-                    System.out.println("test first_chat "+ first_chat);
-                    if(first_chat==true){
-                        chatRoomUid = chatRoomUidd;
-                        System.out.println("test chatRoomUid 6  "+chatRoomUid);
+        FirebaseDatabase.getInstance().getReference().child("chatrooms").orderByChild("users/"+uid).equalTo(true)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        for(DataSnapshot item : dataSnapshot.getChildren()){
+                            chatRoomUidd = item.getKey();
+                            System.out.println("test checkChatRoom chatRoomUidd1 "+chatRoomUidd);
+                            System.out.println("test checkChatRoom chatRoomUid2 "+chatRoomUid);
+                            System.out.println("test checkChatRoom first_chat "+ first_chat);
+                            if((first_chat==true) || (chatRoomUidd==chatRoomUid)){
+                                chatRoomUid = chatRoomUidd;
+                                System.out.println("test checkChatRoom chatRoomUid3 "+chatRoomUid);
+                                button.setEnabled(true);
+                                recyclerView.setLayoutManager(new LinearLayoutManager(ChatActivity.this));
+                                recyclerView.setAdapter(new RecyclerViewAdapter());
+                            }else{
+                                break;
+                            }
+                        }
                     }
-                    button.setEnabled(true);
-                    recyclerView.setLayoutManager(new LinearLayoutManager(ChatActivity.this));
-                    recyclerView.setAdapter(new RecyclerViewAdapter());
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) { }
+                });
     }
 
     class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
@@ -200,41 +290,40 @@ public class ChatActivity extends AppCompatActivity {
 
         public RecyclerViewAdapter() {
             comments = new ArrayList<>();
-
-            FirebaseDatabase.getInstance().getReference()
-                    .child("users").child(uid)
+            FirebaseDatabase.getInstance().getReference().child("users").child(uid)
                     .addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             userModel = dataSnapshot.getValue(UserAccount.class);
+                            System.out.println("test please userModel "+ userModel.uid);
                             getMessageList();
                         }
 
                         @Override
                         public void onCancelled(DatabaseError databaseError) {
-
                         }
                     });
         }
 
         void getMessageList(){
-            FirebaseDatabase.getInstance().getReference().child("chatrooms")
-                    .child(chatRoomUid).child("comments").addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    comments.clear();
-                    for(DataSnapshot item : dataSnapshot.getChildren()){
-                        comments.add(item.getValue(ChatModel.Comment.class));
-                    }
-                    //메세지가 갱신
-                    notifyDataSetChanged();
-                    recyclerView.scrollToPosition(comments.size() - 1);
-                }
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
+            FirebaseDatabase.getInstance().getReference().child("chatrooms").child(chatRoomUid).child("comments")
+                    .addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            comments.clear();
+                            for(DataSnapshot item : dataSnapshot.getChildren()){
+                                comments.add(item.getValue(ChatModel.Comment.class));
+                                System.out.println("please comment item " + item);
+                            }
+                            //메세지가 갱신
+                            notifyDataSetChanged();
+                            recyclerView.scrollToPosition(comments.size() - 1);
+                        }
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
 
-                }
-            });
+                        }
+                    });
         }
 
         @Override
@@ -246,7 +335,6 @@ public class ChatActivity extends AppCompatActivity {
         @Override
         public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
             MessageViewHolder messageViewHolder = ((MessageViewHolder)holder);
-
             //내가보낸 메세지
             if(comments.get(position).uid.equals(uid)){
                 messageViewHolder.textView_message.setText(comments.get(position).msg);
@@ -256,7 +344,7 @@ public class ChatActivity extends AppCompatActivity {
                 messageViewHolder.linearLayout_main.setGravity(Gravity.RIGHT);
                 //상대방이 보낸 메세지
             }else {
-                messageViewHolder.textview_name.setText(userModel.getNickName());
+                messageViewHolder.textview_name.setText(comments.get(position).nickname);
                 messageViewHolder.linearLayout_destination.setVisibility(View.VISIBLE);
 //                messageViewHolder.textView_message.setBackgroundResource(R.drawable.leftbubble);
                 messageViewHolder.textView_message.setText(comments.get(position).msg);
@@ -287,7 +375,6 @@ public class ChatActivity extends AppCompatActivity {
                 super(view);
                 textView_message = (TextView) view.findViewById(R.id.messageItem_textView_message);
                 textview_name = (TextView)view.findViewById(R.id.messageItem_textview_name);
-                imageView_profile = (ImageView)view.findViewById(R.id.messageItem_imageview_profile);
                 linearLayout_destination = (LinearLayout)view.findViewById(R.id.messageItem_linearlayout_destination);
                 linearLayout_main = (LinearLayout)view.findViewById(R.id.messageItem_linearlayout_main);
                 textView_timestamp = (TextView)view.findViewById(R.id.messageItem_textview_timestamp);
