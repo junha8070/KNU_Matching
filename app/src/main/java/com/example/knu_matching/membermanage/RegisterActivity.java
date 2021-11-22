@@ -18,7 +18,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.knu_matching.main.MainActivity;
+import com.example.knu_matching.MainActivity;
 import com.example.knu_matching.R;
 import com.example.knu_matching.UserAccount;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -28,16 +28,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.firestore.auth.User;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -84,27 +79,25 @@ public class RegisterActivity extends AppCompatActivity {
                             @Override
                             public void onComplete(@NonNull Task<QuerySnapshot> task) {
 //                                System.out.println("회원가입 디버깅"+QuerySnapshot document:task.getResult());
-                                if(task.isSuccessful()){
-                                    for(QueryDocumentSnapshot document : task.getResult()){
+                                if (task.isSuccessful()) {
+                                    for (QueryDocumentSnapshot document : task.getResult()) {
                                         UserAccount userAccount = document.toObject(UserAccount.class);
-                                        Log.d("db디버깅",userAccount.getNickName());
-                                        if(strNick.equals(userAccount.getNickName())){
-                                            Toast.makeText(RegisterActivity.this,"중복됨",Toast.LENGTH_SHORT).show();
+                                        Log.d("db디버깅", userAccount.getNickName());
+                                        if (strNick.equals(userAccount.getNickName())) {
+                                            Toast.makeText(RegisterActivity.this, "중복됨", Toast.LENGTH_SHORT).show();
                                             nickname_state = false;
                                             return;
                                         }
                                     }
                                     nickname_state = true;
-                                    Toast.makeText(RegisterActivity.this,"중복안됨",Toast.LENGTH_SHORT).show();
-                                }
-                                else{
+                                    Toast.makeText(RegisterActivity.this, "중복안됨", Toast.LENGTH_SHORT).show();
+                                } else {
 
                                 }
                             }
                         });
             }
         });
-
 
 
         btn_knuID.setOnClickListener(new View.OnClickListener() {
@@ -123,7 +116,7 @@ public class RegisterActivity extends AppCompatActivity {
                 strNick = edt_Nickname.getText().toString();
                 System.out.println("test" + strNick + " " + strEmail + " " + strStudentId);
 
-                if (strStudentName.trim().equals("")||strEmail.trim().equals("") || strPassword.trim().equals("") || strNick.trim().equals("") || strStudentId.trim().equals("") || strMaojr.trim().equals("") ||strPhoneNumber.trim().equals("") ) {
+                if (strStudentName.trim().equals("") || strEmail.trim().equals("") || strPassword.trim().equals("") || strNick.trim().equals("") || strStudentId.trim().equals("") || strMaojr.trim().equals("") || strPhoneNumber.trim().equals("")) {
                     Toast.makeText(RegisterActivity.this, "빈칸을 채워주세요:(", Toast.LENGTH_SHORT).show();
                 } else {
                     if (nickname_state == false) {
@@ -153,10 +146,11 @@ public class RegisterActivity extends AppCompatActivity {
                                     FirebaseDatabase.getInstance().getReference().child("users").child(account.uid)
                                             .setValue(users)
                                             .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                        @Override
-                                        public void onSuccess(Void aVoid) {
-                                        }
-                                    });                                    db.collection("Account")
+                                                @Override
+                                                public void onSuccess(Void aVoid) {
+                                                }
+                                            });
+                                    db.collection("Account")
                                             .document(firebaseUser.getEmail().replace(".", ">"))
                                             .set(account)
                                             .addOnSuccessListener(new OnSuccessListener<Void>() {

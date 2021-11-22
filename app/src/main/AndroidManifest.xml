@@ -3,11 +3,7 @@
     package="com.example.knu_matching">
     <!-- 권한 설정 -->
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.CAMERA" />
-    <uses-feature android:name="android.hardware.camera" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
@@ -18,18 +14,28 @@
         android:theme="@style/Theme.Knu_Matching"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".main.ChangePassWord"
-            android:exported="true" />
-        <activity android:name=".postRegisterActivity"
+            android:name=".Post.Post_Owner_Acticity"
+            android:exported="false" />
+        <activity
+            android:name=".Nav.Edit_profile_Activity"
             android:exported="true" />
         <activity
-            android:name=".postActivity"
+            android:name=".Nav.SettingActivity"
             android:exported="true" />
         <activity
-            android:name=".PostRegisterActivity2"
+            android:name=".Nav.Scrap_Activity"
             android:exported="true" />
         <activity
-            android:name=".main.InfoModify"
+            android:name=".Nav.ChangePassWord"
+            android:exported="true" />
+        <activity
+            android:name=".Post.Post_Visitor_Activity"
+            android:exported="true" />
+        <activity
+            android:name=".Post.postActivity"
+            android:exported="true" />
+        <activity
+            android:name=".Nav.InfoModify"
             android:exported="true" />
         <activity
             android:name=".chatting.ChatActivity"
@@ -47,7 +53,7 @@
             android:name=".membermanage.Student_Certificate"
             android:exported="true" />
         <activity
-            android:name=".main.MainActivity"
+            android:name=".MainActivity"
             android:exported="true" />
         <activity
             android:name=".membermanage.RegisterActivity"

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/nav_scrap"
+            android:title="스크랩 한 글"
+            android:icon="@drawable/ic_edit_profile"
+            />
+
+        <item
+            android:id="@+id/nav_edit_profile"
+            android:title="프로필 수정"
+            android:icon="@drawable/ic_edit_profile"
+            />
+
+        <item
+            android:id="@+id/nav_setting"
+            android:title="설정"
+            android:icon="@drawable/ic_setting"
+            />
+    </group>
+
+</menu>
