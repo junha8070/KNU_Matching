@@ -55,7 +55,7 @@ import io.grpc.Context;
 public class EditPost_Activity extends AppCompatActivity {
     private Button btn_success, btn_choice;
     private EditText edt_Title, edt_Number, edt_post;
-    private FirebaseAuth mFirebaseAuth=FirebaseAuth.getInstance();
+    private FirebaseAuth mFirebaseAuth = FirebaseAuth.getInstance();
     private DatabaseReference mDatabaseRef;
     String str_title, str_count, str_total, str_StartDate, str_EndDate, str_filename, str_content, str_comment, str_email, str_Id, str_time, str_application;
     private String deletefilename;
@@ -84,7 +84,7 @@ public class EditPost_Activity extends AppCompatActivity {
         tv_EndDate = findViewById(R.id.tv_EndDate);
         edt_Number = findViewById(R.id.edt_Number);
         edt_post = findViewById(R.id.edt_post);
-        tv_application = findViewById(R.id.edt_application);
+        tv_application = findViewById(R.id.tv_application);
         btn_choice = findViewById(R.id.btn_choice);
 
         Intent intent = getIntent();
@@ -95,7 +95,7 @@ public class EditPost_Activity extends AppCompatActivity {
         str_total = intent.getStringExtra("Number");
         str_content = intent.getStringExtra("Post");
         str_application = intent.getStringExtra("Filename");
-        System.out.println("파일이름"+str_application);
+        System.out.println("파일이름" + str_application);
         str_time = intent.getStringExtra("Time");
         str_email = intent.getStringExtra("Email");
 
@@ -104,7 +104,7 @@ public class EditPost_Activity extends AppCompatActivity {
         edt_date.setText(str_StartDate);
         tv_EndDate.setText(str_EndDate);
         edt_post.setText(str_content);
-//        tv_application.setText(str_application);
+        tv_application.setText(str_application);
 
         //deletefilename = str_application;
 
@@ -114,7 +114,7 @@ public class EditPost_Activity extends AppCompatActivity {
         edt_date.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DatePickerDialog dialog = new DatePickerDialog(EditPost_Activity.this, callbackMethod, Now.getYear()-1,Now.getDayOfMonth(), now.getDate());
+                DatePickerDialog dialog = new DatePickerDialog(EditPost_Activity.this, callbackMethod, Now.getYear() - 1, Now.getDayOfMonth(), now.getDate());
                 dialog.show();
             }
         });
@@ -122,7 +122,7 @@ public class EditPost_Activity extends AppCompatActivity {
         tv_EndDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DatePickerDialog dialog = new DatePickerDialog(EditPost_Activity.this, callbackMethod2, Now.getYear()-1,Now.getDayOfMonth(), now.getDate());
+                DatePickerDialog dialog = new DatePickerDialog(EditPost_Activity.this, callbackMethod2, Now.getYear() - 1, Now.getDayOfMonth(), now.getDate());
                 dialog.show();
             }
         });
@@ -151,106 +151,103 @@ public class EditPost_Activity extends AppCompatActivity {
                 //str_email = mFirebaseAuth.getCurrentUser().getEmail();
 
                 Uri file = filePath;
-                StorageReference riversRef = storageRef.child(mFirebaseAuth.getUid()).child(getFileName(file));
-                UploadTask uploadTask = riversRef.putFile(file);
+                System.out.println("유얼아이" + file);
+                if (file!=null) {
 
-                Task<Uri> urlTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
-                    @Override
-                    public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
-                        if (!task.isSuccessful()) {
-                            throw task.getException();
-                        }
-                        // Continue with the task to get the download URL
-                        return riversRef.getDownloadUrl();
-                    }
-                }).addOnCompleteListener(new OnCompleteListener<Uri>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Uri> task) {
-                        if (task.isSuccessful()) {
-                            downloadUri = task.getResult();
-//                            Post post = new Post();
-//                            post.setStr_Title(str_Title);
-//                            post.setStr_Number(str_Number);
-//                            post.setStr_StartDate(str_StartDate);
-//                            post.setStr_EndDate(str_EndDate);
-//                            post.setStr_post(str_post);
-//                            post.setStr_filename(str_filename);
-//                            post.setStr_time(formatedNow);
-//                            post.setUri(downloadUri.toString());
-//                            post.setStr_email(str_email);
-//                            post.setStr_Nickname(str_Nickname);
+                    StorageReference riversRef = storageRef.child(mFirebaseAuth.getUid()).child(str_filename);
+                    UploadTask uploadTask = riversRef.putFile(file);
 
-//                            db.collection("Post").add(post).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-//                                @Override
-//                                public void onSuccess(DocumentReference documentReference) {
-//                                    db.collection("Post").document(documentReference.getId()).update("str_Id",documentReference.getId()).addOnSuccessListener(new OnSuccessListener<Void>() {
-//                                        @Override
-//                                        public void onSuccess(Void unused) {
-//                                            finish();
-//                                            Toast.makeText(getApplicationContext(),"게시물을 올렸습니다.",Toast.LENGTH_SHORT).show();
-//                                        }
-//                                    }).addOnFailureListener(new OnFailureListener() {
-//                                        @Override
-//                                        public void onFailure(@NonNull Exception e) {
-//                                            Toast.makeText(getApplicationContext(),"오류가 발생하였습니다.",Toast.LENGTH_SHORT).show();
-//                                        }
-//                                    });
-//                                }
-//                            });
-
-                            if (str_title.trim().equals("") || str_StartDate.trim().equals("") || str_EndDate.trim().equals("") || str_total.trim().equals("") || str_content.trim().equals("")) {
-                                Toast.makeText(EditPost_Activity.this, "빈칸을 채워주세요", Toast.LENGTH_SHORT).show();
-                            } else {
-
-                                db.collection("Post").document(str_Id)
-                                        .update("str_Title", str_title,
-                                                "str_StartDate", str_StartDate,
-                                                "str_EndDate", str_EndDate,
-                                                "str_Number", str_total,
-                                                "str_post", str_content,
-                                                "str_application", str_filename)
-                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                            @Override
-                                            public void onSuccess(Void v) {
-                                                Toast.makeText(EditPost_Activity.this, "성공", Toast.LENGTH_SHORT).show();
-                                                Intent intent = new Intent(EditPost_Activity.this, MainActivity.class);
-                                                startActivity(intent);
-                                                //uploadFile();
-                                                finish();
-                                            }
-                                        }).addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception e) {
-                                        Toast.makeText(EditPost_Activity.this, "실패", Toast.LENGTH_SHORT).show();
-                                    }
-                                });
+                    Task<Uri> urlTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+                        @Override
+                        public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                            if (!task.isSuccessful()) {
+                                throw task.getException();
                             }
-
-
-
+                            // Continue with the task to get the download URL
+                            return riversRef.getDownloadUrl();
                         }
-                    }
-                });
+                    }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Uri> task) {
+                            if (task.isSuccessful()) {
+                                downloadUri = task.getResult();
+
+                                if (str_title.trim().equals("") || str_StartDate.trim().equals("") || str_EndDate.trim().equals("") || str_total.trim().equals("") || str_content.trim().equals("")) {
+                                    Toast.makeText(EditPost_Activity.this, "빈칸을 채워주세요", Toast.LENGTH_SHORT).show();
+                                } else {
+
+                                    db.collection("Post").document(str_Id)
+                                            .update("str_Title", str_title,
+                                                    "str_StartDate", str_StartDate,
+                                                    "str_EndDate", str_EndDate,
+                                                    "str_Number", str_total,
+                                                    "str_post", str_content,
+                                                    "str_filename", str_filename,
+                                                    "uri", downloadUri.toString())
+                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                @Override
+                                                public void onSuccess(Void v) {
+                                                    Toast.makeText(EditPost_Activity.this, "성공", Toast.LENGTH_SHORT).show();
+                                                    Intent intent = new Intent(EditPost_Activity.this, MainActivity.class);
+                                                    startActivity(intent);
+                                                    //uploadFile();
+                                                    finish();
+                                                }
+                                            }).addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            Toast.makeText(EditPost_Activity.this, "실패", Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+                                }
+
+
+                            }
+                        }
+                    });
+                }
+                else{
+                    db.collection("Post").document(str_Id)
+                            .update("str_Title", str_title,
+                                    "str_StartDate", str_StartDate,
+                                    "str_EndDate", str_EndDate,
+                                    "str_Number", str_total,
+                                    "str_post", str_content)
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void v) {
+                                    Toast.makeText(EditPost_Activity.this, "성공", Toast.LENGTH_SHORT).show();
+                                    Intent intent = new Intent(EditPost_Activity.this, MainActivity.class);
+                                    startActivity(intent);
+                                    //uploadFile();
+                                    finish();
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(EditPost_Activity.this, "실패", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+
             }
         });
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == 0 && resultCode == RESULT_OK){
+        if (requestCode == 0 && resultCode == RESULT_OK) {
             filePath = data.getData();
             str_filename = getFileName(filePath);
             Log.d(TAG, "uri:" + getFileName(filePath));
             System.out.println("파일명 : " + filePath.getLastPathSegment());
             tv_application.setText(str_filename);
-           // delete();
+            // delete();
         }
     }
 
-    public void InitializeListener()
-    {
-        callbackMethod = new DatePickerDialog.OnDateSetListener()
-        {
+    public void InitializeListener() {
+        callbackMethod = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                 month++;

@@ -174,6 +174,9 @@ public class MainActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
 
                 switch (menuItem.getItemId()) {
+                    case R.id.nav_logout:
+                        FirebaseAuth.getInstance().signOut();
+                        finish();
 
                     case R.id.nav_scrap:
                         menuItem.setChecked(true);
