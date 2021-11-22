@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Post.Post_Visitor_Activity">
+
+    <androidx.appcompat.widget.Toolbar
+        android:backgroundTint="#00000000"
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme" >
+        <TextView
+            android:text="제목"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/tv_title"/>
+    </androidx.appcompat.widget.Toolbar>
+
+    <LinearLayout
+        android:id="@+id/ll_first"
+        android:layout_below="@id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10px"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10px"
+            android:text="모집인원 수 " />
+
+        <TextView
+            android:id="@+id/tv_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10px"
+            android:ems="1"
+            android:gravity="center"
+            android:text="0" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10px"
+            android:ems="1"
+            android:gravity="center"
+            android:text="/" />
+
+        <TextView
+            android:id="@+id/tv_total"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10px"
+            android:ems="1"
+            android:gravity="center"
+            android:hint="수" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_second"
+        android:layout_below="@id/ll_first"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10px"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10px"
+            android:text="모집기간 " />
+
+        <TextView
+            android:id="@+id/tv_StartDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10px"
+            android:ems="10"
+            android:hint="기간" />
+        <TextView
+            android:id="@+id/tv_EndDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10px"
+            android:ems="10"
+            android:hint="기간" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_third"
+        android:layout_below="@id/ll_second"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10px"
+        android:orientation="horizontal"
+        tools:ignore="WebViewLayout">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10px"
+            android:text="첨부파일" />
+
+        <TextView
+            android:id="@+id/tv_file"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:autoLink="web"
+            android:ems="10"
+            android:linksClickable="true"
+            android:text=" 파일첨부 " />
+
+        <Button
+            android:id="@+id/btn_participate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10px"
+            android:text="참여하기" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_fourth"
+        android:layout_below="@id/ll_third"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10px"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10px"
+            android:text="내용 " />
+
+        <TextView
+            android:id="@+id/tv_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="10px"
+            android:ems="10"
+            android:hint="내용" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_below="@id/ll_fourth"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10px"
+            android:text="댓글 " />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_comment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:background="#FFFFFF"
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <EditText
+                android:layout_weight="1"
+                android:ems="10"
+                android:id="@+id/edt_comment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+            <Button
+                android:layout_weight="3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="답글달기"
+                android:layout_margin="10px"
+                android:id="@+id/btn_comment"/>
+        </LinearLayout>
+    </LinearLayout>
+
+
+</RelativeLayout>

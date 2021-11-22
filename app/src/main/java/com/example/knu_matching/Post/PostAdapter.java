@@ -76,7 +76,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.GalleryViewHol
                     view.getContext().startActivity(intent);
                 }
                 else{
-                    Intent intent = new Intent(view.getContext(), Post_Visitor_Activity.class);
+                    Intent intent = new Intent(view.getContext(), Visitor.class);
                     intent.putExtra("Title", mDataset.get(temp).getStr_Title());
                     intent.putExtra("Date", mDataset.get(temp).getStr_date());
                     intent.putExtra("EndDate", mDataset.get(temp).getStr_EndDate());

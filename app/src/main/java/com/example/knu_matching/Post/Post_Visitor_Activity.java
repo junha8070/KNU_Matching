@@ -255,6 +255,38 @@ public class Post_Visitor_Activity extends AppCompatActivity {
         btn_participate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (mFirebaseAuth.getCurrentUser().getEmail().equals(str_email) == false) {
+                    count++;
+                    tv_count.setText(count + "");
+                    btn_participate.setEnabled(false);
+                    btn_participate.setText("참여 완료");
+
+                    user = FirebaseAuth.getInstance().getCurrentUser();
+                    db.collection("Account").document(user.getEmail().replace(".", ">"))
+                            .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            if (task.isSuccessful()) {
+                                UserAccount userAccount = task.getResult().toObject(UserAccount.class);
+                                str_participate_Nickname = userAccount.getNickName();
+                                str_participate_Major = userAccount.getMajor();
+                                str_participate_StudentId = userAccount.getStudentId();
+                                str_participate_EmailId = userAccount.getEmailId();
+                                ParticipateUser participateUser = new ParticipateUser(str_participate_Nickname, str_participate_Major, str_participate_StudentId, str_participate_EmailId);
+                                update2(participateUser);
+                                Intent intent = new Intent();
+                                setResult(Activity.RESULT_OK, intent);
+                            }
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(Post_Visitor_Activity.this, "postActivity 오류", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                } else {
+                    // 게시글 작성자가 참여가 확인하는 곳
+                }
 
             }
         });
