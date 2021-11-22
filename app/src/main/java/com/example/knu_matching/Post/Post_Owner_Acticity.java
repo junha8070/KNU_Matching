@@ -2,6 +2,7 @@ package com.example.knu_matching.Post;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -11,22 +12,26 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.knu_matching.GetSet.CommentItem;
+import com.example.knu_matching.MainActivity;
 import com.example.knu_matching.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentChange;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
@@ -34,8 +39,11 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
+@RequiresApi(api = Build.VERSION_CODES.O)
 public class Post_Owner_Acticity extends AppCompatActivity {
 
     Toolbar toolbar;
@@ -49,6 +57,9 @@ public class Post_Owner_Acticity extends AppCompatActivity {
     Intent intent;
     ArrayList<CommentItem> comment_list;
     Context context = this;
+
+    LocalDateTime now = LocalDateTime.now();
+    String formatedNow = now.format(DateTimeFormatter.ofPattern("yyyy_MM_dd_HH_mm_ss_SSS"));
 
     // Firebase
     FirebaseAuth auth = FirebaseAuth.getInstance();
@@ -75,6 +86,29 @@ public class Post_Owner_Acticity extends AppCompatActivity {
         tv_StartDate.setText(str_StartDate);    // 모집 시작기간
         tv_EndDate.setText(str_EndDate);        // 모집 끝나는기간
         tv_content.setText(str_content);        // 내용
+
+        btn_comment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CommentItem commentItem = new CommentItem();
+                commentItem.setStr_Email(auth.getCurrentUser().getEmail());
+                commentItem.setStr_Date(formatedNow);
+                commentItem.setStr_NickName(((MainActivity)MainActivity.context).strNick);
+                commentItem.setStr_Content(edt_comment.getText().toString());
+                db.collection("Post").document(str_Id).collection("Comment").add(commentItem)
+                        .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentReference> task) {
+                        Toast.makeText(Post_Owner_Acticity.this, "성공", Toast.LENGTH_SHORT).show();
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(Post_Owner_Acticity.this, "실패", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        });
 
         // 댓글 DB 실시간으로 가져오기
         db.collection("Post").document(str_Id).collection("Comment").orderBy("str_time", Query.Direction.ASCENDING)
@@ -106,6 +140,7 @@ public class Post_Owner_Acticity extends AppCompatActivity {
         });
     }
 
+    // 댓글 추가
     private void addItem(String Email, String Nickname, String Content, String Date){
         CommentItem item = new CommentItem();
 
