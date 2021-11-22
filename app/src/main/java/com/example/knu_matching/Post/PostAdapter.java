@@ -72,7 +72,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.GalleryViewHol
                     intent.putExtra("Email", mDataset.get(temp).getStr_email());
                     intent.putExtra("Time", mDataset.get(temp).getStr_time());
                     intent.putExtra("Id", mDataset.get(temp).getStr_Id());
-                    intent.putExtra("Application", mDataset.get(temp).getStr_application());
+                    intent.putExtra("Application", mDataset.get(temp).getStr_filename());
                     view.getContext().startActivity(intent);
                 }
                 else{
@@ -86,7 +86,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.GalleryViewHol
                     intent.putExtra("Email", mDataset.get(temp).getStr_email());
                     intent.putExtra("Time", mDataset.get(temp).getStr_time());
                     intent.putExtra("Id", mDataset.get(temp).getStr_Id());
-                    intent.putExtra("Application", mDataset.get(temp).getStr_application());
+                    intent.putExtra("Application", mDataset.get(temp).getStr_filename());
                     view.getContext().startActivity(intent);
                 }
 

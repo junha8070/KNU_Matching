@@ -1,5 +1,7 @@
 package com.example.knu_matching.Post;
 
+import android.net.Uri;
+
 import java.util.Date;
 
 public class postInfo {
@@ -12,11 +14,18 @@ public class postInfo {
     private String str_Nickname;
     private String str_email;
     private String str_Id;
-    private String str_application;
+    private String str_filename;
+    private Uri uri;
 
+    public Uri getUri() {
+        return uri;
+    }
 
+    public void setUri(Uri uri) {
+        this.uri = uri;
+    }
 
-    public postInfo(String str_Title, String str_date, String str_EndDate, String str_Number, String str_post, String str_time, String str_Nickname, String str_email, String str_Id, String str_application){
+    public postInfo(String str_Title, String str_date, String str_EndDate, String str_Number, String str_post, String str_time, String str_Nickname, String str_email, String str_Id, String str_filename, Uri uri){
         this.str_Title = str_Title;
         this.str_date = str_date;
         this.str_EndDate = str_EndDate;
@@ -26,8 +35,8 @@ public class postInfo {
         this.str_Nickname = str_Nickname;
         this.str_email = str_email;
         this.str_Id = str_Id;
-        this.str_application = str_application;
-
+        this.str_filename = str_filename;
+        this.uri = uri;
     }
 
     public String getStr_EndDate() {
@@ -72,8 +81,8 @@ public class postInfo {
     public String getStr_Id(){return this.str_Id;}
     public void setStr_Id(String str_Id){this.str_Id = str_Id;}
 
-    public String getStr_application(){return this.str_application;}
-    public void setStr_application(String str_application){this.str_application = str_application;}
+    public String getStr_filename(){return this.str_filename;}
+    public void setStr_filename(String str_filename){this.str_filename = str_filename;}
 
 
 }

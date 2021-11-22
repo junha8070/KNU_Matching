@@ -6,11 +6,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.OpenableColumns;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -21,6 +24,7 @@ import android.widget.Toast;
 
 import com.example.knu_matching.R;
 import com.example.knu_matching.UserAccount;
+import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -36,11 +40,14 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
+
+import io.grpc.Context;
 
 @RequiresApi(api = Build.VERSION_CODES.O)
 public class postActivity extends AppCompatActivity {
@@ -48,12 +55,12 @@ public class postActivity extends AppCompatActivity {
     private EditText edt_Title, edt_Number, edt_post;
     private FirebaseAuth mFirebaseAuth;
     private DatabaseReference mDatabaseRef;
-    private String str_Title, str_date, str_Number, str_post, str_Nickname, str_email, str_Id, str_application, str_EndDate;
+    private String str_Title, str_date, str_Number, str_post, str_Nickname, str_email, str_Id, str_application, str_EndDate, str_filename;
     private FirebaseUser user;
     private TextView application, edt_date, tv_EndDate;
     private FirebaseStorage storage = FirebaseStorage.getInstance();
     private StorageReference storageRef = storage.getReference();
-    private Uri filePath;
+    private Uri filePath, downloadUri;
     int year;
     int month;
     int datOfMonth;
@@ -65,7 +72,6 @@ public class postActivity extends AppCompatActivity {
 
     SimpleDateFormat formatter = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss");
     Date now = new Date();
-    String filename = formatter.format(now);
 
 
 
@@ -109,8 +115,8 @@ public class postActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent();
-                intent.setType("image/*");
-                intent.setAction(Intent.ACTION_GET_CONTENT);
+                intent.setType("*/*");
+                intent.setAction(Intent.ACTION_OPEN_DOCUMENT);
                 startActivityForResult(Intent.createChooser(intent, "이미지를 선택하세요."), 0);
 
             }
@@ -144,13 +150,12 @@ public class postActivity extends AppCompatActivity {
                             if(task.isSuccessful()){
                                 UserAccount userAccount = task.getResult().toObject(UserAccount.class);
                                 str_Nickname = userAccount.getNickName();
-                                postInfo postInfo = new postInfo(str_Title, str_date, str_EndDate, str_Number, str_post, formatedNow, str_Nickname, str_email, str_Id, str_application);
+                                System.out.println("유얼아이"+uploadFile());
+                                postInfo postInfo = new postInfo(str_Title, str_date, str_EndDate, str_Number, str_post, formatedNow, str_Nickname, str_email, str_Id, str_filename, downloadUri);
                                 update(postInfo);
                                 Intent intent = new Intent();
                                 setResult(RESULT_OK, intent);
-                                uploadFile();
                                 finish();
-
                             }
                         }
                         }).addOnFailureListener(new OnFailureListener() {
@@ -181,31 +186,42 @@ public class postActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == 0 && resultCode == RESULT_OK){
             filePath = data.getData();
-            Log.d(TAG, "uri:" + String.valueOf(filePath));
-            application.setText(filename);
+            str_filename = getFileName(filePath);
+            Log.d(TAG, "uri:" + getFileName(filePath));
+            System.out.println("파일명 : " + filePath.getLastPathSegment());
+            application.setText(str_filename);
         }
     }
 
-    private void uploadFile() {
-        if (filePath != null) {
-            StorageReference storageRef = storage.getReferenceFromUrl("gs://knu-matching.appspot.com").child( str_Title+ "/" + filename);
-            storageRef.putFile(filePath)
-                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            Toast.makeText(getApplicationContext(), "업로드 완료!", Toast.LENGTH_SHORT).show();
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(getApplicationContext(), "업로드 실패!", Toast.LENGTH_SHORT).show();
+    private Uri uploadFile() {
+        Uri file = filePath;
+        Uri temp;
+        StorageReference riversRef = storageRef.child(str_Id).child(getFileName(file));
+        UploadTask uploadTask = riversRef.putFile(file);
 
-                        }
-                    });
-        } else {
-            Toast.makeText(getApplicationContext(), "파일을 먼저 선택하세요.", Toast.LENGTH_SHORT).show();
-        }
+        Task<Uri> urlTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+            @Override
+            public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                if (!task.isSuccessful()) {
+                    throw task.getException();
+                }
+                System.out.println("경로1:"+riversRef.getDownloadUrl());
+                // Continue with the task to get the download URL
+                return riversRef.getDownloadUrl();
+            }
+        }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+            @Override
+            public void onComplete(@NonNull Task<Uri> task) {
+                if (task.isSuccessful()) {
+                    downloadUri = task.getResult();
+                    System.out.println("경로2:"+downloadUri);
+                } else {
+                    // Handle failures
+                    // ...
+                }
+            }
+        });
+        return downloadUri;
     }
 
     public void InitializeListener()
@@ -227,6 +243,42 @@ public class postActivity extends AppCompatActivity {
         };
     }
 
+    // URI에서 파일명 얻기
+//    private String getFileNameFromUri(Uri uri) {
+//        String fileName = "";
+//
+//        Cursor cursor = getContentResolver().query(uri, null, null, null, null);
+//
+//        if (cursor != null && cursor.moveToFirst()) {
+//            fileName = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
+//            Log.i(TAG, "Display Name: " + fileName);
+//
+//        }
+//        cursor.close();
+//
+//        return fileName;
+//    }
+
+    @SuppressLint("Range")
+    public String getFileName(Uri uri) {
+        String result = null;
+        if (uri.getScheme().equals("content")) {
+            Cursor cursor = getContentResolver().query(uri, null, null, null, null);
+            try {
+                if (cursor != null && cursor.moveToFirst()) {
+                    result = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
+                }
+            } finally {
+                if (cursor != null) {
+                    cursor.close();
+                }
+            }
+        }
+        if (result == null) {
+            result = uri.getLastPathSegment();
+        }
+        return result;
+    }
 }
 
 
