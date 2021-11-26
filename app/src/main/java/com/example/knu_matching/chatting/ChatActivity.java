@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -98,10 +99,11 @@ public class ChatActivity extends AppCompatActivity {
         editText = (EditText) findViewById(R.id.messageActivity_editText);
         recyclerView = (RecyclerView)findViewById(R.id.messageActivity_reclclerview);
         final String myUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        System.out.println("test chat_list "+ chat_list);
+        System.out.println("test oncreate arrNick1 "+ arrayList);
         user_arrayList = new ArrayList<String>();
+
         roomNum=0;
-        System.out.println("test oncreate arrNick "+arrNick);
+        System.out.println("test oncreate arrNick2 "+arrayList);
         Map<String, Object> map = new HashMap<>();
 
         FirebaseMessaging.getInstance().getToken()
@@ -165,6 +167,7 @@ public class ChatActivity extends AppCompatActivity {
                         for(String key : chatModel.users.keySet()){
                             user_arrayList.add(key);
                         }
+                        System.out.println("arrayList real "+ arrayList);
                         if ((user_arrayList.containsAll(arrayList) == true) && (user_arrayList.size() == arrayList.size())){
                             first_chat = false;
                             chatRoomUid = item.getKey();
@@ -267,8 +270,11 @@ public class ChatActivity extends AppCompatActivity {
 
         //채팅방 내에서 메세지 전송 버튼
         button.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View view) {
+                System.out.println("Send msg token "+arrayList);
+
                 System.out.println("Send msg token1 "+mToken);
                 System.out.println("Send msg token2 "+map.entrySet());
 
@@ -290,12 +296,12 @@ public class ChatActivity extends AppCompatActivity {
                                     System.out.println("token token " +userAccount.getToken());
                                     arr_Nick.put(userAccount.getNickName(), userAccount.getUid());
                                     token_List.put(userAccount.getToken(), userAccount.getUid());
+
                                 }
                                 ChatModel.Comment comment = new ChatModel.Comment();
                                 comment.uid = uid;
                                 comment.msg = editText.getText().toString();
                                 comment.timestamp = ServerValue.TIMESTAMP;
-
                                 for (String key : arr_Nick.keySet()) {
                                     String value = arr_Nick.get(key);
                                     if (value.equals(uid)) {
@@ -303,11 +309,53 @@ public class ChatActivity extends AppCompatActivity {
                                     } else {
                                         System.out.println("ttest wrong");
                                     }
-                                    //앞서 생성한 작업 내용을 Notification 객체에 담기 위한 PendingIntent 객체 생성
+
                                 }
+
+                                FirebaseDatabase.getInstance().getReference().child("chatrooms").child(chatRoomUid).child("users").addValueEventListener(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                        for(DataSnapshot item : snapshot.getChildren()){
+                                            System.out.println("valuevaluevalue "+ item.getKey());
+
+                                            for(String key : token_List.keySet()) {
+                                                String value = token_List.get(key);
+
+                                                System.out.println("arrayList element "+item.getKey());
+                                                System.out.println("arrayList key "+key);
+                                                System.out.println("arrayList value "+value);
+                                                if(value.equals(item.getKey())){
+                                                    System.out.println("arrayList equals "+item.getKey());
+                                                    SendNotification.sendNotification(key, nickname);
+                                                }
+                                            }
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError error) {
+
+                                    }
+                                });
                                 //내 토큰
-                                System.out.println("mToken "+mToken);
-                                SendNotification.sendNotification(mToken, nickname);
+
+                                //fb - chatroom
+                                //arrayList에 user uid 다 들어가있어array
+                                //token_List에는 토큰,uid
+//
+//                                for(String key : token_List.keySet()){
+//                                    String value = token_List.get(key);
+//                                    for(String element : user_arrayList){
+//                                        System.out.println("arrayList element "+element);
+//                                        System.out.println("arrayList key "+key);
+//                                        System.out.println("arrayList value "+value);
+//                                        if(value.equals(element)){
+//                                            System.out.println("arrayList equals "+element);
+//                                            SendNotification.sendNotification(key, nickname);
+//                                        }
+//                                    }
+//
+//                                }
 
                                 FirebaseDatabase.getInstance().getReference().child("chatrooms").child(chatRoomUid).child("comments").push().setValue(comment).addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
@@ -339,15 +387,11 @@ public class ChatActivity extends AppCompatActivity {
                             System.out.println("test checkChatRoom chatRoomUidd1 "+chatRoomUidd);
                             System.out.println("test checkChatRoom chatRoomUid2 "+chatRoomUid);
                             System.out.println("test checkChatRoom first_chat "+ first_chat);
-                            if((first_chat==true) || (chatRoomUidd==chatRoomUid)){
-                                chatRoomUid = chatRoomUidd;
-                                System.out.println("test checkChatRoom chatRoomUid3 "+chatRoomUid);
-                                button.setEnabled(true);
-                                recyclerView.setLayoutManager(new LinearLayoutManager(ChatActivity.this));
-                                recyclerView.setAdapter(new RecyclerViewAdapter());
-                            }else{
-                                break;
-                            }
+//                            chatRoomUid = chatRoomUidd;
+                            button.setEnabled(true);
+                            recyclerView.setLayoutManager(new LinearLayoutManager(ChatActivity.this));
+                            recyclerView.setAdapter(new RecyclerViewAdapter());
+
                         }
                     }
                     @Override
@@ -457,9 +501,5 @@ public class ChatActivity extends AppCompatActivity {
     public void onBackPressed() {
         finish();
         overridePendingTransition(R.anim.fromleft,R.anim.toright);
-    }
-
-    private void sendGson(){
-
     }
 }

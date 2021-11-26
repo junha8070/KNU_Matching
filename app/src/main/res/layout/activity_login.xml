@@ -20,17 +20,18 @@
             android:src="@drawable/logo" />
 
         <LinearLayout
+            android:layout_marginTop="30dp"
             android:layout_width="300dp"
             android:layout_height="400dp"
             android:layout_gravity="center"
             android:gravity="center"
-            android:background="@drawable/loginframe"
+            android:background="@drawable/login_profile"
             android:orientation="vertical">
             <EditText
                 android:id="@+id/edt_email"
+                android:layout_marginTop="80dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp"
                 android:ems="10"
                 android:hint="Email"
                 android:inputType="textEmailAddress" />
@@ -52,17 +53,17 @@
 
                 <ImageButton
                     android:id="@+id/btn_IdFind"
-                    android:layout_width="wrap_content"
-                    android:layout_height="30dp"
+                    android:layout_width="0dp"
+                    android:layout_height="35dp"
                     android:layout_margin="10dp"
-                    android:background="@drawable/id"
                     android:layout_weight="1"
+                    android:background="@drawable/id"
                     android:text="아이디 찾기"/>
 
                 <ImageButton
                     android:id="@+id/btn_PwdFind"
-                    android:layout_width="wrap_content"
-                    android:layout_height="30dp"
+                    android:layout_width="0dp"
+                    android:layout_height="35dp"
                     android:layout_margin="10dp"
                     android:background="@drawable/pw"
                     android:layout_weight="1"

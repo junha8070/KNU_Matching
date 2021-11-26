@@ -55,33 +55,6 @@ public class ChatFragment extends Fragment {
 
         public ChatFragmentRecyclerViewAdapter() {
             chatModels = new ArrayList<>();
-//
-//            FirebaseDatabase.getInstance().getReference().child("chatrooms")
-//                    .addValueEventListener(new ValueEventListener() {
-//                @Override
-//                public void onDataChange(DataSnapshot dataSnapshot) {
-//                    chatModels.clear();
-//                    showChatModels.clear();
-//                    //snapshot = 전체 chatrooms
-//                    //chatroom의 users 봤을 때 현재 로그인된 내 uid있을 경우에만 chatModel에 추가하기
-//                    for(DataSnapshot snapshot :dataSnapshot.getChildren()){
-//                        ChatModel chatModel = snapshot.getValue(ChatModel.class);
-//                        chatModels.add(chatModel);
-//                        System.out.println("test chatModel 22 " + chatModel);
-//
-//                        //chatModels는 ArrayList
-//                        //chatModel는 chatModel형snapshot? ChatModel.class
-//                    }
-//                    notifyDataSetChanged();
-//                    System.out.println("test chatModel 1 " + chatModels);
-//
-//                }
-//
-//                @Override
-//                public void onCancelled(DatabaseError databaseError) {
-//
-//                }
-//            });
 
             FirebaseDatabase.getInstance().getReference().child("chatrooms").orderByChild("users").addValueEventListener(new ValueEventListener() {
                 @Override

@@ -15,7 +15,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
-            android:textSize="20dp"
+            android:textSize="13dp"
             android:fontFamily="@font/tway_air"
             android:text="아이디" />
         <LinearLayout
