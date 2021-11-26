@@ -7,6 +7,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.database.Cursor;
@@ -130,57 +131,91 @@ public class postActivity extends AppCompatActivity {
                 str_Nickname = ((MainActivity)MainActivity.context).strNick;
                 str_email = mFirebaseAuth.getCurrentUser().getEmail();
 
-                Uri file = filePath;
-                StorageReference riversRef = storageRef.child(mFirebaseAuth.getUid()).child(getFileName(file));
-                UploadTask uploadTask = riversRef.putFile(file);
-
-                Task<Uri> urlTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
-                    @Override
-                    public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
-                        if (!task.isSuccessful()) {
-                            throw task.getException();
-                        }
-                        // Continue with the task to get the download URL
-                        return riversRef.getDownloadUrl();
-                    }
-                }).addOnCompleteListener(new OnCompleteListener<Uri>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Uri> task) {
-                        if (task.isSuccessful()) {
-                            downloadUri = task.getResult();
-                            Post post = new Post();
-                            post.setStr_link(edt_link.getText().toString());
-                            post.setStr_Title(str_Title);
-                            post.setStr_Number(str_Number);
-                            post.setStr_StartDate(str_StartDate);
-                            post.setStr_EndDate(str_EndDate);
-                            post.setStr_post(str_post);
-                            post.setStr_filename(str_filename);
-                            post.setStr_time(formatedNow);
-                            post.setUri(downloadUri.toString());
-                            post.setStr_email(str_email);
-                            post.setStr_Nickname(str_Nickname);
-
-                            db.collection("Post").add(post).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                if(filePath == null){
+                    Post post = new Post();
+                    post.setStr_link(edt_link.getText().toString());
+                    post.setStr_Title(str_Title);
+                    post.setStr_Number(str_Number);
+                    post.setStr_StartDate(str_StartDate);
+                    post.setStr_EndDate(str_EndDate);
+                    post.setStr_post(str_post);
+                    post.setStr_time(formatedNow);
+                    post.setStr_email(str_email);
+                    post.setStr_Nickname(str_Nickname);
+                    db.collection("Post").add(post).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                        @Override
+                        public void onSuccess(DocumentReference documentReference) {
+                            db.collection("Post").document(documentReference.getId()).update("str_Id",documentReference.getId()).addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
-                                public void onSuccess(DocumentReference documentReference) {
-                                    db.collection("Post").document(documentReference.getId()).update("str_Id",documentReference.getId()).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                        @Override
-                                        public void onSuccess(Void unused) {
-                                            finish();
-                                            Toast.makeText(getApplicationContext(),"게시물을 올렸습니다.",Toast.LENGTH_SHORT).show();
-                                        }
-                                    }).addOnFailureListener(new OnFailureListener() {
-                                        @Override
-                                        public void onFailure(@NonNull Exception e) {
-                                            Toast.makeText(getApplicationContext(),"오류가 발생하였습니다.",Toast.LENGTH_SHORT).show();
-                                        }
-                                    });
+                                public void onSuccess(Void unused) {
+                                    setResult(Activity.RESULT_OK);
+                                    finish();
+                                    Toast.makeText(getApplicationContext(),"게시물을 올렸습니다.",Toast.LENGTH_SHORT).show();
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Toast.makeText(getApplicationContext(),"오류가 발생하였습니다.",Toast.LENGTH_SHORT).show();
                                 }
                             });
                         }
-                    }
-                });
+                    });
+                }else if(filePath != null){
+                    Uri file = filePath;
+                    StorageReference riversRef = storageRef.child(mFirebaseAuth.getUid()).child(getFileName(file));
+                    UploadTask uploadTask = riversRef.putFile(file);
+
+                    Task<Uri> urlTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+                        @Override
+                        public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                            if (!task.isSuccessful()) {
+                                throw task.getException();
+                            }
+                            // Continue with the task to get the download URL
+                            return riversRef.getDownloadUrl();
+                        }
+                    }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Uri> task) {
+                            if (task.isSuccessful()) {
+                                downloadUri = task.getResult();
+                                Post post = new Post();
+                                post.setStr_link(edt_link.getText().toString());
+                                post.setStr_Title(str_Title);
+                                post.setStr_Number(str_Number);
+                                post.setStr_StartDate(str_StartDate);
+                                post.setStr_EndDate(str_EndDate);
+                                post.setStr_post(str_post);
+                                post.setStr_filename(str_filename);
+                                post.setStr_time(formatedNow);
+                                post.setUri(downloadUri.toString());
+                                post.setStr_email(str_email);
+                                post.setStr_Nickname(str_Nickname);
+
+                                db.collection("Post").add(post).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                    @Override
+                                    public void onSuccess(DocumentReference documentReference) {
+                                        db.collection("Post").document(documentReference.getId()).update("str_Id",documentReference.getId()).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void unused) {
+                                                setResult(Activity.RESULT_OK);
+                                                finish();
+                                                Toast.makeText(getApplicationContext(),"게시물을 올렸습니다.",Toast.LENGTH_SHORT).show();
+                                            }
+                                        }).addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                Toast.makeText(getApplicationContext(),"오류가 발생하였습니다.",Toast.LENGTH_SHORT).show();
+                                            }
+                                        });
+                                    }
+                                });
+                            }
+                        }
+                    });
+                }
+
+
             }
         });
     }
