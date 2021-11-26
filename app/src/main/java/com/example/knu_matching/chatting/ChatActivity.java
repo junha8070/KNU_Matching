@@ -30,6 +30,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.knu_matching.MainActivity;
 import com.example.knu_matching.R;
 //import com.example.knu_matching.SendNotification;
+import com.example.knu_matching.SendNotification;
 import com.example.knu_matching.UserAccount;
 import com.example.knu_matching.membermanage.FindIDActivity;
 import com.example.knu_matching.membermanage.RegisterActivity;
@@ -68,6 +69,7 @@ import java.util.TimeZone;
 public class ChatActivity extends AppCompatActivity {
     private ArrayList<String> user_arrayList;
     private Map<String, String> arr_Nick;
+    private Map<String, String> token_List;
     private Button button, chat_in;
     private EditText editText;
     private ArrayList<String> arrayList = new ArrayList<>();
@@ -100,15 +102,7 @@ public class ChatActivity extends AppCompatActivity {
         user_arrayList = new ArrayList<String>();
         roomNum=0;
         System.out.println("test oncreate arrNick "+arrNick);
-        final NotificationManager notificationManager = (NotificationManager)ChatActivity.this.getSystemService(ChatActivity.this.NOTIFICATION_SERVICE);
-        final Intent intent = new Intent(ChatActivity.this.getApplicationContext(),ChatActivity.class);
-        //Notification 객체 생성
-        final Notification.Builder builder = new Notification.Builder(getApplicationContext());
-
-
-
-//푸시 알림을 터치하여 실행할 작업에 대한 Flag 설정 (현재 액티비티를 최상단으로 올린다 | 최상단 액티비티를 제외하고 모든 액티비티를 제거한다)
-        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        Map<String, Object> map = new HashMap<>();
 
         FirebaseMessaging.getInstance().getToken()
                 .addOnCompleteListener(new OnCompleteListener<String>() {
@@ -118,14 +112,12 @@ public class ChatActivity extends AppCompatActivity {
                             System.out.println("Fetching FCM registration token failed" + task.getException());
                             return;
                         }
-
                         // Get new FCM registration token
                         String token = task.getResult();
 
                         System.out.println("fcm map 1" + token);
                         FirebaseDatabase.getInstance().getReference().child("users").child(uid).child("token").setValue(token);
 
-                        Map<String, Object> map = new HashMap<>();
                         map.put("fcmToken", token);
                         System.out.println("fcm map " + map.keySet());
                         String msg = getString(R.string.msg_token_fmt, token);
@@ -277,67 +269,60 @@ public class ChatActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                System.out.println("Send msg token1 "+mToken);
+                System.out.println("Send msg token2 "+map.entrySet());
+
                 if(chatRoomUid == null) {
                     checkChatRoom();
                 }
                 else {
-                    arr_Nick = new HashMap<>();
+                    if(editText.getText().toString().equals("")){
+                    }
+                    else{
+                        arr_Nick = new HashMap<>();
+                        token_List = new HashMap<>();
+                        FirebaseDatabase.getInstance().getReference().child("users").addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                for (DataSnapshot item : snapshot.getChildren()) {
+                                    UserAccount userAccount = item.getValue(UserAccount.class);
+                                    System.out.println("userAccount " +userAccount.getNickName());
+                                    System.out.println("token token " +userAccount.getToken());
+                                    arr_Nick.put(userAccount.getNickName(), userAccount.getUid());
+                                    token_List.put(userAccount.getToken(), userAccount.getUid());
+                                }
+                                ChatModel.Comment comment = new ChatModel.Comment();
+                                comment.uid = uid;
+                                comment.msg = editText.getText().toString();
+                                comment.timestamp = ServerValue.TIMESTAMP;
 
-                    FirebaseDatabase.getInstance().getReference().child("users").addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            for (DataSnapshot item : snapshot.getChildren()) {
-                                UserAccount userAccount = item.getValue(UserAccount.class);
-                                System.out.println("userAccount " +userAccount.getNickName());
-                                arr_Nick.put(userAccount.getNickName(), userAccount.getUid());
+                                for (String key : arr_Nick.keySet()) {
+                                    String value = arr_Nick.get(key);
+                                    if (value.equals(uid)) {
+                                        comment.nickname = key;
+                                    } else {
+                                        System.out.println("ttest wrong");
+                                    }
+                                    //앞서 생성한 작업 내용을 Notification 객체에 담기 위한 PendingIntent 객체 생성
+                                }
+                                //내 토큰
+                                System.out.println("mToken "+mToken);
+                                SendNotification.sendNotification(mToken, nickname);
+
+                                FirebaseDatabase.getInstance().getReference().child("chatrooms").child(chatRoomUid).child("comments").push().setValue(comment).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        editText.setText("");
+                                    }
+                                });
+
                             }
-                            ChatModel.Comment comment = new ChatModel.Comment();
-                            comment.uid = uid;
-                            comment.msg = editText.getText().toString();
-                            comment.timestamp = ServerValue.TIMESTAMP;
-
-                            for (String key : arr_Nick.keySet()) {
-                                String value = arr_Nick.get(key);
-
-                                if (value.equals(uid)) {
-                                    comment.nickname = key;
-                                }
-                                else{
-                                    System.out.println("ttest wrong");
-                                }
-//                                SendNotification.sendNotification(mToken, nickname);
-                                //앞서 생성한 작업 내용을 Notification 객체에 담기 위한 PendingIntent 객체 생성
-                                PendingIntent pendnoti = PendingIntent.getActivity(ChatActivity.this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-
-
-                                //푸시 알림에 대한 각종 설정
-
-                                builder.setSmallIcon(R.drawable.ic_launcher_background).setTicker("Ticker").setWhen(System.currentTimeMillis())
-                                        .setNumber(1).setContentTitle("Content Title").setContentText("Content Text")
-                                        .setDefaults(Notification.DEFAULT_SOUND | Notification.DEFAULT_VIBRATE).setContentIntent(pendnoti).setAutoCancel(true).setOngoing(true);
-
-
-
-                                //NotificationManager를 이용하여 푸시 알림 보내기
-                                notificationManager.notify(1, builder.build());
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
 
                             }
-
-                            FirebaseDatabase.getInstance().getReference().child("chatrooms").child(chatRoomUid).child("comments").push().setValue(comment).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    editText.setText("");
-                                }
-                            });
-
-                        }
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
-
-                        }
-                    });
-
+                        });
+                    }
                 }
             }
         });
