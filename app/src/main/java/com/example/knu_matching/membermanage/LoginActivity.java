@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.example.knu_matching.MainActivity;
@@ -23,7 +24,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private FirebaseAuth mFirebaseAuth;
     private DatabaseReference mDatabaseRef;
-    private Button btn_login, btn_IdFind, btn_PwdFind, btn_Register;
+    private ImageButton btn_login, btn_IdFind, btn_PwdFind, btn_Register;
     private EditText edt_Email, edt_Pwd;
 
     @Override

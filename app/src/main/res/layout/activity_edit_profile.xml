@@ -7,11 +7,14 @@
     android:orientation="vertical"
     android:id="@+id/modifyclass"
     tools:context=".Nav.Edit_profile_Activity">
-
     <LinearLayout
+        android:layout_margin="20dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-
+        <ImageView
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:background="@drawable/profile"/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -84,14 +87,12 @@
             android:hint="핸드폰 번호(조회버튼을 눌러주세요!)" />
     </LinearLayout>
 
-    <Button
+    <ImageButton
         android:id="@+id/btn_update"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginBottom="10dp"
-        android:text="업데이트" />
+        android:layout_height="50dp"
+        android:layout_margin="20dp"
+        android:background="@drawable/ok"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -104,27 +105,31 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="2"
             android:orientation="vertical">
             <EditText
                 android:id="@+id/edt_nickname"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="40dp"
                 android:background="#FFFFFFFF"
-                android:hint="닉네임" />
+                android:fontFamily="@font/tway_air"
+                android:hint="닉네임"
+                android:textSize="20dp" />
             <TextView
                 android:textColor="@color/black"
                 android:id="@+id/tv_nickstate"
                 android:layout_width="match_parent"
+                android:fontFamily="@font/tway_air"
                 android:layout_height="wrap_content"/>
         </LinearLayout>
 
 
-        <Button
+        <ImageButton
             android:id="@+id/btn_check_nick"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
             android:layout_weight="4"
+            android:background="@drawable/nickname"
             android:text="중복 확인" />
     </LinearLayout>
 
@@ -136,10 +141,11 @@
         android:gravity="center"
         android:orientation="horizontal">
 
-        <Button
+        <ImageButton
             android:id="@+id/btn_finish_modify"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
+            android:background="@drawable/edit"
             android:text="수정 완료" />
     </LinearLayout>
 

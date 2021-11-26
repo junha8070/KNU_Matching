@@ -24,10 +24,13 @@ import android.widget.Toast;
 import com.example.knu_matching.Nav.Edit_profile_Activity;
 import com.example.knu_matching.Nav.Scrap_Activity;
 import com.example.knu_matching.Nav.SettingActivity;
+import com.example.knu_matching.People.PeolpeFragment;
 import com.example.knu_matching.Post.PostFragment;
 import com.example.knu_matching.Recruitment.RecruitmentFragment;
 import com.example.knu_matching.board.BoardFragment;
-import com.example.knu_matching.chatting.PeolpeFragment;
+import com.example.knu_matching.chatting.ChatFragment;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
@@ -38,6 +41,10 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.messaging.FirebaseMessaging;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
     public static Context context;
@@ -65,12 +72,15 @@ public class MainActivity extends AppCompatActivity {
     private TabLayout tabLayout;
 
     String code;
-    private String[] titles = new String[]{"최신글", "친구", "모집\n상황", "My\nPage", "활동\n게시판"};
+    private String[] titles = new String[]{"게시판", "친구", "채팅", "모집\n상황", "활동\n게시판"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+//
+//        Intent fcm = new Intent(getApplicationContext(), MyFirebaseMessagingService.class);
+//        startService(fcm);
 
         context = MainActivity.this;
 //        getSupportActionBar().hide();
@@ -129,9 +139,10 @@ public class MainActivity extends AppCompatActivity {
 
         Fragment frag_post = new PostFragment().newInstance(code, "");
         Fragment frag_people = new PeolpeFragment();
+        Fragment frag_chat = new ChatFragment();
         Fragment frag_recruit = new RecruitmentFragment();
         Fragment frag_board = new BoardFragment().newInstance(code, "");
-        Fragment frag_mypage = new MypageFragment().newInstance(code, "");
+//        Fragment frag_mypage = new MypageFragment().newInstance(code, "");
 
         mViewPager = findViewById(R.id.viewPager);
         tabLayout = findViewById(R.id.tab_layout);
@@ -139,7 +150,8 @@ public class MainActivity extends AppCompatActivity {
         myPagerAdapter = new MyViewPagerAdapter(this);
         myPagerAdapter.addFrag(frag_post);
         myPagerAdapter.addFrag(frag_people);
-        myPagerAdapter.addFrag(frag_mypage);
+        myPagerAdapter.addFrag(frag_chat);
+//        myPagerAdapter.addFrag(frag_mypage);
         myPagerAdapter.addFrag(frag_recruit);
         myPagerAdapter.addFrag(frag_board);
         mViewPager.setAdapter(myPagerAdapter);

@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,7 +42,7 @@ public class Edit_profile_Activity extends AppCompatActivity {
     final DocumentReference dbRef = db.collection("Account").document((((MainActivity) MainActivity.context).strEmail.replace(".", ">")));
     private String strEmail, strPassword, strNick, strMaojr, strStudentId, strPhoneNumber, strStudentName;
     private EditText edt_StudentName, edt_StudentID, edt_Major, edt_PhoneNumber, edt_nickname;
-    private Button btn_update, btn_check_nick, btn_finish_modify;
+    private ImageButton btn_update, btn_check_nick, btn_finish_modify;
     private TextView tv_nickstate;
     private boolean nickname_state;
     MainActivity mainActivity = new MainActivity();

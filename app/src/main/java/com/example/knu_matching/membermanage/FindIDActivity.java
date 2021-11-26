@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.example.knu_matching.R;
@@ -24,7 +25,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 public class FindIDActivity extends AppCompatActivity {
     private EditText edt_name;
-    private Button btn_FindloginId, btn_Cancel;
+    private ImageButton btn_FindloginId, btn_Cancel;
     private DatabaseReference mDatabaseRef;
     private FirebaseAuth mFirebaseAuth;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();

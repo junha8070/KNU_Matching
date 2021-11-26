@@ -9,12 +9,12 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="144dp"
+        android:background="@drawable/title">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="회원가입"
             android:textAlignment="center" />
     </LinearLayout>
 
@@ -24,13 +24,16 @@
 
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:text="강남대학교 종합정보시스템 기준으로\n학번과 전공과 이메일이 채워집니다.\n이메일은 수정가능합니다!"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:textSize="15dp"/>
     </LinearLayout>
 
     <LinearLayout
-        android:layout_margin="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -46,7 +49,9 @@
     </LinearLayout>
 
     <LinearLayout
-        android:layout_margin="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -62,7 +67,9 @@
     </LinearLayout>
 
     <LinearLayout
-        android:layout_margin="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -78,7 +85,9 @@
     </LinearLayout>
 
     <LinearLayout
-        android:layout_margin="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -94,7 +103,9 @@
     </LinearLayout>
 
     <LinearLayout
-        android:layout_margin="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -114,18 +125,19 @@
 
     </LinearLayout>
 
-    <Button
-        android:layout_marginBottom="10dp"
+    <ImageButton
+        android:layout_marginTop="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginLeft="20dp"
         android:id="@+id/btn_knuID"
+        android:background="@drawable/ok"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
         android:text="조회" />
 
     <LinearLayout
-        android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
+        android:layout_marginTop="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginLeft="20dp"
         android:layout_width="match_parent"
@@ -137,7 +149,8 @@
             android:background="#FFFFFFFF"
             android:id="@+id/edt_Password"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="30dp"
+            android:ems="10"
             android:hint="비밀번호"
             android:inputType="textPassword" />
 
@@ -146,51 +159,45 @@
             android:background="#FFFFFFFF"
             android:id="@+id/edt_RePassword"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="30dp"
             android:hint="비밀번호 재입력"
             android:inputType="textPassword" />
+        <LinearLayout
+            android:gravity="center"
+            android:layout_marginTop="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/edt_nickname"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_weight="1"
+                android:background="#FFFFFFFF"
+                android:hint="Nickname" />
+
+            <ImageButton
+                android:layout_weight="3"
+                android:id="@+id/btn_check_nick"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="@drawable/nickname" />
+        </LinearLayout>
+
     </LinearLayout>
 
-    <LinearLayout
-        android:gravity="center"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
+    <ImageButton
+        android:id="@+id/btn_registerButton"
+        android:layout_marginTop="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginLeft="20dp"
+        android:layout_marginBottom="20dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
         android:layout_gravity="center"
-        android:orientation="horizontal">
-
-        <EditText
-            android:background="#FFFFFFFF"
-            android:id="@+id/edt_nickname"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:hint="Nickname" />
-
-        <Button
-            android:layout_weight="3"
-            android:id="@+id/btn_check_nick"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="중복\n확인" />
-    </LinearLayout>
-
-
-
-    <LinearLayout
-        android:layout_margin="20dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <Button
-            android:id="@+id/btn_registerButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="회원가입" />
-    </LinearLayout>
+        android:background="@drawable/signin"
+        android:text="회원가입" />
 
 </LinearLayout>

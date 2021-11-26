@@ -16,11 +16,13 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.example.knu_matching.MainActivity;
 import com.example.knu_matching.R;
 import com.example.knu_matching.UserAccount;
+import com.example.knu_matching.chatting.ChatActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -33,6 +35,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.messaging.FirebaseMessaging;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -40,7 +46,7 @@ public class RegisterActivity extends AppCompatActivity {
     private DatabaseReference mDatabaseref;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private EditText edt_StudentID, edt_Major, edt_Email, edt_password, edt_repassword, edt_Nickname, edt_PhoneNumber, edt_StudentName;
-    private Button btn_finish, btn_check_nick, btn_knuID;
+    private ImageButton btn_finish, btn_check_nick, btn_knuID;
     private String strEmail, strPassword, strNick, strMaojr, strStudentId, strPhoneNumber, strStudentName;
     private boolean nickname_state;
 
@@ -139,10 +145,10 @@ public class RegisterActivity extends AppCompatActivity {
                                     account.setMajor(strMaojr);
                                     account.setNickName(strNick);
                                     account.setPassword(strPassword);
-
                                     UserAccount users = new UserAccount();
                                     users.setUid(account.uid);
                                     users.setNickName(account.getNickName());
+
                                     FirebaseDatabase.getInstance().getReference().child("users").child(account.uid)
                                             .setValue(users)
                                             .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -150,6 +156,8 @@ public class RegisterActivity extends AppCompatActivity {
                                                 public void onSuccess(Void aVoid) {
                                                 }
                                             });
+
+
                                     db.collection("Account")
                                             .document(firebaseUser.getEmail().replace(".", ">"))
                                             .set(account)

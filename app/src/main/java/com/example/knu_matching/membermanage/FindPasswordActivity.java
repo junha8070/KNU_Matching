@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.example.knu_matching.R;
@@ -17,7 +18,7 @@ import com.google.firebase.auth.FirebaseAuth;
 public class FindPasswordActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
-    private Button btn_send, btn_Cancel;
+    private ImageButton btn_send, btn_Cancel;
     private EditText edt_email;
 
     @Override

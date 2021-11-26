@@ -21,6 +21,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,9 +29,6 @@ import android.widget.Toast;
 import com.example.knu_matching.R;
 import com.example.knu_matching.UserAccount;
 import com.example.knu_matching.chatting.ChatActivity;
-import com.example.knu_matching.chatting.ChatModel;
-import com.example.knu_matching.main.ChangePassWord;
-import com.example.knu_matching.main.PostFragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -47,7 +45,7 @@ public class PeolpeFragment extends Fragment {
     private String uid, strNick, str_chatroom_name, strUid;
     private String chatRoomUid;
     boolean chatin, ischeckfriend, iswritename;
-    Button btn_invite;
+    ImageButton btn_invite;
     EditText chatroom_name;
 
     public PeolpeFragment() {
@@ -67,7 +65,7 @@ public class PeolpeFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(inflater.getContext()));
         recyclerView.setAdapter(new PeopleFragmentRecyclerViewAdapter());
         uid = FirebaseAuth.getInstance().getCurrentUser().getUid();  //채팅을 요구 하는 아아디 즉 단말기에 로그인된 UID
-        btn_invite = (Button) view.findViewById(R.id.btn_invite);
+        btn_invite = (ImageButton) view.findViewById(R.id.btn_invite);
         chatroom_name = (EditText) view.findViewById(R.id.chatroom_name);
         return view;
 
@@ -137,6 +135,7 @@ public class PeolpeFragment extends Fragment {
                     @Override
                     public void onClick(View v) {
                         if (((CustomViewHolder) holder).cbox_invite.isChecked()) {
+
                             strUid = userModels.get(position).getUid();
                             arrNick.add(userModels.get(position).getNickName());
                             arrayList.add(strUid);

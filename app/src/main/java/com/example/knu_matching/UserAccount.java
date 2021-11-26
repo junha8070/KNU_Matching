@@ -10,6 +10,15 @@ public class UserAccount {
     private String StudentId;
     private String StudentName;
     private String PhoneNumber;
+    private String token;
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
 
     public String getStudentName() {
         return StudentName;

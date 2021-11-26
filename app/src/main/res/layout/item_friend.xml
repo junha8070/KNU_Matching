@@ -15,7 +15,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
-            android:textSize="15dp"
+            android:textSize="20dp"
+            android:fontFamily="@font/tway_air"
             android:text="아이디" />
         <LinearLayout
             android:layout_width="match_parent"
@@ -24,10 +25,11 @@
             android:layout_gravity="center_vertical">
             <CheckBox
                 android:id="@+id/cbox_invite"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="100dp"
+                android:layout_height="40dp"
                 android:layout_marginRight="20dp"
-                android:text="초대"/>
+                android:button="@android:color/transparent"
+                android:background="@drawable/custom_checkbox"/>
         </LinearLayout>
 
     </LinearLayout>
