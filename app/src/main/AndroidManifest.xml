@@ -4,7 +4,8 @@
     <!-- 권한 설정 -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -13,6 +14,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Knu_Matching"
         android:usesCleartextTraffic="true">
+        <activity android:name=".Post.EditPost_Activity"
+            android:exported="true"/>
+        <activity android:name=".WebView"
+            android:exported="true"/>
         <activity
             android:name=".Post.Visitor"
             android:exported="true" />

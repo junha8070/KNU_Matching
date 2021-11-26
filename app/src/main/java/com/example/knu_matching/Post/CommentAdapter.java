@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -69,13 +70,13 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
             tv_nickname = itemView.findViewById(R.id.tv_nickname);
             tv_content = itemView.findViewById(R.id.tv_content);
             tv_date = itemView.findViewById(R.id.tv_date);
-            btn_comment = itemView.findViewById(R.id.btn_comment);
+//            btn_comment = itemView.findViewById(R.id.btn_comment);
             btn_report = itemView.findViewById(R.id.btn_report);
             btn_del = itemView.findViewById(R.id.btn_del);
 
             System.out.println("현재 이메일 Adapter"+auth.getCurrentUser().getEmail());
             System.out.println("댓글 이메일 Adapter"+str_Email);
-
         }
     }
+
 }

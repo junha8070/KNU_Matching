@@ -14,7 +14,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="게시글"
+            android:text="게시판 양식"
             android:textSize="10pt"
             android:layout_margin="10dp"/>
 
@@ -27,7 +27,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="게시글 제목 "
-                android:id="@+id/Title"
                 android:layout_margin="10px"/>
             <EditText
                 android:layout_width="wrap_content"
@@ -67,13 +66,20 @@
                 android:layout_height="wrap_content"
                 android:text="모집기간 "
                 android:layout_margin="10px"/>
-            <EditText
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:layout_margin="10px"
                 android:hint="기간"
                 android:id="@+id/edt_date"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:layout_margin="10px"
+                android:hint="기간"
+                android:id="@+id/tv_EndDate"/>
         </LinearLayout>
 
         <LinearLayout
@@ -93,17 +99,18 @@
                 android:layout_margin="10px"
                 android:hint="내용"
                 android:id="@+id/edt_post"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="신청서 양식 "
-                android:layout_margin="10px"/>
         </LinearLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="신청서 양식 "
+            android:layout_margin="10px"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_margin="10px"
+
             tools:ignore="WebViewLayout">
             <TextView
                 android:layout_width="wrap_content"
@@ -120,10 +127,6 @@
                 android:layout_margin="10px"
                 android:id="@+id/btn_choice"/>
         </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
 
             <Button
                 android:id="@+id/btn_success"
@@ -131,9 +134,6 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="10px"
                 android:text="수정완료" />
-
-
         </LinearLayout>
-    </LinearLayout>
 
 </ScrollView>

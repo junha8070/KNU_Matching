@@ -8,8 +8,10 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 
 import android.app.Activity;
@@ -22,6 +24,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.example.knu_matching.GetSet.Post;
 import com.example.knu_matching.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -35,7 +38,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 
 public class PostFragment extends Fragment {
-
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -87,43 +90,21 @@ public class PostFragment extends Fragment {
         Button btn_Recent = v.findViewById(R.id.btn_Recent);
         Button btn_test = v.findViewById(R.id.btn_test);
 
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        user = FirebaseAuth.getInstance().getCurrentUser();
 
-        db.collection("Post")
-                .orderBy("str_time", Query.Direction.DESCENDING)
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            ArrayList<postInfo> postList = new ArrayList<>();
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                Log.d(TAG, document.getId() + "==>" + document.getData());
-                                postList.add(new postInfo(
-                                        document.getData().get("str_Title").toString(),
-                                        document.getData().get("str_date").toString(),
-                                        document.getData().get("str_EndDate").toString(),
-                                        document.getData().get("str_Number").toString(),
-                                        document.getData().get("str_post").toString(),
-                                        document.getData().get("str_time").toString(),
-                                        document.getData().get("str_Nickname").toString(),
-                                        document.getData().get("str_email").toString(),
-                                        document.getId(),
-                                        document.getData().get("str_filename").toString(),
-                                        (Uri) document.getData().get("uri")
-                                ));
-                            }
-                            RecyclerView recyclerView = v.findViewById(R.id.recycleView);
-                            recyclerView.setHasFixedSize(true);
-                            recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-                            RecyclerView.Adapter mAdapter = new PostAdapter(getActivity(), postList);
-                            recyclerView.setAdapter(mAdapter);
-                        } else {
-                            Log.d(TAG, "error", task.getException());
-                        }
-                    }
-                });
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        getData();
+        SwipeRefreshLayout swipeRefreshLayout = v.findViewById(R.id.swipe_layout);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                getData();
+                ft.detach(PostFragment.this).attach(PostFragment.this).commit();
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
+
+
 
         btn_Recent.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -163,4 +144,54 @@ public class PostFragment extends Fragment {
                     }
                 }
             });
+    public void getData(){
+        db.collection("Post")
+                .orderBy("str_time", Query.Direction.DESCENDING)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            ArrayList<Post> postList = new ArrayList<>();
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.d(TAG, document.getId() + "==>" + document.getData());
+                                Post post = document.toObject(Post.class);
+                                post.getStr_Title();
+                                post.getStr_Title();
+                                post.getStr_Number();
+                                post.getUri();
+                                post.getStr_post();
+                                post.getStr_email();
+                                post.getStr_filename();
+                                post.getStr_EndDate();
+                                post.getStr_StartDate();
+                                post.getStr_Id();
+                                post.getStr_Nickname();
+                                post.getStr_time();
+                                postList.add(post);
+//                                postList.add(new postInfo(
+//                                        document.getData().get("str_Title").toString(),
+//                                        document.getData().get("str_StartDate").toString(),
+//                                        document.getData().get("str_EndDate").toString(),
+//                                        document.getData().get("str_Number").toString(),
+//                                        document.getData().get("str_post").toString(),
+//                                        document.getData().get("str_time").toString(),
+//                                        document.getData().get("str_Nickname").toString(),
+//                                        document.getData().get("str_email").toString(),
+//                                        document.getId(),
+//                                        document.getData().get("str_filename").toString(),
+//                                        (Uri) document.getData().get("uri")
+//                                ));
+                            }
+                            RecyclerView recyclerView = getView().findViewById(R.id.recycleView);
+                            recyclerView.setHasFixedSize(true);
+                            recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+                            RecyclerView.Adapter mAdapter = new PostAdapter(getActivity(), postList);
+                            recyclerView.setAdapter(mAdapter);
+                        } else {
+                            Log.d(TAG, "error", task.getException());
+                        }
+                    }
+                });
+    }
 }
