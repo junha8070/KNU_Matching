@@ -54,10 +54,10 @@ import io.grpc.Context;
 @RequiresApi(api = Build.VERSION_CODES.O)
 public class EditPost_Activity extends AppCompatActivity {
     private Button btn_success, btn_choice;
-    private EditText edt_Title, edt_Number, edt_post;
+    private EditText edt_Title, edt_Number, edt_post, edt_link;
     private FirebaseAuth mFirebaseAuth = FirebaseAuth.getInstance();
     private DatabaseReference mDatabaseRef;
-    String str_title, str_count, str_total, str_StartDate, str_EndDate, str_filename, str_content, str_comment, str_email, str_Id, str_time, str_application;
+    String str_title, str_count, str_total, str_StartDate, str_EndDate, str_filename, str_content, str_comment, str_email, str_Id, str_time, str_application, str_link;
     private String deletefilename;
     private FirebaseUser user;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -86,6 +86,8 @@ public class EditPost_Activity extends AppCompatActivity {
         edt_post = findViewById(R.id.edt_post);
         tv_application = findViewById(R.id.tv_application);
         btn_choice = findViewById(R.id.btn_choice);
+        edt_link = findViewById(R.id.edt_link);
+
 
         Intent intent = getIntent();
         str_Id = intent.getStringExtra("Str_Id");
@@ -98,6 +100,7 @@ public class EditPost_Activity extends AppCompatActivity {
         System.out.println("파일이름" + str_application);
         str_time = intent.getStringExtra("Time");
         str_email = intent.getStringExtra("Email");
+        str_link = intent.getStringExtra("Link");
 
         edt_Title.setText(str_title);
         edt_Number.setText(str_total);
@@ -105,6 +108,7 @@ public class EditPost_Activity extends AppCompatActivity {
         tv_EndDate.setText(str_EndDate);
         edt_post.setText(str_content);
         tv_application.setText(str_application);
+        edt_link.setText(str_link);
 
         //deletefilename = str_application;
 
@@ -148,6 +152,7 @@ public class EditPost_Activity extends AppCompatActivity {
                 str_total = edt_Number.getText().toString();
                 str_content = edt_post.getText().toString();
                 str_filename = tv_application.getText().toString();
+                str_link = edt_link.getText().toString();
                 //str_email = mFirebaseAuth.getCurrentUser().getEmail();
 
                 Uri file = filePath;
@@ -183,7 +188,8 @@ public class EditPost_Activity extends AppCompatActivity {
                                                     "str_Number", str_total,
                                                     "str_post", str_content,
                                                     "str_filename", str_filename,
-                                                    "uri", downloadUri.toString())
+                                                    "uri", downloadUri.toString(),
+                                                    "str_link",str_link)
                                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                                                 @Override
                                                 public void onSuccess(Void v) {
@@ -212,7 +218,8 @@ public class EditPost_Activity extends AppCompatActivity {
                                     "str_StartDate", str_StartDate,
                                     "str_EndDate", str_EndDate,
                                     "str_Number", str_total,
-                                    "str_post", str_content)
+                                    "str_post", str_content,
+                                    "str_link",str_link)
                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void v) {
