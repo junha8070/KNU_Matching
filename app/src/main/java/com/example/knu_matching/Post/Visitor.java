@@ -67,12 +67,12 @@ public class Visitor extends AppCompatActivity {
 
     Toolbar toolbar;
     Button btn_comment, btn_participate;
-    TextView tv_count, tv_total, tv_StartDate, tv_EndDate, tv_file, tv_content, tv_title;
+    TextView tv_count, tv_total, tv_StartDate, tv_EndDate, tv_file, tv_content, tv_title, tv_link;
     RecyclerView rv_comment;
     CommentAdapter commentAdapter = null;
     EditText edt_comment;
     String str_participate_Nickname, str_participate_Major, str_participate_StudentId, str_participate_EmailId;
-    String str_title, str_count, str_total, str_StartDate, str_EndDate, str_filename, str_content, str_comment, str_email, str_Id, str_time, str_application;
+    String str_title, str_count, str_total, str_StartDate, str_EndDate, str_filename, str_content, str_comment, str_email, str_Id, str_time, str_application, str_link;
     public String str_Current_Email;
     Intent intent;
     ArrayList<CommentItem> comment_list;
@@ -112,6 +112,7 @@ public class Visitor extends AppCompatActivity {
         tv_EndDate.setText(str_EndDate);        // 모집 끝나는기간
         tv_content.setText(str_content);        // 내용
         tv_file.setText(str_application);       // 파일이름
+        tv_link.setText(str_link);              // 링크
 
         btn_comment.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -316,6 +317,7 @@ public class Visitor extends AppCompatActivity {
         tv_content = findViewById(R.id.tv_content);
         rv_comment = findViewById(R.id.rv_comment);
         edt_comment = findViewById(R.id.edt_comment);
+        tv_link = findViewById(R.id.tv_link);
 
         // intent 값 받아오기
         intent = getIntent();
@@ -328,6 +330,8 @@ public class Visitor extends AppCompatActivity {
         str_application = intent.getStringExtra("Filename");
         str_time = intent.getStringExtra("Time");
         str_email = intent.getStringExtra("Email");
+        str_link = intent.getStringExtra("Link");
+
 
         // 접속 계정 정보
         str_Current_Email = auth.getCurrentUser().getEmail();

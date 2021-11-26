@@ -14,6 +14,8 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.knu_matching.Post.Visitor;
+import com.example.knu_matching.Post.postActivity;
 import com.example.knu_matching.R;
 import com.example.knu_matching.WebView;
 import com.example.knu_matching.GetSet.Board;
@@ -147,7 +149,22 @@ public class BoardAdapter extends RecyclerView.Adapter<BoardAdapter.RecyclerView
                 @Override
                 public void onClick(View v) {
                     Toast.makeText(cv.getContext(), "게시판으로 연동", Toast.LENGTH_SHORT).show();
+                    db.collection("Scrap")
+                            .document(mFirebaseAuth.getCurrentUser().getEmail().replace(".", ">"))
+                            .collection("activity").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                Intent intent = new Intent(cv.getContext(), postActivity.class);
+                                intent.putExtra("Link", jobabaUrl);
+                                cv.getContext().startActivity(intent);
+                            }
+                            else {
+                                Log.e("firebase", "Error getting data", task.getException());
 
+                            }
+                        }
+                    });
                 }
             });
         }

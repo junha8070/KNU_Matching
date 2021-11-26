@@ -67,11 +67,11 @@ public class Post_Owner_Acticity extends AppCompatActivity {
 
     Toolbar toolbar;
     Button btn_down, btn_comment, btn_participate;
-    TextView tv_count, tv_total, tv_StartDate, tv_EndDate, tv_file, tv_content, tv_title;
+    TextView tv_count, tv_total, tv_StartDate, tv_EndDate, tv_file, tv_content, tv_title, tv_link;
     RecyclerView rv_comment;
     CommentAdapter commentAdapter = null;
     EditText edt_comment;
-    String str_title, str_count, str_total, str_StartDate, str_EndDate, str_filename, str_content, str_comment, str_email, str_Id, str_time, str_uri;
+    String str_title, str_count, str_total, str_StartDate, str_EndDate, str_filename, str_content, str_comment, str_email, str_Id, str_time, str_uri, str_link;
     public String str_Current_Email;
     Intent intent;
     ArrayList<CommentItem> comment_list;
@@ -100,10 +100,6 @@ public class Post_Owner_Acticity extends AppCompatActivity {
         setContentView(R.layout.activity_post_owner_acticity);
         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
         StrictMode.setVmPolicy(builder.build());
-        /**
-         TODO: 수정하기 버튼 연결
-         **/
-
 
         init();     // 요소 초기화 작업
         // ArrayList 초기화
@@ -126,6 +122,7 @@ public class Post_Owner_Acticity extends AppCompatActivity {
         tv_EndDate.setText(str_EndDate);        // 모집 끝나는기간
         tv_content.setText(str_content);        // 내용
         tv_file.setText(str_filename);          // 첨부파일 이름
+        tv_link.setText(str_link);              // 링크
         tv_file.setPaintFlags(tv_file.getPaintFlags()| Paint.UNDERLINE_TEXT_FLAG);
         System.out.println("array값"+str_filename);
         System.out.println("array값"+str_uri);
@@ -286,6 +283,7 @@ public class Post_Owner_Acticity extends AppCompatActivity {
                 intent.putExtra("Post", str_content);
                 intent.putExtra("Filename", str_filename);
                 intent.putExtra("Str_Id",str_Id);
+                intent.putExtra("Link",str_link);
                 startActivity(intent);
                 break;
             case R.id.btn_del:
@@ -357,6 +355,7 @@ public class Post_Owner_Acticity extends AppCompatActivity {
         tv_content = findViewById(R.id.tv_content);
         rv_comment = findViewById(R.id.rv_comment);
         edt_comment = findViewById(R.id.edt_comment);
+        tv_link = findViewById(R.id.tv_link);
 
         // intent 값 받아오기
         intent = getIntent();
@@ -370,6 +369,7 @@ public class Post_Owner_Acticity extends AppCompatActivity {
         str_time = intent.getStringExtra("Time");
         str_email = intent.getStringExtra("Email");
         str_uri = intent.getStringExtra("Uri");
+        str_link = intent.getStringExtra("Link");
 
         // 접속 계정 정보
         str_Current_Email = auth.getCurrentUser().getEmail();

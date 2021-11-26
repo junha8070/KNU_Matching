@@ -58,13 +58,14 @@ public class postActivity extends AppCompatActivity {
     private EditText edt_Title, edt_Number, edt_post, edt_link;
     private FirebaseAuth mFirebaseAuth=FirebaseAuth.getInstance();
     private DatabaseReference mDatabaseRef;
-    private String str_Title, str_StartDate, str_Number, str_post, str_Nickname, str_email, str_EndDate, str_filename, str_Id;
+    private String str_Title, str_StartDate, str_Number, str_post, str_Nickname, str_email, str_EndDate, str_filename, str_Id, str_url;
     private FirebaseUser user;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     private TextView application, edt_date, tv_EndDate;
     private FirebaseStorage storage = FirebaseStorage.getInstance();
     private StorageReference storageRef = storage.getReference();
     private Uri filePath, downloadUri;
+    Intent intent;
     // 현재 날짜/시간
     LocalDateTime Now = LocalDateTime.now();
     private DatePickerDialog.OnDateSetListener callbackMethod, callbackMethod2;
@@ -88,6 +89,12 @@ public class postActivity extends AppCompatActivity {
 
         application = findViewById(R.id.application);
         btn_choice = findViewById(R.id.btn_choice);
+
+        intent = getIntent();
+        str_url = intent.getStringExtra("Link");
+        edt_link.setText(str_url);
+
+
 
         this.InitializeListener();
 
