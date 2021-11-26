@@ -14,6 +14,15 @@ public class Post {
     String str_filename;
     String str_time;
     String uri;
+    String str_link;
+
+    public String getStr_link() {
+        return str_link;
+    }
+
+    public void setStr_link(String str_link) {
+        this.str_link = str_link;
+    }
 
     public String getStr_time() {
         return str_time;

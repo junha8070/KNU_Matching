@@ -1,142 +1,180 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".Post.postActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:backgroundTint="#00ff0000"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme">
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="팀원 구하기"
+            android:textSize="20dp"
+            android:textStyle="bold" />
+
+        <Button
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:id="@+id/btn_write"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:text="완료"
+            android:backgroundTint="#00FF0000"
+            android:textColor="#000000"
+            android:textStyle="bold" />
+
+    </androidx.appcompat.widget.Toolbar>
+
     <LinearLayout
+        android:layout_margin="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="게시판 양식"
-            android:textSize="10pt"
-            android:layout_margin="10dp"/>
-
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_margin="10px">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="게시글 제목 "
-                android:layout_margin="10px"/>
+            android:orientation="horizontal">
+
             <EditText
-                android:layout_width="wrap_content"
+                android:id="@+id/edt_Title"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:ems="10"
-                android:layout_margin="10px"
-                android:hint="제목"
-                android:id="@+id/edt_Title"/>
+                android:hint="모집글 제목을 적어주세요" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_margin="10px">
+            android:orientation="vertical">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="모집인원 수 "
-                android:layout_margin="10px"/>
+                android:text="같이 하고 싶은 사람이 몇명인가요?" />
+
             <EditText
+                android:id="@+id/edt_Number"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="3"
-                android:layout_margin="10px"
-                android:hint="인원수"
-                android:id="@+id/edt_Number"/>
+                android:hint="인원수" />
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_margin="10px">
+            android:orientation="vertical">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="모집기간 "
-                android:layout_margin="10px"/>
-            <TextView
-                android:layout_width="wrap_content"
+                android:text="언제부터 언제까지 모집할까요?" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:ems="10"
-                android:layout_margin="10px"
-                android:hint="기간"
-                android:id="@+id/edt_date"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:layout_margin="10px"
-                android:hint="기간"
-                android:id="@+id/tv_EndDate"/>
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_weight="1"
+                    android:layout_gravity="center_vertical"
+                    android:textSize="17dp"
+                    android:id="@+id/edt_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="기간" />
+                <TextView
+                    android:gravity="center"
+                    android:layout_weight="0.1"
+                    android:layout_gravity="center_vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="~"/>
+
+                <TextView
+                    android:layout_weight="1"
+                    android:layout_gravity="center_vertical"
+                    android:textSize="17dp"
+                    android:id="@+id/tv_EndDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="기간" />
+            </LinearLayout>
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_margin="10px">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="내용 "
-                android:layout_margin="10px"/>
-            <EditText
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:ems="10"
-                android:layout_margin="10px"
-                android:hint="내용"
-                android:id="@+id/edt_post"/>
-        </LinearLayout>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="신청서 양식 "
-            android:layout_margin="10px"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_margin="10px"
-
             tools:ignore="WebViewLayout">
+
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_gravity="left|center_vertical"
+                android:id="@+id/application"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:ems="10"
-                android:text=" 파일첨부 "
-                android:linksClickable="true"
                 android:autoLink="web"
-                android:id="@+id/application"/>
+                android:layout_weight="6"
+                android:linksClickable="true"
+                android:text="참고할 파일이 있으면 업로드 버튼을 눌러주세요" />
+
             <Button
+                android:layout_weight="1"
+                android:layout_gravity="right|center_vertical"
+                android:id="@+id/btn_choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="파일 선택"
-                android:layout_margin="10px"
-                android:id="@+id/btn_choice"/>
+                android:backgroundTint="#b1cae9"
+                android:text="업로드"
+                android:textColor="#167bc3"
+                android:textStyle="bold" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            tools:ignore="WebViewLayout">
+
+            <EditText
+                android:id="@+id/edt_link"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:autoLink="web"
+                android:ems="10"
+                android:linksClickable="true"
+                android:hint="참고할 링크를 적어주세요" />
         </LinearLayout>
 
-        <Button
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="글쓰기"
-            android:layout_margin="10px"
-            android:id="@+id/btn_write"/>
+            android:orientation="vertical">
 
+
+            <EditText
+                android:gravity="top"
+                android:lines="100"
+                android:id="@+id/edt_post"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:ems="10"
+                android:hint="내용" />
+        </LinearLayout>
 
 
     </LinearLayout>
 
-</ScrollView>
+</LinearLayout>

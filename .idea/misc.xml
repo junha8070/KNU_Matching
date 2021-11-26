@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/Excellent_Summer/AndroidStudioProjects/Knu_Matching/app/src/main/res/drawable/design_button.xml" value="0.39479166666666665" />
         <entry key="..\:/Users/Excellent_Summer/AndroidStudioProjects/Knu_Matching/app/src/main/res/drawable/edittext_box_design.xml" value="0.13240740740740742" />
         <entry key="..\:/Users/Excellent_Summer/AndroidStudioProjects/Knu_Matching/app/src/main/res/drawable/ic_after_scrap.xml" value="0.2203125" />
         <entry key="..\:/Users/Excellent_Summer/AndroidStudioProjects/Knu_Matching/app/src/main/res/drawable/ic_baseline_people_24.xml" value="0.2203125" />
@@ -32,7 +33,7 @@
         <entry key="..\:/Users/Excellent_Summer/AndroidStudioProjects/Knu_Matching/app/src/main/res/layout/activity_peolpe_fragment.xml" value="0.5494791666666666" />
         <entry key="..\:/Users/Excellent_Summer/AndroidStudioProjects/Knu_Matching/app/src/main/res/layout/activity_post.xml" value="0.5494791666666666" />
         <entry key="..\:/Users/Excellent_Summer/AndroidStudioProjects/Knu_Matching/app/src/main/res/layout/activity_post_fragment.xml" value="0.541025641025641" />
-        <entry key="..\:/Users/Excellent_Summer/AndroidStudioProjects/Knu_Matching/app/src/main/res/layout/activity_post_owner_acticity.xml" value="0.2604166666666667" />
+        <entry key="..\:/Users/Excellent_Summer/AndroidStudioProjects/Knu_Matching/app/src/main/res/layout/activity_post_owner_acticity.xml" value="0.4" />
         <entry key="..\:/Users/Excellent_Summer/AndroidStudioProjects/Knu_Matching/app/src/main/res/layout/activity_post_register.xml" value="0.5494791666666666" />
         <entry key="..\:/Users/Excellent_Summer/AndroidStudioProjects/Knu_Matching/app/src/main/res/layout/activity_post_register2.xml" value="0.4666666666666667" />
         <entry key="..\:/Users/Excellent_Summer/AndroidStudioProjects/Knu_Matching/app/src/main/res/layout/activity_progress_dialog.xml" value="0.446875" />
@@ -42,6 +43,7 @@
         <entry key="..\:/Users/Excellent_Summer/AndroidStudioProjects/Knu_Matching/app/src/main/res/layout/activity_setting.xml" value="0.1" />
         <entry key="..\:/Users/Excellent_Summer/AndroidStudioProjects/Knu_Matching/app/src/main/res/layout/activity_student_certificate.xml" value="0.1" />
         <entry key="..\:/Users/Excellent_Summer/AndroidStudioProjects/Knu_Matching/app/src/main/res/layout/activity_third_fragment.xml" value="0.26510416666666664" />
+        <entry key="..\:/Users/Excellent_Summer/AndroidStudioProjects/Knu_Matching/app/src/main/res/layout/activity_visitor.xml" value="0.37864583333333335" />
         <entry key="..\:/Users/Excellent_Summer/AndroidStudioProjects/Knu_Matching/app/src/main/res/layout/activity_web_view.xml" value="0.1" />
         <entry key="..\:/Users/Excellent_Summer/AndroidStudioProjects/Knu_Matching/app/src/main/res/layout/fragment_board.xml" value="0.1" />
         <entry key="..\:/Users/Excellent_Summer/AndroidStudioProjects/Knu_Matching/app/src/main/res/layout/fragment_recruitment.xml" value="0.1" />
@@ -62,12 +64,10 @@
         <entry key="..\:/Users/yulim/AndroidStudioProjects/Knu_Matching/app/src/main/res/layout/activity_login.xml" value="0.22916666666666666" />
         <entry key="..\:/Users/yulim/AndroidStudioProjects/Knu_Matching/app/src/main/res/layout/activity_main.xml" value="0.24974358974358973" />
         <entry key="..\:/Users/yulim/AndroidStudioProjects/Knu_Matching/app/src/main/res/layout/activity_post.xml" value="0.24974358974358973" />
-        <entry key="..\:/Users/yulim/AndroidStudioProjects/Knu_Matching/app/src/main/res/layout/activity_post_owner_acticity.xml" value="0.1296875" />
         <entry key="..\:/Users/yulim/AndroidStudioProjects/Knu_Matching/app/src/main/res/layout/activity_post_register.xml" value="0.4" />
         <entry key="..\:/Users/yulim/AndroidStudioProjects/Knu_Matching/app/src/main/res/layout/activity_post_register2.xml" value="0.264" />
         <entry key="..\:/Users/yulim/AndroidStudioProjects/Knu_Matching/app/src/main/res/layout/activity_register.xml" value="0.25364583333333335" />
         <entry key="..\:/Users/yulim/AndroidStudioProjects/Knu_Matching/app/src/main/res/layout/activity_student_certificate.xml" value="0.22864583333333333" />
-        <entry key="..\:/Users/yulim/AndroidStudioProjects/Knu_Matching/app/src/main/res/layout/activity_visitor.xml" value="0.12552083333333333" />
       </map>
     </option>
   </component>

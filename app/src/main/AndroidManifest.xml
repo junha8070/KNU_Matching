@@ -16,6 +16,8 @@
         android:usesCleartextTraffic="true">
         <activity android:name=".Post.EditPost_Activity"
             android:exported="true"/>
+        <activity android:name=".WebView"
+            android:exported="true"/>
         <activity
             android:name=".Post.Visitor"
             android:exported="true" />

@@ -54,7 +54,7 @@ import io.grpc.Context;
 @RequiresApi(api = Build.VERSION_CODES.O)
 public class postActivity extends AppCompatActivity {
     private Button btn_write, btn_choice;
-    private EditText edt_Title, edt_Number, edt_post;
+    private EditText edt_Title, edt_Number, edt_post, edt_link;
     private FirebaseAuth mFirebaseAuth=FirebaseAuth.getInstance();
     private DatabaseReference mDatabaseRef;
     private String str_Title, str_StartDate, str_Number, str_post, str_Nickname, str_email, str_EndDate, str_filename, str_Id;
@@ -83,6 +83,7 @@ public class postActivity extends AppCompatActivity {
         tv_EndDate = findViewById(R.id.tv_EndDate);
         edt_Number = findViewById(R.id.edt_Number);
         edt_post = findViewById(R.id.edt_post);
+        edt_link = findViewById(R.id.edt_link);
 
         application = findViewById(R.id.application);
         btn_choice = findViewById(R.id.btn_choice);
@@ -148,6 +149,7 @@ public class postActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             downloadUri = task.getResult();
                             Post post = new Post();
+                            post.setStr_link(edt_link.getText().toString());
                             post.setStr_Title(str_Title);
                             post.setStr_Number(str_Number);
                             post.setStr_StartDate(str_StartDate);
