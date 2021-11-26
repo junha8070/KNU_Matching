@@ -23,6 +23,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.example.knu_matching.GetSet.Post;
 import com.example.knu_matching.R;
@@ -140,6 +141,10 @@ public class PostFragment extends Fragment {
                 @Override
                 public void onActivityResult(ActivityResult result) {
                     if (result.getResultCode() == Activity.RESULT_OK) {
+                        Toast.makeText(getContext(),"돌아옴",Toast.LENGTH_SHORT).show();
+                        FragmentTransaction ft = getFragmentManager().beginTransaction();
+                        getData();
+                        ft.detach(PostFragment.this).attach(PostFragment.this).commit();
                         Log.d(TAG, "RegisterActivity로 돌아왔다. ");
                     }
                 }

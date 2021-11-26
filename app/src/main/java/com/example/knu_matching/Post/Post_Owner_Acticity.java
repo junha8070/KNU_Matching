@@ -130,33 +130,38 @@ public class Post_Owner_Acticity extends AppCompatActivity {
         System.out.println("array값"+str_filename);
         System.out.println("array값"+str_uri);
         String temp = str_filename;
-        System.out.println("array값2"+temp);
-        String[] str_split = str_filename.split("\\.");
-        System.out.println("array값3"+str_split[0]+"+"+str_split[1]);
 
-        File_Name = str_filename;
-        File_extend = str_split[1];
 
-        tv_file.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                File dir = new File(Save_Path);
-                // 폴더가 존재하지 않을 경우 폴더를 만듦
-                if (!dir.exists()) {
-                    dir.mkdir();
+
+
+
+        if(str_filename != null){
+            String[] str_split = str_filename.split("\\.");
+            File_Name = str_filename;
+            File_extend = str_split[1];
+
+            tv_file.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    File dir = new File(Save_Path);
+                    // 폴더가 존재하지 않을 경우 폴더를 만듦
+                    if (!dir.exists()) {
+                        dir.mkdir();
+                    }
+
+                    // 다운로드 폴더에 동일한 파일명이 존재하는지 확인해서
+                    // 없으면 다운받고 있으면 해당 파일 실행시킴.
+                    if (new File(Save_Path + "/" + File_Name).exists() == false) {
+                        dThread = new DownloadThread(str_uri + "/" + File_Name,
+                                Save_Path + "/" + File_Name);
+                        dThread.start();
+                    } else {
+                        showDownloadFile();
+                    }
                 }
+            });
+        }
 
-                // 다운로드 폴더에 동일한 파일명이 존재하는지 확인해서
-                // 없으면 다운받고 있으면 해당 파일 실행시킴.
-                if (new File(Save_Path + "/" + File_Name).exists() == false) {
-                    dThread = new DownloadThread(str_uri + "/" + File_Name,
-                            Save_Path + "/" + File_Name);
-                    dThread.start();
-                } else {
-                    showDownloadFile();
-                }
-            }
-        });
 
         db.collection("Post").document(str_Id).collection("Participate")
                 .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
