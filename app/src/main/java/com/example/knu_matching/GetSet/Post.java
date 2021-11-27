@@ -15,6 +15,7 @@ public class Post {
     String str_time;
     String uri;
     String str_link;
+    String str_uid;
 
     public String getStr_link() {
         return str_link;
@@ -110,5 +111,13 @@ public class Post {
 
     public void setStr_filename(String str_filename) {
         this.str_filename = str_filename;
+    }
+
+    public String getStr_uid() {
+        return str_uid;
+    }
+
+    public void setStr_uid(String str_uid) {
+        this.str_uid = str_uid;
     }
 }

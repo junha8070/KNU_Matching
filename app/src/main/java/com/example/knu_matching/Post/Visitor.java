@@ -71,8 +71,8 @@ public class Visitor extends AppCompatActivity {
     RecyclerView rv_comment;
     CommentAdapter commentAdapter = null;
     EditText edt_comment;
-    String str_participate_Nickname, str_participate_Major, str_participate_StudentId, str_participate_EmailId;
-    String str_title, str_count, str_total, str_StartDate, str_EndDate, str_filename, str_content, str_comment, str_email, str_Id, str_time, str_application, str_link;
+    String str_participate_Nickname, str_participate_Major, str_participate_StudentId, str_participate_EmailId, str_participate_Uid;
+    String str_title, str_count, str_total, str_StartDate, str_EndDate, str_filename, str_content, str_comment, str_email, str_Id, str_time, str_application, str_link, str_uid;
     public String str_Current_Email;
     Intent intent;
     ArrayList<CommentItem> comment_list;
@@ -148,6 +148,8 @@ public class Visitor extends AppCompatActivity {
                 commentItem.setStr_Date(formatedNow);
                 commentItem.setStr_NickName(((MainActivity) MainActivity.context).strNick);
                 commentItem.setStr_Content(edt_comment.getText().toString());
+                commentItem.setStr_Uid(auth.getCurrentUser().getUid());
+
                 db.collection("Post").document(str_Id).collection("Comment").add(commentItem)
                         .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
                             @Override
@@ -164,19 +166,19 @@ public class Visitor extends AppCompatActivity {
         });
 
         // 댓글 DB 실시간으로 가져오기
-        db.collection("Post").document(str_Id).collection("Comment").orderBy("str_time", Query.Direction.ASCENDING)
+        db.collection("Post").document(str_Id).collection("Comment").orderBy("str_Date", Query.Direction.ASCENDING)
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-                        if (error != null) {
+                        if(error != null){
                             System.out.println("Error: Post_Owner_Activity - Comment 불러오기 오류");
                             return;
                         }
-                        for (DocumentChange doc : value.getDocumentChanges()) {
-                            switch (doc.getType()) {
+                        for(DocumentChange doc: value.getDocumentChanges()){
+                            switch (doc.getType()){
                                 case ADDED:
-                                    System.out.println("오너 디버깅" + doc.getDocument().getString("str_email2"));
-                                    addItem(doc.getDocument().getString("str_email2"), doc.getDocument().getString("str_Nickname2"), doc.getDocument().getString("str_comment2"), doc.getDocument().getString("str_time"));
+                                    System.out.println("오너 디버깅"+doc.getDocument().getString("str_Email"));
+                                    addItem(doc.getDocument().getString("str_Email"),doc.getDocument().getString("str_NickName"),doc.getDocument().getString("str_Content"),doc.getDocument().getString("str_Date"), doc.getDocument().getString("str_Uid"));
                                     commentAdapter.notifyDataSetChanged();
                                     break;
                                 case MODIFIED:
@@ -184,7 +186,7 @@ public class Visitor extends AppCompatActivity {
                                     break;
                                 case REMOVED:
                                     // 삭제되었을때 작업
-                                    delItem(doc.getDocument().getString("str_email2"), doc.getDocument().getString("str_Nickname2"), doc.getDocument().getString("str_comment2"), doc.getDocument().getString("str_time"));
+                                    delItem(doc.getDocument().getString("str_Email"),doc.getDocument().getString("str_NickName"),doc.getDocument().getString("str_Content"),doc.getDocument().getString("str_Date"), doc.getDocument().getString("str_Uid"));
                                     commentAdapter.notifyDataSetChanged();
                                     break;
                             }
@@ -231,7 +233,8 @@ public class Visitor extends AppCompatActivity {
                                 str_participate_Major = userAccount.getMajor();
                                 str_participate_StudentId = userAccount.getStudentId();
                                 str_participate_EmailId = userAccount.getEmailId();
-                                ParticipateUser participateUser = new ParticipateUser(str_participate_Nickname, str_participate_Major, str_participate_StudentId, str_participate_EmailId);
+                                str_participate_Uid = userAccount.getUid();
+                                ParticipateUser participateUser = new ParticipateUser(str_participate_Nickname, str_participate_Major, str_participate_StudentId, str_participate_EmailId, str_participate_Uid);
                                 ParticipateUserSave(participateUser);
                                 Intent intent = new Intent();
                                 setResult(Activity.RESULT_OK, intent);
@@ -294,25 +297,27 @@ public class Visitor extends AppCompatActivity {
     }
 
     // 댓글 추가
-    private void addItem(String Email, String Nickname, String Content, String Date) {
+    private void addItem(String Email, String Nickname, String Content, String Date, String Uid){
         CommentItem item = new CommentItem();
 
         item.setStr_Email(Email);
         item.setStr_NickName(Nickname);
         item.setStr_Content(Content);
         item.setStr_Date(Date);
+        item.setStr_Uid(Uid);
 
         comment_list.add(item);
     }
 
     // 댓글 삭제 눌렀을때 작동
-    private void delItem(String Email, String Nickname, String Content, String Date) {
+    private void delItem(String Email, String Nickname, String Content, String Date, String Uid){
         CommentItem item = new CommentItem();
 
         item.setStr_Email(Email);
         item.setStr_NickName(Nickname);
         item.setStr_Content(Content);
         item.setStr_Date(Date);
+        item.setStr_Uid(Uid);
 
         comment_list.remove(item);
     }
@@ -361,6 +366,7 @@ public class Visitor extends AppCompatActivity {
         str_time = intent.getStringExtra("Time");
         str_email = intent.getStringExtra("Email");
         str_link = intent.getStringExtra("Link");
+        str_uid = intent.getStringExtra("Uid");
 
 
         // 접속 계정 정보

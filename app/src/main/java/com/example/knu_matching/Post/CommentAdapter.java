@@ -20,7 +20,7 @@ import java.util.ArrayList;
 public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHolder> {
     private ArrayList<CommentItem> mData = null;
     private FirebaseAuth auth = FirebaseAuth.getInstance();
-    String str_Email;
+    String str_Email, str_Uid;
 
     public CommentAdapter(ArrayList<CommentItem> data){
         mData = data;
@@ -45,6 +45,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
         CommentItem item = mData.get(position);
 
         str_Email = item.getStr_Email();
+        str_Uid = item.getStr_Uid();
         holder.tv_nickname.setText(item.getStr_NickName());
         holder.tv_content.setText(item.getStr_Content());
         holder.tv_date.setText(item.getStr_Date());
@@ -70,7 +71,6 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
             tv_nickname = itemView.findViewById(R.id.tv_nickname);
             tv_content = itemView.findViewById(R.id.tv_content);
             tv_date = itemView.findViewById(R.id.tv_date);
-//            btn_comment = itemView.findViewById(R.id.btn_comment);
             btn_report = itemView.findViewById(R.id.btn_report);
             btn_del = itemView.findViewById(R.id.btn_del);
 

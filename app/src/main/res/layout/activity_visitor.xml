@@ -191,15 +191,14 @@
     </LinearLayout>
 
     <LinearLayout
+        android:layout_below="@id/ll_fifth"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/ll_fifth"
         android:orientation="vertical">
-
         <LinearLayout
+            android:layout_weight="1"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
             android:orientation="vertical">
 
             <TextView
@@ -214,35 +213,34 @@
                 android:layout_height="match_parent" />
 
         </LinearLayout>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:background="#FFFFFF">
 
         <LinearLayout
+            android:layout_weight="7"
+            android:background="#FFFFFF"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <EditText
-                android:id="@+id/edt_comment"
+            android:layout_height="match_parent">
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:ems="10" />
-
-            <Button
-                android:id="@+id/btn_comment"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10px"
-                android:layout_weight="3"
-                android:text="답글달기" />
+                android:orientation="horizontal">
+                <EditText
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:id="@+id/edt_comment"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+                <Button
+                    android:layout_weight="3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="답글달기"
+                    android:layout_margin="10px"
+                    android:id="@+id/btn_comment"/>
+            </LinearLayout>
         </LinearLayout>
+
     </LinearLayout>
+
 
 
 </RelativeLayout>

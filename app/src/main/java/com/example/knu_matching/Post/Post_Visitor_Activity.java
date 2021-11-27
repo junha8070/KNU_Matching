@@ -62,8 +62,8 @@ public class Post_Visitor_Activity extends AppCompatActivity {
     private TextView tv_Title, tv_Number, tv_date, tv_post, tv_application, tv_count;
     private Button btn_list, btn_change, btn_delete, btn_comment, btn_down, btn_participate;
     private EditText edt_comment;
-    private String str_participate_Nickname, str_participate_Major, str_participate_StudentId, str_participate_EmailId, str_participate_EmailId2;
-    private String str_Title, str_date, str_Number, str_post, str_time, str_email, str_Nickname2, str_email2, str_comment2, str_Id, str_application;
+    private String str_participate_Nickname, str_participate_Major, str_participate_StudentId, str_participate_EmailId, str_participate_EmailId2, str_participate_Uid;
+    private String str_Title, str_date, str_Number, str_post, str_time, str_email, str_Nickname2, str_email2, str_comment2, str_Id, str_application, str_uid;
     private FirebaseUser user;
     private FirebaseStorage storage = FirebaseStorage.getInstance();
     private StorageReference storageRef = storage.getReference();
@@ -109,6 +109,8 @@ public class Post_Visitor_Activity extends AppCompatActivity {
         str_application = intent.getStringExtra("Application");
         str_time = intent.getStringExtra("Time");
         str_email = intent.getStringExtra("Email");
+        str_uid = intent.getStringExtra("Uid");
+
 
         tv_Title.setText(str_Title);
         tv_Number.setText(str_Number);
@@ -129,8 +131,10 @@ public class Post_Visitor_Activity extends AppCompatActivity {
                                         document.getData().get("str_email2").toString(),
                                         document.getData().get("str_comment2").toString(),
                                         document.getData().get("str_Nickname2").toString(),
-                                        document.getData().get("str_time").toString()
-                                ));
+                                        document.getData().get("str_time").toString(),
+                                        document.getData().get("str_uid").toString()
+
+                                        ));
                             }
                             RecyclerView recyclerView = Post_Visitor_Activity.this.findViewById(R.id.recycleView);
                             recyclerView.setHasFixedSize(true);
@@ -157,7 +161,8 @@ public class Post_Visitor_Activity extends AppCompatActivity {
                                         document.getData().get("str_participate_Nickname").toString(),
                                         document.getData().get("str_participate_Major").toString(),
                                         document.getData().get("str_participate_StudentId").toString(),
-                                        document.getData().get("str_participate_EmailId").toString()
+                                        document.getData().get("str_participate_EmailId").toString(),
+                                        document.getData().get("str_participate_Uid").toString()
                                 ));
                             }
                         } else {
@@ -180,7 +185,7 @@ public class Post_Visitor_Activity extends AppCompatActivity {
                             UserAccount userAccount = task.getResult().toObject(UserAccount.class);
                             str_Nickname2 = userAccount.getNickName();
                             str_email2 = userAccount.getEmailId();
-                            postInfo2 postInfo2 = new postInfo2(str_email2, str_comment2, str_Nickname2, formatedNow);
+                            postInfo2 postInfo2 = new postInfo2(str_email2, str_comment2, str_Nickname2, formatedNow, str_uid);
                             update(postInfo2);
                             Intent intent = new Intent();
                             setResult(Activity.RESULT_OK, intent);
@@ -272,7 +277,8 @@ public class Post_Visitor_Activity extends AppCompatActivity {
                                 str_participate_Major = userAccount.getMajor();
                                 str_participate_StudentId = userAccount.getStudentId();
                                 str_participate_EmailId = userAccount.getEmailId();
-                                ParticipateUser participateUser = new ParticipateUser(str_participate_Nickname, str_participate_Major, str_participate_StudentId, str_participate_EmailId);
+                                str_participate_Uid = userAccount.getUid();
+                                ParticipateUser participateUser = new ParticipateUser(str_participate_Nickname, str_participate_Major, str_participate_StudentId, str_participate_EmailId, str_participate_Uid);
                                 update2(participateUser);
                                 Intent intent = new Intent();
                                 setResult(Activity.RESULT_OK, intent);

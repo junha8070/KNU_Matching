@@ -2,6 +2,7 @@ package com.example.knu_matching.Post;
 
 import android.net.Uri;
 
+import java.security.SecureRandom;
 import java.util.Date;
 
 public class postInfo {
@@ -16,6 +17,7 @@ public class postInfo {
     private String str_Id;
     private String str_filename;
     private Uri uri;
+    private String str_uid;
 
     public Uri getUri() {
         return uri;
@@ -25,7 +27,7 @@ public class postInfo {
         this.uri = uri;
     }
 
-    public postInfo(String str_Title, String str_date, String str_EndDate, String str_Number, String str_post, String str_time, String str_Nickname, String str_email, String str_Id, String str_filename, Uri uri){
+    public postInfo(String str_Title, String str_date, String str_EndDate, String str_Number, String str_post, String str_time, String str_Nickname, String str_email, String str_Id, String str_filename, Uri uri, String str_uid){
         this.str_Title = str_Title;
         this.str_date = str_date;
         this.str_EndDate = str_EndDate;
@@ -37,6 +39,7 @@ public class postInfo {
         this.str_Id = str_Id;
         this.str_filename = str_filename;
         this.uri = uri;
+        this.str_uid = str_uid;
     }
 
     public String getStr_EndDate() {
@@ -83,6 +86,9 @@ public class postInfo {
 
     public String getStr_filename(){return this.str_filename;}
     public void setStr_filename(String str_filename){this.str_filename = str_filename;}
+
+    public String getStr_uid(){return this.str_uid;}
+    public void setStr_uid(String str_uid){this.str_uid= str_uid;}
 
 
 }

@@ -58,7 +58,7 @@ public class postActivity extends AppCompatActivity {
     private EditText edt_Title, edt_Number, edt_post, edt_link;
     private FirebaseAuth mFirebaseAuth=FirebaseAuth.getInstance();
     private DatabaseReference mDatabaseRef;
-    private String str_Title, str_StartDate, str_Number, str_post, str_Nickname, str_email, str_EndDate, str_filename, str_Id, str_url;
+    private String str_Title, str_StartDate, str_Number, str_post, str_Nickname, str_email, str_EndDate, str_filename, str_Id, str_url, str_uid;
     private FirebaseUser user;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     private TextView application, edt_date, tv_EndDate;
@@ -137,6 +137,7 @@ public class postActivity extends AppCompatActivity {
                 str_filename = application.getText().toString();
                 str_Nickname = ((MainActivity)MainActivity.context).strNick;
                 str_email = mFirebaseAuth.getCurrentUser().getEmail();
+                str_uid = mFirebaseAuth.getCurrentUser().getUid();
 
                 if(filePath == null){
                     Post post = new Post();
@@ -149,6 +150,7 @@ public class postActivity extends AppCompatActivity {
                     post.setStr_time(formatedNow);
                     post.setStr_email(str_email);
                     post.setStr_Nickname(str_Nickname);
+                    post.setStr_uid(str_uid);
                     db.collection("Post").add(post).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                         @Override
                         public void onSuccess(DocumentReference documentReference) {
@@ -198,6 +200,7 @@ public class postActivity extends AppCompatActivity {
                                 post.setUri(downloadUri.toString());
                                 post.setStr_email(str_email);
                                 post.setStr_Nickname(str_Nickname);
+                                post.setStr_uid(str_uid);
 
                                 db.collection("Post").add(post).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                                     @Override

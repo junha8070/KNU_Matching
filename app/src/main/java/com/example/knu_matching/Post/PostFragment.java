@@ -174,6 +174,7 @@ public class PostFragment extends Fragment {
                                 post.getStr_Nickname();
                                 post.getStr_time();
                                 post.getStr_link();
+                                post.getStr_uid();
                                 postList.add(post);
 //                                postList.add(new postInfo(
 //                                        document.getData().get("str_Title").toString(),

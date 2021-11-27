@@ -33,12 +33,15 @@ import android.widget.Toast;
 import com.example.knu_matching.GetSet.CommentItem;
 import com.example.knu_matching.MainActivity;
 import com.example.knu_matching.R;
+import com.example.knu_matching.UserAccount;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.EventListener;
@@ -47,6 +50,7 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.auth.User;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -61,6 +65,9 @@ import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 @RequiresApi(api = Build.VERSION_CODES.O)
 public class Post_Owner_Acticity extends AppCompatActivity {
@@ -68,15 +75,17 @@ public class Post_Owner_Acticity extends AppCompatActivity {
     Toolbar toolbar;
     Button btn_down, btn_comment, btn_participate;
     TextView tv_count, tv_total, tv_StartDate, tv_EndDate, tv_file, tv_content, tv_title, tv_link;
+    static final Map<String, String> comment_notice= new HashMap<String,String>();
     RecyclerView rv_comment;
     CommentAdapter commentAdapter = null;
     EditText edt_comment;
-    String str_title, str_count, str_total, str_StartDate, str_EndDate, str_filename, str_content, str_comment, str_email, str_Id, str_time, str_uri, str_link;
+    String str_title, str_count, str_total, str_StartDate, str_EndDate, str_filename, str_content, str_comment, str_email, str_Id, str_time, str_uri, str_link, str_uid;
     public String str_Current_Email;
     Intent intent;
     ArrayList<CommentItem> comment_list;
     Context context = this;
     int count = 0;
+    String uid;
 
     LocalDateTime now = LocalDateTime.now();
     String formatedNow = now.format(DateTimeFormatter.ofPattern("yyyy_MM_dd_HH_mm_ss_SSS"));
@@ -92,7 +101,7 @@ public class Post_Owner_Acticity extends AppCompatActivity {
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     FirebaseStorage storage = FirebaseStorage.getInstance();
     FirebaseAuth mFirebaseAuth;
-    DatabaseReference mDatabaseRef;
+    DatabaseReference mDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,6 +109,7 @@ public class Post_Owner_Acticity extends AppCompatActivity {
         setContentView(R.layout.activity_post_owner_acticity);
         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
         StrictMode.setVmPolicy(builder.build());
+        mDatabase = FirebaseDatabase.getInstance().getReference();
 
         init();     // 요소 초기화 작업
         // ArrayList 초기화
@@ -108,7 +118,7 @@ public class Post_Owner_Acticity extends AppCompatActivity {
         // Adapter 초기화
         commentAdapter = new CommentAdapter(comment_list);
         rv_comment.setAdapter(commentAdapter);
-        rv_comment.setLayoutManager(new LinearLayoutManager(this,RecyclerView.VERTICAL, false));
+        rv_comment.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
 
         String ext = Environment.getExternalStorageState();
         if (ext.equals(Environment.MEDIA_MOUNTED)) {
@@ -123,16 +133,12 @@ public class Post_Owner_Acticity extends AppCompatActivity {
         tv_content.setText(str_content);        // 내용
         tv_file.setText(str_filename);          // 첨부파일 이름
         tv_link.setText(str_link);              // 링크
-        tv_file.setPaintFlags(tv_file.getPaintFlags()| Paint.UNDERLINE_TEXT_FLAG);
-        System.out.println("array값"+str_filename);
-        System.out.println("array값"+str_uri);
+        tv_file.setPaintFlags(tv_file.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+        System.out.println("array값" + str_filename);
+        System.out.println("array값" + str_uri);
         String temp = str_filename;
 
-
-
-
-
-        if(str_filename != null){
+        if (str_filename != null) {
             String[] str_split = str_filename.split("\\.");
             File_Name = str_filename;
             File_extend = str_split[1];
@@ -159,6 +165,71 @@ public class Post_Owner_Acticity extends AppCompatActivity {
             });
         }
 
+        ;
+        System.out.println("struid" + str_uid);
+        FirebaseDatabase.getInstance().getReference().child("users").equalTo(str_uid).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                if (task.isSuccessful()) {
+                    System.out.println("일단 성공?");
+                    db.collection("Post").document(str_Id).collection("Comment").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            System.out.println("일단 성공?2");
+                            if (task.isSuccessful()) {
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                    Log.d("Visitor", document.getId() + " => " + document.getData());
+                                    String uid;
+                                    uid = document.getData().get("str_Uid").toString();
+                                    System.out.println("uid 출력" + uid);
+
+                                    FirebaseDatabase.getInstance().getReference().child("users").child(uid).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<DataSnapshot> task) {
+                                            System.out.println("토큰 값"+task.getResult());
+                                            UserAccount userAccount = task.getResult().getValue(UserAccount.class);
+                                            System.out.println("토큰 값2"+userAccount.getToken());
+                                            comment_notice.put(userAccount.getToken(),uid);
+                                            System.out.println("해쉬"+comment_notice.get(userAccount.getToken()));
+                                        }
+                                    });
+                                    //comment_notice.put(userAccount.getNickName(), userAccount.getUid());
+                                }
+                            } else {
+                                Log.d("Visitor", "Error getting documents: ", task.getException());
+                            }
+
+                        }
+                    });
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                System.out.println("일단 실패?");
+            }
+        });
+
+
+        //System.out.println("해쉬맵"+" : "+ comment_notice);
+
+//        mDatabase.child("users").orderByChild("uid").get().getResult();
+
+//        db.collection("Post")
+//                .whereEqualTo("str_uid", ).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//            @Override
+//            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                if(task.isSuccessful()){
+//                    System.out.println("일단 성공?");
+//
+//                }else {
+//
+//                }
+//
+//            }
+//        });
+
+        System.out.println("참여자 데이터" + str_uid);
 
         db.collection("Post").document(str_Id).collection("Participate")
                 .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -169,7 +240,7 @@ public class Post_Owner_Acticity extends AppCompatActivity {
                 if (task.isSuccessful()) {
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         Log.d("Visitor", document.getId() + " => " + document.getData());
-                        j = i+1;
+                        j = i + 1;
                         i++;
                     }
                     count = j;
@@ -187,15 +258,17 @@ public class Post_Owner_Acticity extends AppCompatActivity {
                 CommentItem commentItem = new CommentItem();
                 commentItem.setStr_Email(auth.getCurrentUser().getEmail());
                 commentItem.setStr_Date(formatedNow);
-                commentItem.setStr_NickName(((MainActivity)MainActivity.context).strNick);
+                commentItem.setStr_NickName(((MainActivity) MainActivity.context).strNick);
                 commentItem.setStr_Content(edt_comment.getText().toString());
+                commentItem.setStr_Uid(auth.getCurrentUser().getUid());
+
                 db.collection("Post").document(str_Id).collection("Comment").add(commentItem)
                         .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentReference> task) {
-                        Toast.makeText(Post_Owner_Acticity.this, "성공", Toast.LENGTH_SHORT).show();
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onComplete(@NonNull Task<DocumentReference> task) {
+                                Toast.makeText(Post_Owner_Acticity.this, "성공", Toast.LENGTH_SHORT).show();
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         Toast.makeText(Post_Owner_Acticity.this, "실패", Toast.LENGTH_SHORT).show();
@@ -207,53 +280,55 @@ public class Post_Owner_Acticity extends AppCompatActivity {
         // 댓글 DB 실시간으로 가져오기
         db.collection("Post").document(str_Id).collection("Comment").orderBy("str_Date", Query.Direction.ASCENDING)
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
-            @Override
-            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-                if(error != null){
-                    System.out.println("Error: Post_Owner_Activity - Comment 불러오기 오류");
-                    return;
-                }
-                for(DocumentChange doc: value.getDocumentChanges()){
-                    switch (doc.getType()){
-                        case ADDED:
-                            System.out.println("오너 디버깅"+doc.getDocument().getString("str_Email"));
-                            addItem(doc.getDocument().getString("str_Email"),doc.getDocument().getString("str_NickName"),doc.getDocument().getString("str_Content"),doc.getDocument().getString("str_Date"));
-                            commentAdapter.notifyDataSetChanged();
-                            break;
-                        case MODIFIED:
-                            // 수정되었을때 작업
-                            break;
-                        case REMOVED:
-                            // 삭제되었을때 작업
-                            delItem(doc.getDocument().getString("str_Email"),doc.getDocument().getString("str_NickName"),doc.getDocument().getString("str_Content"),doc.getDocument().getString("str_Date"));
-                            commentAdapter.notifyDataSetChanged();
-                            break;
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                        if (error != null) {
+                            System.out.println("Error: Post_Owner_Activity - Comment 불러오기 오류");
+                            return;
+                        }
+                        for (DocumentChange doc : value.getDocumentChanges()) {
+                            switch (doc.getType()) {
+                                case ADDED:
+                                    System.out.println("오너 디버깅" + doc.getDocument().getString("str_Email"));
+                                    addItem(doc.getDocument().getString("str_Email"), doc.getDocument().getString("str_NickName"), doc.getDocument().getString("str_Content"), doc.getDocument().getString("str_Date"), doc.getDocument().getString("str_Uid"));
+                                    commentAdapter.notifyDataSetChanged();
+                                    break;
+                                case MODIFIED:
+                                    // 수정되었을때 작업
+                                    break;
+                                case REMOVED:
+                                    // 삭제되었을때 작업
+                                    delItem(doc.getDocument().getString("str_Email"), doc.getDocument().getString("str_NickName"), doc.getDocument().getString("str_Content"), doc.getDocument().getString("str_Date"), doc.getDocument().getString("str_Uid"));
+                                    commentAdapter.notifyDataSetChanged();
+                                    break;
+                            }
+                        }
                     }
-                }
-            }
-        });
+                });
     }
 
     // 댓글 추가
-    private void addItem(String Email, String Nickname, String Content, String Date){
+    private void addItem(String Email, String Nickname, String Content, String Date, String Uid) {
         CommentItem item = new CommentItem();
 
         item.setStr_Email(Email);
         item.setStr_NickName(Nickname);
         item.setStr_Content(Content);
         item.setStr_Date(Date);
+        item.setStr_Uid(Uid);
 
         comment_list.add(item);
     }
 
     // 댓글 삭제 눌렀을때 작동
-    private void delItem(String Email, String Nickname, String Content, String Date){
+    private void delItem(String Email, String Nickname, String Content, String Date, String Uid) {
         CommentItem item = new CommentItem();
 
         item.setStr_Email(Email);
         item.setStr_NickName(Nickname);
         item.setStr_Content(Content);
         item.setStr_Date(Date);
+        item.setStr_Uid(Uid);
 
         comment_list.remove(item);
     }
@@ -269,21 +344,22 @@ public class Post_Owner_Acticity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case android.R.id.home:
                 finish();
                 break;
             case R.id.btn_edit:
                 Toast.makeText(getApplicationContext(), "수정하기", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(Post_Owner_Acticity.this,EditPost_Activity.class);
+                Intent intent = new Intent(Post_Owner_Acticity.this, EditPost_Activity.class);
                 intent.putExtra("Title", str_title);
                 intent.putExtra("StartDate", str_StartDate);
                 intent.putExtra("EndDate", str_EndDate);
                 intent.putExtra("Number", str_total);
                 intent.putExtra("Post", str_content);
                 intent.putExtra("Filename", str_filename);
-                intent.putExtra("Str_Id",str_Id);
-                intent.putExtra("Link",str_link);
+                intent.putExtra("Str_Id", str_Id);
+                intent.putExtra("Link", str_link);
+                intent.putExtra("Uid", str_uid);
                 startActivity(intent);
                 break;
             case R.id.btn_del:
@@ -295,7 +371,7 @@ public class Post_Owner_Acticity extends AppCompatActivity {
 
                 // AlertDialog 셋팅
                 alertDialogBuilder
-                        .setMessage(str_title+" 게시물을 삭제할까요?")
+                        .setMessage(str_title + " 게시물을 삭제할까요?")
                         .setCancelable(false)
                         .setPositiveButton("네",
                                 new DialogInterface.OnClickListener() {
@@ -304,7 +380,7 @@ public class Post_Owner_Acticity extends AppCompatActivity {
                                         db.collection("Post").document(str_Id).delete().addOnCompleteListener(new OnCompleteListener<Void>() {
                                             @Override
                                             public void onComplete(@NonNull Task<Void> task) {
-                                                if(task.isSuccessful()){
+                                                if (task.isSuccessful()) {
                                                     Toast.makeText(getApplicationContext(), "삭제가 완료되었습니다:)", Toast.LENGTH_SHORT).show();
                                                     finish();
                                                 }
@@ -370,6 +446,7 @@ public class Post_Owner_Acticity extends AppCompatActivity {
         str_email = intent.getStringExtra("Email");
         str_uri = intent.getStringExtra("Uri");
         str_link = intent.getStringExtra("Link");
+        str_uid = intent.getStringExtra("Uid");
 
         // 접속 계정 정보
         str_Current_Email = auth.getCurrentUser().getEmail();
@@ -397,7 +474,7 @@ public class Post_Owner_Acticity extends AppCompatActivity {
                 InputStream is = conn.getInputStream();
                 File file = new File(LocalPath);
                 FileOutputStream fos = new FileOutputStream(file);
-                for (;;) {
+                for (; ; ) {
                     Read = is.read(tmpByte);
                     if (Read <= 0) {
                         break;

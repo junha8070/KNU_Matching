@@ -5,6 +5,7 @@ public class CommentItem {
     String str_Content;
     String str_Date;
     String str_Email;
+    String str_Uid;
 
     public String getStr_Email() {
         return str_Email;
@@ -36,5 +37,13 @@ public class CommentItem {
 
     public void setStr_Date(String str_Date) {
         this.str_Date = str_Date;
+    }
+
+    public String getStr_Uid() {
+        return str_Uid;
+    }
+
+    public void setStr_Uid(String str_Uid) {
+        this.str_Uid = str_Uid;
     }
 }

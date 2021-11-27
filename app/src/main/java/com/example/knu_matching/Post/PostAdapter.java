@@ -76,6 +76,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.GalleryViewHol
                     intent.putExtra("Uri",mDataset.get(temp).getUri());
                     intent.putExtra("Filename", mDataset.get(temp).getStr_filename());
                     intent.putExtra("Link", mDataset.get(temp).getStr_link());
+                    intent.putExtra("Uid", mDataset.get(temp).getStr_uid());
+
                     view.getContext().startActivity(intent);
                 }
                 else{
@@ -92,6 +94,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.GalleryViewHol
                     intent.putExtra("Uri",mDataset.get(temp).getUri());
                     intent.putExtra("Filename", mDataset.get(temp).getStr_filename());
                     intent.putExtra("Link", mDataset.get(temp).getStr_link());
+                    intent.putExtra("Uid", mDataset.get(temp).getStr_uid());
+
                     view.getContext().startActivity(intent);
                 }
 
