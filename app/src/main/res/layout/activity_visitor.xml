@@ -120,7 +120,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:autoLink="web"
-            android:ems="10"
+            android:ems="8"
             android:linksClickable="true"
             android:text=" 파일첨부 " />
 
@@ -130,6 +130,12 @@
             android:layout_height="wrap_content"
             android:layout_margin="10px"
             android:text="참여하기" />
+        <Button
+            android:id="@+id/btn_participate_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10px"
+            android:text="참여하기 취소" />
     </LinearLayout>
 
     <LinearLayout

@@ -66,7 +66,7 @@ import java.util.ArrayList;
 public class Visitor extends AppCompatActivity {
 
     Toolbar toolbar;
-    Button btn_comment, btn_participate;
+    Button btn_comment, btn_participate, btn_participate_cancel;
     TextView tv_count, tv_total, tv_StartDate, tv_EndDate, tv_file, tv_content, tv_title, tv_link;
     RecyclerView rv_comment;
     CommentAdapter commentAdapter = null;
@@ -113,6 +113,32 @@ public class Visitor extends AppCompatActivity {
         tv_content.setText(str_content);        // 내용
         tv_file.setText(str_application);       // 파일이름
         tv_link.setText(str_link);              // 링크
+
+        btn_participate_cancel.setEnabled(false);
+
+        btn_participate_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                db.collection("Post").document(str_Id).collection("Participate").document(auth.getCurrentUser().getEmail().replace(".", ">")).delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if(task.isSuccessful()){
+                            Toast.makeText(getApplicationContext(), "취소됨", Toast.LENGTH_SHORT).show();
+                            count --;
+                            tv_count.setText(count + "");
+                            btn_participate_cancel.setEnabled(false);
+                            btn_participate.setEnabled(true);
+                            finish();
+                        }
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(getApplicationContext(), "오류가 발생하였습니다.\n관리자한테 문의주시길 바랍니다.", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        });
 
         btn_comment.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -188,9 +214,11 @@ public class Visitor extends AppCompatActivity {
                 mFirebaseAuth = FirebaseAuth.getInstance();
                 mDatabaseRef = FirebaseDatabase.getInstance().getReference("Knu_Matching");
                 if (mFirebaseAuth.getCurrentUser().getEmail().equals(str_email) == false) {
+                    count ++;
                     tv_count.setText(count + "");
                     btn_participate.setEnabled(false);
                     btn_participate.setText("참여 완료");
+                    btn_participate_cancel.setEnabled(true);
 
                     user = FirebaseAuth.getInstance().getCurrentUser();
                     db.collection("Account").document(user.getEmail().replace(".", ">"))
@@ -251,6 +279,7 @@ public class Visitor extends AppCompatActivity {
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         Log.d("Visitor", document.getId() + " => " + document.getData());
                         if (document.getId().equals(auth.getCurrentUser().getEmail().replace(".", ">"))) {
+                            btn_participate_cancel.setEnabled(true);
                             btn_participate.setEnabled(false);
                             btn_participate.setText("참여 완료");
                         }
@@ -318,6 +347,7 @@ public class Visitor extends AppCompatActivity {
         rv_comment = findViewById(R.id.rv_comment);
         edt_comment = findViewById(R.id.edt_comment);
         tv_link = findViewById(R.id.tv_link);
+        btn_participate_cancel = findViewById(R.id.btn_participate_cancel);
 
         // intent 값 받아오기
         intent = getIntent();
