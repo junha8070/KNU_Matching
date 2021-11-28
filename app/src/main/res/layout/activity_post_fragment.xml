@@ -6,34 +6,47 @@ android:layout_height="match_parent"
 tools:context=".Post.PostFragment"
     android:id="@+id/FL_Third">
 
-<!-- TODO: Update blank fragment layout -->
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/swipe_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/recycleView"/>
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
     <LinearLayout
-        android:layout_gravity="center|bottom"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-        <Button
-            android:id="@+id/btn_Recent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:layout_alignParentRight="true"
-            android:text="글쓰기" />
-        <Button
-            android:layout_width="wrap_content"
+            android:text="최신글"
+            android:fontFamily="@font/tway_air"
+            android:textSize="22dp"
+            android:textColor="#0071be"
+            android:padding="12dp"/>
+
+
+        <!-- TODO: Update blank fragment layout -->
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipe_layout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/btn_test"
-            android:text="테스트"/>
+            android:orientation="vertical">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycleView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
     </LinearLayout>
+
+
+    <Button
+        android:id="@+id/btn_Recent"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:layout_alignParentRight="true"
+        android:layout_gravity="center|bottom"
+        android:layout_margin="5dp"
+        android:layout_weight="1"
+        android:backgroundTint="#e8f3ff"
+        android:textColor="#111"
+        android:fontFamily="@font/tway_air"
+        android:text="글쓰기" />
+
 </FrameLayout>

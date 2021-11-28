@@ -36,6 +36,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="10px"
+            android:textColor="#5489C3"
             android:text="모집인원 수 " />
 
         <TextView
@@ -78,6 +79,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="10px"
+            android:textColor="#5489C3"
             android:text="모집기간 " />
 
         <TextView
@@ -85,14 +87,20 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="10px"
-            android:ems="10"
+            android:ems="6"
             android:hint="기간" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10px"
+            android:text=" ~ " />
+
         <TextView
             android:id="@+id/tv_EndDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="10px"
-            android:ems="10"
+            android:ems="6"
             android:hint="기간" />
     </LinearLayout>
 
@@ -109,6 +117,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="10px"
+            android:textColor="#5489C3"
             android:text="첨부파일" />
 
         <TextView
@@ -135,6 +144,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="10px"
+            android:textColor="#5489C3"
             android:text="링크 " />
 
         <TextView
@@ -161,6 +171,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="10px"
+            android:textColor="#5489C3"
             android:text="내용 " />
 
         <TextView
@@ -187,6 +198,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="10px"
+            android:textColor="#5489C3"
             android:text="댓글 " />
 
         <androidx.recyclerview.widget.RecyclerView
@@ -217,6 +229,9 @@
                 android:layout_height="wrap_content"
                 android:text="답글달기"
                 android:layout_margin="10px"
+                android:backgroundTint="#e8f3ff"
+                android:textColor="#111"
+                android:fontFamily="@font/tway_air"
                 android:id="@+id/btn_comment"/>
         </LinearLayout>
     </LinearLayout>

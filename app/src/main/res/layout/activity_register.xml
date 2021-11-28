@@ -40,11 +40,11 @@
         android:orientation="horizontal">
 
         <EditText
-            android:background="#FFFFFFFF"
             android:id="@+id/edt_StudentName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:enabled="false"
+            android:backgroundTint="#e8f3ff"
             android:hint="이름(조회버튼을 눌러주세요!)" />
     </LinearLayout>
 
@@ -58,11 +58,11 @@
         android:orientation="horizontal">
 
         <EditText
-            android:background="#FFFFFFFF"
             android:id="@+id/edt_StudentID"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:enabled="false"
+            android:backgroundTint="#e8f3ff"
             android:hint="학번(조회버튼을 눌러주세요!)" />
     </LinearLayout>
 
@@ -76,11 +76,11 @@
         android:orientation="horizontal">
 
         <EditText
-            android:background="#FFFFFFFF"
             android:id="@+id/edt_Major"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:enabled="false"
+            android:backgroundTint="#e8f3ff"
             android:hint="전공(조회버튼을 눌러주세요!)" />
     </LinearLayout>
 
@@ -94,11 +94,11 @@
         android:orientation="horizontal">
 
         <EditText
-            android:background="#FFFFFFFF"
             android:id="@+id/edt_PhoneNumber"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:enabled="false"
+            android:backgroundTint="#e8f3ff"
             android:hint="핸드폰 번호(조회버튼을 눌러주세요!)" />
     </LinearLayout>
 
@@ -112,11 +112,12 @@
         android:orientation="vertical">
 
         <EditText
-            android:background="#FFFFFFFF"
             android:id="@+id/edt_Email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:backgroundTint="#e8f3ff"
             android:hint="Email(조회버튼을 눌러주세요!)"
+            android:importantForAutofill="no"
             android:inputType="textEmailAddress" />
         <TextView
             android:layout_width="match_parent"
@@ -146,20 +147,20 @@
         android:orientation="vertical">
 
         <EditText
-            android:background="#FFFFFFFF"
             android:id="@+id/edt_Password"
             android:layout_width="match_parent"
             android:layout_height="30dp"
             android:ems="10"
             android:hint="비밀번호"
+            android:backgroundTint="#e8f3ff"
             android:inputType="textPassword" />
 
         <EditText
             android:layout_marginTop="20dp"
-            android:background="#FFFFFFFF"
             android:id="@+id/edt_RePassword"
             android:layout_width="match_parent"
             android:layout_height="30dp"
+            android:backgroundTint="#e8f3ff"
             android:hint="비밀번호 재입력"
             android:inputType="textPassword" />
         <LinearLayout
@@ -175,7 +176,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
                 android:layout_weight="1"
-                android:background="#FFFFFFFF"
+                android:backgroundTint="#e8f3ff"
                 android:hint="Nickname" />
 
             <ImageButton

@@ -23,6 +23,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.example.knu_matching.GetSet.Post;
@@ -89,7 +90,6 @@ public class PostFragment extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.activity_post_fragment, container, false);
         Button btn_Recent = v.findViewById(R.id.btn_Recent);
-        Button btn_test = v.findViewById(R.id.btn_test);
 
 
         user = FirebaseAuth.getInstance().getCurrentUser();
@@ -113,13 +113,7 @@ public class PostFragment extends Fragment {
                 moveSubActivity();
             }
         });
-        btn_test.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getContext(),Post_Owner_Acticity.class);
-                startActivity(intent);
-            }
-        });
+
 
         // Inflate the layout for this fragment
         return v;
