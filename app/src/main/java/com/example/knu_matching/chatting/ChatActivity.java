@@ -326,7 +326,7 @@ public class ChatActivity extends AppCompatActivity {
                                                 System.out.println("arrayList value "+value);
                                                 if(value.equals(item.getKey())){
                                                     System.out.println("arrayList equals "+item.getKey());
-                                                    SendNotification.sendNotification(key, "메세지가 도착했습니다!");
+                                                    SendNotification.sendNotification(key, "메세지가 도착했습니다!", nickname);
                                                 }
                                             }
                                         }

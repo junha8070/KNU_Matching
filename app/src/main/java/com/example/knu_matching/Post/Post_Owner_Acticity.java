@@ -31,6 +31,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.knu_matching.GetSet.CommentItem;
+import com.example.knu_matching.GetSet.Post;
 import com.example.knu_matching.MainActivity;
 import com.example.knu_matching.R;
 import com.example.knu_matching.SendNotification;
@@ -45,6 +46,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
@@ -80,7 +82,7 @@ public class Post_Owner_Acticity extends AppCompatActivity {
     RecyclerView rv_comment;
     CommentAdapter commentAdapter = null;
     EditText edt_comment;
-    String str_title, str_count, str_total, str_StartDate, str_EndDate, str_filename, str_content, str_comment, str_email, str_Id, str_time, str_uri, str_link, str_uid;
+    String str_title, str_count, str_total, str_StartDate, str_EndDate, str_filename, str_content, str_comment, str_email, str_Id, str_time, str_uri, str_link, str_uid, str_owner_uid;
     public String str_Current_Email;
     Intent intent;
     ArrayList<CommentItem> comment_list;
@@ -196,12 +198,86 @@ public class Post_Owner_Acticity extends AppCompatActivity {
                 commentItem.setStr_NickName(((MainActivity) MainActivity.context).strNick);
                 commentItem.setStr_Content(edt_comment.getText().toString());
                 commentItem.setStr_Uid(auth.getCurrentUser().getUid());
+                db.collection("Post").document(str_Id).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        Post post = task.getResult().toObject(Post.class);
+                        str_owner_uid = post.getStr_uid();
+                        System.out.println("글쓴이 uid1 "+str_owner_uid);
+                        FirebaseDatabase.getInstance().getReference().child("users").child(str_owner_uid).get()
+                                .addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<DataSnapshot> task) {
+                                        UserAccount userAccount = task.getResult().getValue(UserAccount.class);
+                                        System.out.println("토큰 값 2  "+userAccount.getToken());
+                                        comment_notice.put(userAccount.getToken(),str_owner_uid);
+                                        System.out.println("해쉬 "+comment_notice.keySet());
+                                    }
+                                });
+
+                    }
+                });
+
 
                 db.collection("Post").document(str_Id).collection("Comment").add(commentItem)
                         .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
                             @Override
                             public void onComplete(@NonNull Task<DocumentReference> task) {
                                 Toast.makeText(Post_Owner_Acticity.this, "성공", Toast.LENGTH_SHORT).show();
+                                FirebaseDatabase.getInstance().getReference().child("users").equalTo(str_uid).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<DataSnapshot> task) {
+                                        if (task.isSuccessful()) {
+                                            System.out.println("일단 성공?");
+
+
+                                            db.collection("Post").document(str_Id).collection("Comment").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                    System.out.println("일단 성공?2");
+                                                    if (task.isSuccessful()) {
+                                                        for (QueryDocumentSnapshot document : task.getResult()) {
+                                                            Log.d("Visitor", document.getId() + " => " + document.getData());
+                                                            String uid;
+                                                            uid = document.getData().get("str_Uid").toString();
+                                                            System.out.println("uid 출력" + uid);
+
+                                                            FirebaseDatabase.getInstance().getReference().child("users").child(uid).get()
+                                                                    .addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                                                                        @Override
+                                                                        public void onComplete(@NonNull Task<DataSnapshot> task) {
+                                                                            System.out.println("토큰 값 "+task.getResult());
+                                                                            UserAccount userAccount = task.getResult().getValue(UserAccount.class);
+                                                                            System.out.println("토큰 값 2  "+userAccount.getToken());
+                                                                            comment_notice.put(userAccount.getToken(),uid);
+                                                                            System.out.println("해쉬 "+comment_notice.keySet());
+
+                                                                        }
+                                                                    });
+                                                            //comment_notice.put(userAccount.getNickName(), userAccount.getUid());
+
+                                                        }
+                                                    } else {
+                                                        Log.d("Visitor", "Error getting documents: ", task.getException());
+                                                    }
+
+                                                }
+                                            });
+                                        }
+                                    }
+                                }).addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        System.out.println("일단 실패?");
+                                    }
+                                });
+                                for(String key : comment_notice.keySet()) {
+                                    String value = comment_notice.get(key);
+                                    System.out.println("comment_notice key "+key);
+                                    System.out.println("comment_notice value "+value);
+                                    SendNotification.sendNotification(key, "댓글이 달렸습니다!", str_title);
+                                    System.out.println("comment_notice value enddddd");
+                                }
                             }
                         }).addOnFailureListener(new OnFailureListener() {
                     @Override

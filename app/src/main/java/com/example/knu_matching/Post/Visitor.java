@@ -234,7 +234,7 @@ public class Visitor extends AppCompatActivity {
                                         String value = comment_notice.get(key);
                                         System.out.println("comment_notice key "+key);
                                         System.out.println("comment_notice value "+value);
-                                        SendNotification.sendNotification(key, "댓글이 달렸습니다!");
+                                        SendNotification.sendNotification(key, "댓글이 달렸습니다!", str_title);
                                         System.out.println("comment_notice value enddddd");
                                     }
                                 }

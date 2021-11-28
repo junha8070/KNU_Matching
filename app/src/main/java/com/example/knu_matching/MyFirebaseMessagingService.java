@@ -94,7 +94,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     private void sendNotification(String title, String messageBody, String click_action) {
         if (title == null){
             //제목이 없는 payload이면
-            title = "KNU Matching"; //기본제목을 적어 주자.
+            title = "asdf"; //기본제목을 적어 주자.
         }
         Intent intent = new Intent(this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
