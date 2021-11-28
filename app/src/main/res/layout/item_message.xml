@@ -17,8 +17,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="이름"
-            android:layout_margin="20dp"
-            android:textSize="20dp"
+            android:layout_margin="10dp"
+            android:textSize="15dp"
             android:layout_gravity="center"
             android:layout_marginRight="20dp"/>
 
@@ -26,9 +26,10 @@
 
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="200dp"
         android:layout_height="50dp"
         android:orientation="vertical"
+        android:background="@drawable/idpwblank"
         android:layout_gravity="bottom"
         android:gravity="bottom">
 
@@ -36,7 +37,7 @@
             android:text="메세지"
             android:id="@+id/messageItem_textView_message"
             android:layout_width="wrap_content"
-            android:textSize="15dp"
+            android:textSize="12dp"
             android:layout_height="wrap_content" />
 
         <TextView

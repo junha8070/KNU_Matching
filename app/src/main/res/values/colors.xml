@@ -9,6 +9,7 @@
     <color name="white">#FFFFFFFF</color>
     <color name="transparent">#00000000</color><!-- 투명 -->
     <color name="colorBlack">#ff000000</color>
+    <color name="mainColor">#e8f3ff</color>
     <color name="colorBlue">#0385ff</color>
     <color name="colorWhite">#ffffffff</color>
     <color name="colorGray">#ff8a8a8a</color>

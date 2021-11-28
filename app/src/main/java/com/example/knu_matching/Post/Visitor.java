@@ -29,8 +29,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.knu_matching.GetSet.CommentItem;
+import com.example.knu_matching.GetSet.Post;
 import com.example.knu_matching.MainActivity;
 import com.example.knu_matching.R;
+import com.example.knu_matching.SendNotification;
 import com.example.knu_matching.UserAccount;
 import com.example.knu_matching.membermanage.RegisterActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -39,6 +41,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentChange;
@@ -61,6 +64,8 @@ import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 @RequiresApi(api = Build.VERSION_CODES.O)
 public class Visitor extends AppCompatActivity {
@@ -72,7 +77,7 @@ public class Visitor extends AppCompatActivity {
     CommentAdapter commentAdapter = null;
     EditText edt_comment;
     String str_participate_Nickname, str_participate_Major, str_participate_StudentId, str_participate_EmailId, str_participate_Uid;
-    String str_title, str_count, str_total, str_StartDate, str_EndDate, str_filename, str_content, str_comment, str_email, str_Id, str_time, str_application, str_link, str_uid;
+    String str_owner_uid, str_title, str_count, str_total, str_StartDate, str_EndDate, str_filename, str_content, str_comment, str_email, str_Id, str_time, str_application, str_link, str_uid;
     public String str_Current_Email;
     Intent intent;
     ArrayList<CommentItem> comment_list;
@@ -90,6 +95,7 @@ public class Visitor extends AppCompatActivity {
     FirebaseUser user;
     FirebaseAuth auth = FirebaseAuth.getInstance();
     FirebaseFirestore db = FirebaseFirestore.getInstance();
+    static final Map<String, String> comment_notice= new HashMap<String,String>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -143,26 +149,106 @@ public class Visitor extends AppCompatActivity {
         btn_comment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CommentItem commentItem = new CommentItem();
-                commentItem.setStr_Email(auth.getCurrentUser().getEmail());
-                commentItem.setStr_Date(formatedNow);
-                commentItem.setStr_NickName(((MainActivity) MainActivity.context).strNick);
-                commentItem.setStr_Content(edt_comment.getText().toString());
-                commentItem.setStr_Uid(auth.getCurrentUser().getUid());
+                if(edt_comment.getText().toString().equals("")){
+                }
+                else{
+                    CommentItem commentItem = new CommentItem();
+                    commentItem.setStr_Email(auth.getCurrentUser().getEmail());
+                    commentItem.setStr_Date(formatedNow);
+                    commentItem.setStr_NickName(((MainActivity) MainActivity.context).strNick);
+                    commentItem.setStr_Content(edt_comment.getText().toString());
+                    commentItem.setStr_Uid(auth.getCurrentUser().getUid());
+                    db.collection("Post").document(str_Id).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            Post post = task.getResult().toObject(Post.class);
+                            str_owner_uid = post.getStr_uid();
+                            System.out.println("글쓴이 uid1 "+str_owner_uid);
+                            FirebaseDatabase.getInstance().getReference().child("users").child(str_owner_uid).get()
+                                    .addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<DataSnapshot> task) {
+                                            UserAccount userAccount = task.getResult().getValue(UserAccount.class);
+                                            System.out.println("토큰 값 2  "+userAccount.getToken());
+                                            comment_notice.put(userAccount.getToken(),str_owner_uid);
+                                            System.out.println("해쉬 "+comment_notice.keySet());
+                                        }
+                                    });
 
-                db.collection("Post").document(str_Id).collection("Comment").add(commentItem)
-                        .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
-                            @Override
-                            public void onComplete(@NonNull Task<DocumentReference> task) {
-                                Toast.makeText(Visitor.this, "성공", Toast.LENGTH_SHORT).show();
-                            }
-                        }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(Visitor.this, "실패", Toast.LENGTH_SHORT).show();
-                    }
-                });
+                        }
+                    });
+
+                    db.collection("Post").document(str_Id).collection("Comment").add(commentItem)
+                            .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                                @Override
+                                public void onComplete(@NonNull Task<DocumentReference> task) {
+                                    Toast.makeText(Visitor.this, "성공", Toast.LENGTH_SHORT).show();
+                                    FirebaseDatabase.getInstance().getReference().child("users").equalTo(str_uid).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<DataSnapshot> task) {
+                                            if (task.isSuccessful()) {
+                                                System.out.println("일단 성공?");
+
+
+                                                db.collection("Post").document(str_Id).collection("Comment").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                        System.out.println("일단 성공?2");
+                                                        if (task.isSuccessful()) {
+                                                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                                                Log.d("Visitor", document.getId() + " => " + document.getData());
+                                                                String uid;
+                                                                uid = document.getData().get("str_Uid").toString();
+                                                                System.out.println("uid 출력" + uid);
+
+                                                                FirebaseDatabase.getInstance().getReference().child("users").child(uid).get()
+                                                                        .addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                                                                            @Override
+                                                                            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                                                                                System.out.println("토큰 값 "+task.getResult());
+                                                                                UserAccount userAccount = task.getResult().getValue(UserAccount.class);
+                                                                                System.out.println("토큰 값 2  "+userAccount.getToken());
+                                                                                comment_notice.put(userAccount.getToken(),uid);
+                                                                                System.out.println("해쉬 "+comment_notice.keySet());
+
+                                                                            }
+                                                                        });
+                                                                //comment_notice.put(userAccount.getNickName(), userAccount.getUid());
+
+                                                            }
+                                                        } else {
+                                                            Log.d("Visitor", "Error getting documents: ", task.getException());
+                                                        }
+
+                                                    }
+                                                });
+                                            }
+                                        }
+                                    }).addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            System.out.println("일단 실패?");
+                                        }
+                                    });
+                                    for(String key : comment_notice.keySet()) {
+                                        String value = comment_notice.get(key);
+                                        System.out.println("comment_notice key "+key);
+                                        System.out.println("comment_notice value "+value);
+                                        SendNotification.sendNotification(key, "댓글이 달렸습니다!");
+                                        System.out.println("comment_notice value enddddd");
+                                    }
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(Visitor.this, "실패", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+
+
             }
+
         });
 
         // 댓글 DB 실시간으로 가져오기
@@ -264,7 +350,7 @@ public class Visitor extends AppCompatActivity {
                         Log.d("Visitor", document.getId() + " => " + document.getData());
                         j = i+1;
                         i++;
-                        }
+                    }
                     count = j;
                     tv_count.setText(count + "");
                 } else {

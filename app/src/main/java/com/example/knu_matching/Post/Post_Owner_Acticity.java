@@ -33,6 +33,7 @@ import android.widget.Toast;
 import com.example.knu_matching.GetSet.CommentItem;
 import com.example.knu_matching.MainActivity;
 import com.example.knu_matching.R;
+import com.example.knu_matching.SendNotification;
 import com.example.knu_matching.UserAccount;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -85,11 +86,9 @@ public class Post_Owner_Acticity extends AppCompatActivity {
     ArrayList<CommentItem> comment_list;
     Context context = this;
     int count = 0;
-    String uid;
-
     LocalDateTime now = LocalDateTime.now();
     String formatedNow = now.format(DateTimeFormatter.ofPattern("yyyy_MM_dd_HH_mm_ss_SSS"));
-
+    String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
     String File_Name = "확장자를 포함한 파일명";
     String File_extend = "확장자명";
     String Save_Path;
@@ -164,70 +163,6 @@ public class Post_Owner_Acticity extends AppCompatActivity {
                 }
             });
         }
-
-        ;
-        System.out.println("struid" + str_uid);
-        FirebaseDatabase.getInstance().getReference().child("users").equalTo(str_uid).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DataSnapshot> task) {
-                if (task.isSuccessful()) {
-                    System.out.println("일단 성공?");
-                    db.collection("Post").document(str_Id).collection("Comment").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                            System.out.println("일단 성공?2");
-                            if (task.isSuccessful()) {
-                                for (QueryDocumentSnapshot document : task.getResult()) {
-                                    Log.d("Visitor", document.getId() + " => " + document.getData());
-                                    String uid;
-                                    uid = document.getData().get("str_Uid").toString();
-                                    System.out.println("uid 출력" + uid);
-
-                                    FirebaseDatabase.getInstance().getReference().child("users").child(uid).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<DataSnapshot> task) {
-                                            System.out.println("토큰 값"+task.getResult());
-                                            UserAccount userAccount = task.getResult().getValue(UserAccount.class);
-                                            System.out.println("토큰 값2"+userAccount.getToken());
-                                            comment_notice.put(userAccount.getToken(),uid);
-                                            System.out.println("해쉬"+comment_notice.get(userAccount.getToken()));
-                                        }
-                                    });
-                                    //comment_notice.put(userAccount.getNickName(), userAccount.getUid());
-                                }
-                            } else {
-                                Log.d("Visitor", "Error getting documents: ", task.getException());
-                            }
-
-                        }
-                    });
-                }
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                System.out.println("일단 실패?");
-            }
-        });
-
-
-        //System.out.println("해쉬맵"+" : "+ comment_notice);
-
-//        mDatabase.child("users").orderByChild("uid").get().getResult();
-
-//        db.collection("Post")
-//                .whereEqualTo("str_uid", ).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-//            @Override
-//            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-//                if(task.isSuccessful()){
-//                    System.out.println("일단 성공?");
-//
-//                }else {
-//
-//                }
-//
-//            }
-//        });
 
         System.out.println("참여자 데이터" + str_uid);
 

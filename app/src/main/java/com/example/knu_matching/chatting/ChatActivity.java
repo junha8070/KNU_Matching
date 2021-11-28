@@ -307,12 +307,12 @@ public class ChatActivity extends AppCompatActivity {
                                     if (value.equals(uid)) {
                                         comment.nickname = key;
                                     } else {
-                                        System.out.println("ttest wrong");
+                                        System.out.println("wrong");
                                     }
 
                                 }
 
-                                FirebaseDatabase.getInstance().getReference().child("chatrooms").child(chatRoomUid).child("users").addValueEventListener(new ValueEventListener() {
+                                FirebaseDatabase.getInstance().getReference().child("chatrooms").child(chatRoomUid).child("users").addListenerForSingleValueEvent(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                                         for(DataSnapshot item : snapshot.getChildren()){
@@ -326,7 +326,7 @@ public class ChatActivity extends AppCompatActivity {
                                                 System.out.println("arrayList value "+value);
                                                 if(value.equals(item.getKey())){
                                                     System.out.println("arrayList equals "+item.getKey());
-                                                    SendNotification.sendNotification(key, nickname);
+                                                    SendNotification.sendNotification(key, "메세지가 도착했습니다!");
                                                 }
                                             }
                                         }
