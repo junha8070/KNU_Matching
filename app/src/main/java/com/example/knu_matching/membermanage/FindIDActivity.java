@@ -25,7 +25,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 public class FindIDActivity extends AppCompatActivity {
     private EditText edt_name;
-    private ImageButton btn_FindloginId, btn_Cancel;
+    private Button btn_FindloginId, btn_Cancel;
     private DatabaseReference mDatabaseRef;
     private FirebaseAuth mFirebaseAuth;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();

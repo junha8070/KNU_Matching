@@ -24,7 +24,9 @@
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
         android:ems="15"
+        android:fontFamily="@font/tway_air"
         android:hint="이름을 입력해 주세요."
+        android:textSize="15dp"
         android:inputType="textPersonName" />
 
 
@@ -34,20 +36,26 @@
         android:weightSum="2"
         android:orientation="horizontal">
 
-        <ImageButton
+        <Button
             android:id="@+id/btn_FindloginId"
-            android:layout_width="30dp"
-            android:layout_height="50dp"
-            android:background="@drawable/id"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#e8f3ff"
+            android:textSize="20dp"
+            android:fontFamily="@font/tway_air"
+            android:textColor="@color/black"
             android:layout_margin="20dp"
             android:layout_weight="1"
             android:text="아이디 찾기" />
 
-        <ImageButton
+        <Button
             android:id="@+id/btn_Cancel"
-            android:layout_width="30dp"
-            android:layout_height="50dp"
-            android:background="@drawable/cancel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#e8f3ff"
+            android:textSize="20dp"
+            android:fontFamily="@font/tway_air"
+            android:textColor="@color/black"
             android:layout_margin="20dp"
             android:layout_weight="1"
             android:text="취소" />

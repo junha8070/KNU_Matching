@@ -25,9 +25,10 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:fontFamily="@font/tway_air"
             android:text="강남대학교 종합정보시스템 기준으로\n학번과 전공과 이메일이 채워집니다.\n이메일은 수정가능합니다!"
             android:textAlignment="center"
-            android:textSize="15dp"/>
+            android:textSize="12dp"/>
     </LinearLayout>
 
     <LinearLayout
@@ -45,6 +46,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:enabled="false"
+            android:textSize="15dp"
+            android:fontFamily="@font/tway_air"
             android:hint="이름(조회버튼을 눌러주세요!)" />
     </LinearLayout>
 
@@ -63,6 +66,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:enabled="false"
+            android:textSize="15dp"
+            android:fontFamily="@font/tway_air"
             android:hint="학번(조회버튼을 눌러주세요!)" />
     </LinearLayout>
 
@@ -81,6 +86,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:enabled="false"
+            android:textSize="15dp"
+            android:fontFamily="@font/tway_air"
             android:hint="전공(조회버튼을 눌러주세요!)" />
     </LinearLayout>
 
@@ -98,7 +105,9 @@
             android:id="@+id/edt_PhoneNumber"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textSize="15dp"
             android:enabled="false"
+            android:fontFamily="@font/tway_air"
             android:hint="핸드폰 번호(조회버튼을 눌러주세요!)" />
     </LinearLayout>
 
@@ -116,28 +125,35 @@
             android:id="@+id/edt_Email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textSize="15dp"
+            android:fontFamily="@font/tway_air"
             android:hint="Email(조회버튼을 눌러주세요!)"
             android:inputType="textEmailAddress" />
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/tway_air"
+            android:textSize="12dp"
             android:text="* ID로 쓰입니다! *"/>
 
     </LinearLayout>
 
-    <ImageButton
-        android:layout_marginTop="20dp"
+    <Button
+        android:layout_marginTop="10dp"
         android:layout_marginRight="20dp"
         android:layout_marginLeft="20dp"
         android:id="@+id/btn_knuID"
-        android:background="@drawable/ok"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#e8f3ff"
+        android:fontFamily="@font/tway_air"
+        android:textSize="15dp"
+        android:textColor="@color/black"
         android:text="조회" />
 
     <LinearLayout
         android:layout_marginBottom="10dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:layout_marginRight="20dp"
         android:layout_marginLeft="20dp"
         android:layout_width="match_parent"
@@ -149,55 +165,67 @@
             android:background="#FFFFFFFF"
             android:id="@+id/edt_Password"
             android:layout_width="match_parent"
-            android:layout_height="30dp"
+            android:layout_height="wrap_content"
             android:ems="10"
+            android:textSize="15dp"
+            android:fontFamily="@font/tway_air"
             android:hint="비밀번호"
             android:inputType="textPassword" />
 
         <EditText
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
             android:background="#FFFFFFFF"
             android:id="@+id/edt_RePassword"
             android:layout_width="match_parent"
-            android:layout_height="30dp"
+            android:layout_height="wrap_content"
             android:hint="비밀번호 재입력"
+            android:textSize="15dp"
+            android:fontFamily="@font/tway_air"
             android:inputType="textPassword" />
         <LinearLayout
             android:gravity="center"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:orientation="horizontal">
 
             <EditText
                 android:id="@+id/edt_nickname"
                 android:layout_width="match_parent"
-                android:layout_height="30dp"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:textSize="15dp"
                 android:background="#FFFFFFFF"
+                android:fontFamily="@font/tway_air"
                 android:hint="Nickname" />
 
-            <ImageButton
+            <Button
                 android:layout_weight="3"
                 android:id="@+id/btn_check_nick"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:background="@drawable/nickname" />
+                android:layout_height="wrap_content"
+                android:backgroundTint="#e8f3ff"
+                android:fontFamily="@font/tway_air"
+                android:textSize="15dp"
+                android:textColor="@color/black"
+                android:text="중복조회"/>
         </LinearLayout>
 
     </LinearLayout>
 
-    <ImageButton
+    <Button
         android:id="@+id/btn_registerButton"
-        android:layout_marginTop="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginLeft="20dp"
         android:layout_marginBottom="20dp"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:background="@drawable/signin"
+        android:backgroundTint="#e8f3ff"
+        android:fontFamily="@font/tway_air"
+        android:textSize="15dp"
+        android:textColor="@color/black"
         android:text="회원가입" />
 
 </LinearLayout>
