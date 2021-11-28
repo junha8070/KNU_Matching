@@ -71,6 +71,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
             tv_nickname = itemView.findViewById(R.id.tv_nickname);
             tv_content = itemView.findViewById(R.id.tv_content);
             tv_date = itemView.findViewById(R.id.tv_date);
+//            btn_comment = itemView.findViewById(R.id.btn_comment);
             btn_report = itemView.findViewById(R.id.btn_report);
             btn_del = itemView.findViewById(R.id.btn_del);
 

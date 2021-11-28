@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
     private TabLayout tabLayout;
 
     String code;
-    private String[] titles = new String[]{"게시판", "친구", "채팅", "모집\n상황", "활동\n게시판"};
+    private String[] titles = new String[]{"게시판", "친구", "채팅", "활동\n게시판"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -152,7 +152,6 @@ public class MainActivity extends AppCompatActivity {
         myPagerAdapter.addFrag(frag_people);
         myPagerAdapter.addFrag(frag_chat);
 //        myPagerAdapter.addFrag(frag_mypage);
-        myPagerAdapter.addFrag(frag_recruit);
         myPagerAdapter.addFrag(frag_board);
         mViewPager.setAdapter(myPagerAdapter);
 

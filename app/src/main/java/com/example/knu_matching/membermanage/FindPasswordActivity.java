@@ -18,7 +18,7 @@ import com.google.firebase.auth.FirebaseAuth;
 public class FindPasswordActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
-    private ImageButton btn_send, btn_Cancel;
+    private Button btn_send, btn_Cancel;
     private EditText edt_email;
 
     @Override

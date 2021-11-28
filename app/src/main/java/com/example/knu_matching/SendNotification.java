@@ -13,7 +13,7 @@ import okhttp3.Response;
 
 public class SendNotification {
     public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
-    public static void sendNotification(String regToken, String title){
+    public static void sendNotification(String regToken, String msg, String title){
         new AsyncTask<Void, Void, Void>() {
             @Override
             protected Void doInBackground(Void... parms) {
@@ -21,7 +21,7 @@ public class SendNotification {
                     OkHttpClient client = new OkHttpClient();
                     JSONObject json = new JSONObject();
                     JSONObject dataJson = new JSONObject();
-                    dataJson.put("body", "메시지 도착");
+                    dataJson.put("body", msg);
                     dataJson.put("title", title);
                     json.put("notification", dataJson);
                     json.put("to", regToken);

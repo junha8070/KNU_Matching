@@ -46,7 +46,7 @@ public class RegisterActivity extends AppCompatActivity {
     private DatabaseReference mDatabaseref;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private EditText edt_StudentID, edt_Major, edt_Email, edt_password, edt_repassword, edt_Nickname, edt_PhoneNumber, edt_StudentName;
-    private ImageButton btn_finish, btn_check_nick, btn_knuID;
+    private Button btn_finish, btn_check_nick, btn_knuID;
     private String strEmail, strPassword, strNick, strMaojr, strStudentId, strPhoneNumber, strStudentName;
     private boolean nickname_state;
 

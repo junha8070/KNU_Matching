@@ -20,6 +20,7 @@
             android:layout_height="wrap_content"
             android:padding="10dp"
             android:text="개인 정보 수정"
+            android:fontFamily="@font/tway_air"
             android:textSize="30dp" />
     </LinearLayout>
 
@@ -38,6 +39,8 @@
             android:layout_height="wrap_content"
             android:background="#FFFFFFFF"
             android:enabled="false"
+            android:textSize="15dp"
+            android:fontFamily="@font/tway_air"
             android:hint="이름(조회버튼을 눌러주세요!)" />
     </LinearLayout>
 
@@ -55,7 +58,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#FFFFFFFF"
+            android:fontFamily="@font/tway_air"
             android:enabled="false"
+            android:textSize="15dp"
             android:hint="학번(조회버튼을 눌러주세요!)" />
     </LinearLayout>
 
@@ -74,6 +79,8 @@
             android:layout_height="wrap_content"
             android:background="#FFFFFFFF"
             android:enabled="false"
+            android:textSize="15dp"
+            android:fontFamily="@font/tway_air"
             android:hint="전공(조회버튼을 눌러주세요!)" />
     </LinearLayout>
 
@@ -91,16 +98,22 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#FFFFFFFF"
+            android:fontFamily="@font/tway_air"
             android:enabled="false"
+            android:textSize="15dp"
             android:hint="핸드폰 번호(조회버튼을 눌러주세요!)" />
     </LinearLayout>
 
-    <ImageButton
+    <Button
         android:id="@+id/btn_update"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="wrap_content"
         android:layout_margin="20dp"
-        android:background="@drawable/ok"/>
+        android:backgroundTint="#e8f3ff"
+        android:textSize="15dp"
+        android:fontFamily="@font/tway_air"
+        android:text="조회"
+        android:textColor="@color/black"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -119,26 +132,30 @@
             <EditText
                 android:id="@+id/edt_nickname"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
+                android:layout_height="wrap_content"
                 android:background="#FFFFFFFF"
                 android:fontFamily="@font/tway_air"
                 android:hint="닉네임"
-                android:textSize="20dp" />
+                android:textSize="15dp" />
             <TextView
                 android:textColor="@color/black"
                 android:id="@+id/tv_nickstate"
                 android:layout_width="match_parent"
                 android:fontFamily="@font/tway_air"
+                android:textSize="12dp"
                 android:layout_height="wrap_content"/>
         </LinearLayout>
 
 
-        <ImageButton
+        <Button
             android:id="@+id/btn_check_nick"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="wrap_content"
             android:layout_weight="4"
-            android:background="@drawable/nickname"
+            android:backgroundTint="#e8f3ff"
+            android:textSize="15dp"
+            android:fontFamily="@font/tway_air"
+            android:textColor="@color/black"
             android:text="중복 확인" />
     </LinearLayout>
 
@@ -150,11 +167,14 @@
         android:gravity="center"
         android:orientation="horizontal">
 
-        <ImageButton
+        <Button
             android:id="@+id/btn_finish_modify"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:background="@drawable/edit"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#e8f3ff"
+            android:textSize="15dp"
+            android:fontFamily="@font/tway_air"
+            android:textColor="@color/black"
             android:text="수정 완료" />
     </LinearLayout>
 

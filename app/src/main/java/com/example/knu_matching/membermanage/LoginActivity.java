@@ -24,7 +24,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private FirebaseAuth mFirebaseAuth;
     private DatabaseReference mDatabaseRef;
-    private ImageButton btn_login, btn_IdFind, btn_PwdFind, btn_Register;
+    private Button btn_login, btn_IdFind, btn_PwdFind, btn_Register;
     private EditText edt_Email, edt_Pwd;
 
     @Override
