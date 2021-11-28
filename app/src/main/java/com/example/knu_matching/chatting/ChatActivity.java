@@ -287,6 +287,7 @@ public class ChatActivity extends AppCompatActivity {
                     else{
                         arr_Nick = new HashMap<>();
                         token_List = new HashMap<>();
+                        String title;
                         FirebaseDatabase.getInstance().getReference().child("users").addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -326,7 +327,7 @@ public class ChatActivity extends AppCompatActivity {
                                                 System.out.println("arrayList value "+value);
                                                 if(value.equals(item.getKey())){
                                                     System.out.println("arrayList equals "+item.getKey());
-                                                    SendNotification.sendNotification(key, "메세지가 도착했습니다!", nickname);
+                                                    SendNotification.sendNotification(key, "메세지가 도착했습니다!", comment.nickname);
                                                 }
                                             }
                                         }
