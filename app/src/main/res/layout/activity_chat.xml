@@ -10,6 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/messageActivity_button"
+        android:layout_margin="10dp"
         android:layout_alignParentEnd="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
@@ -22,6 +23,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
+        android:fontFamily="@font/tway_air"
         android:layout_toLeftOf="@+id/messageActivity_button" />
 
     <Button
@@ -30,6 +32,10 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
+        android:fontFamily="@font/tway_air"
+        android:backgroundTint="@color/mainColor"
+        android:textColor="@color/black"
+        android:textSize="18dp"
         android:text="전송" />
 
 </RelativeLayout>
