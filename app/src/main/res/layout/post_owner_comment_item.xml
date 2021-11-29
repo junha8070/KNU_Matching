@@ -6,15 +6,18 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="15dp"
         android:orientation="horizontal">
 
         <TextView
             android:id="@+id/tv_nickname"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="left|center_vertical"
+            android:layout_marginLeft="10px"
+            android:layout_marginTop="10px"
             android:text="닉네임"
+            android:textSize="10dp"
+            android:fontFamily="@font/tway_air"
             android:textStyle="bold" />
 
         <View
@@ -55,12 +58,26 @@
         android:id="@+id/tv_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textSize="10dp"
+        android:layout_marginLeft="10px"
+        android:fontFamily="@font/tway_air"
         android:text="내용" />
 
     <TextView
         android:id="@+id/tv_date"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="날짜" />
+        android:text="날짜"
+        android:fontFamily="@font/tway_air"
+        android:layout_marginTop="5px"
+        android:layout_marginLeft="10px"
+        android:textSize="7dp"/>
+    
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="#C5C5C5"
+        android:layout_marginTop="5dp"
+/>
 
 </LinearLayout>

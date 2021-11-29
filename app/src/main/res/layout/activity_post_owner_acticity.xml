@@ -21,23 +21,31 @@
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="제목" />
+            android:text="제목"
+            android:textColor="#0071be"
+            android:textStyle="bold"
+            android:fontFamily="@font/tway_air"/>
     </androidx.appcompat.widget.Toolbar>
 
     <LinearLayout
         android:id="@+id/ll_first"
-        android:layout_below="@id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10px"
+        android:layout_below="@id/toolbar"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginBottom="5dp"
+        android:background="#80E8F1FB"
         android:orientation="horizontal">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="10px"
-            android:textColor="#5489C3"
-            android:text="모집인원 수 " />
+            android:text="모집인원 수 "
+            android:fontFamily="@font/tway_air"
+            android:textColor="#5489C3" />
 
         <TextView
             android:id="@+id/tv_count"
@@ -45,6 +53,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="10px"
             android:ems="1"
+            android:fontFamily="@font/tway_air"
             android:gravity="center"
             android:text="0" />
 
@@ -53,6 +62,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="10px"
             android:ems="1"
+            android:fontFamily="@font/tway_air"
             android:gravity="center"
             android:text="/" />
 
@@ -62,6 +72,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="10px"
             android:ems="1"
+            android:fontFamily="@font/tway_air"
             android:gravity="center"
             android:hint="수" />
 
@@ -69,30 +80,38 @@
 
     <LinearLayout
         android:id="@+id/ll_second"
-        android:layout_below="@id/ll_first"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10px"
+        android:layout_below="@id/ll_first"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginBottom="5dp"
+        android:background="#80E8F3FF"
         android:orientation="horizontal">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="10px"
-            android:textColor="#5489C3"
-            android:text="모집기간 " />
+            android:text="모집기간 "
+            android:fontFamily="@font/tway_air"
+            android:textColor="#5489C3" />
 
         <TextView
             android:id="@+id/tv_StartDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="10px"
-            android:ems="6"
+            android:fontFamily="@font/tway_air"
+            android:ems="5"
             android:hint="기간" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="10px"
+            android:fontFamily="@font/tway_air"
             android:text=" ~ " />
 
         <TextView
@@ -100,16 +119,21 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="10px"
+            android:fontFamily="@font/tway_air"
             android:ems="6"
             android:hint="기간" />
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/ll_third"
-        android:layout_below="@id/ll_second"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10px"
+        android:layout_below="@id/ll_second"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginBottom="5dp"
+        android:background="#80E8F3FF"
         android:orientation="horizontal"
         tools:ignore="WebViewLayout">
 
@@ -117,14 +141,18 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="10px"
-            android:textColor="#5489C3"
-            android:text="첨부파일" />
+            android:text="첨부파일"
+            android:fontFamily="@font/tway_air"
+            android:textColor="#5489C3" />
 
         <TextView
             android:id="@+id/tv_file"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="10px"
             android:autoLink="web"
+            android:fontFamily="@font/tway_air"
             android:linksClickable="true"
             android:text=" 파일첨부 " />
     </LinearLayout>
@@ -134,16 +162,18 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/ll_third"
-        android:layout_marginStart="10px"
-        android:layout_marginTop="10px"
-        android:layout_marginEnd="10px"
-        android:layout_marginBottom="10px"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginBottom="5dp"
+        android:background="#80E8F3FF"
         android:orientation="vertical">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="10px"
+            android:fontFamily="@font/tway_air"
             android:textColor="#5489C3"
             android:text="링크 " />
 
@@ -151,7 +181,9 @@
             android:id="@+id/tv_link"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="10px"
+            android:layout_marginLeft="15px"
+            android:layout_marginBottom="15px"
+            android:fontFamily="@font/tway_air"
             android:hint="링크" />
 
     </LinearLayout>
@@ -161,24 +193,25 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/ll_fourth"
-        android:layout_marginStart="10px"
-        android:layout_marginTop="10px"
-        android:layout_marginEnd="10px"
-        android:layout_marginBottom="10px"
+        android:layout_margin="5dp"
+        android:background="#80E8F3FF"
         android:orientation="vertical">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="10px"
-            android:textColor="#5489C3"
-            android:text="내용 " />
+            android:text="내용 "
+            android:fontFamily="@font/tway_air"
+            android:textColor="#5489C3" />
 
         <TextView
             android:id="@+id/tv_content"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="10px"
+            android:layout_marginLeft="15px"
+            android:layout_marginBottom="15px"
+            android:fontFamily="@font/tway_air"
             android:ems="10"
             android:hint="내용" />
 
@@ -187,7 +220,9 @@
     android:layout_below="@id/ll_fifth"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:layout_margin="5dp"
+    android:background="#80E8F3FF">
     <LinearLayout
         android:layout_weight="1"
         android:layout_width="match_parent"
@@ -198,6 +233,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="10px"
+            android:fontFamily="@font/tway_air"
             android:textColor="#5489C3"
             android:text="댓글 " />
 
@@ -209,22 +245,19 @@
     </LinearLayout>
 
     <LinearLayout
-        android:layout_weight="7"
+        android:layout_weight="6"
         android:background="#FFFFFF"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
             <EditText
                 android:layout_weight="1"
-                android:ems="10"
+                android:ems="8"
+                android:layout_marginTop="10px"
                 android:id="@+id/edt_comment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
             <Button
-                android:layout_weight="3"
+                android:layout_weight="2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="답글달기"
@@ -236,7 +269,6 @@
         </LinearLayout>
     </LinearLayout>
 
-</LinearLayout>
 
 
 </RelativeLayout>

@@ -17,6 +17,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.knu_matching.MainActivity;
@@ -46,8 +47,9 @@ public class RegisterActivity extends AppCompatActivity {
     private DatabaseReference mDatabaseref;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private EditText edt_StudentID, edt_Major, edt_Email, edt_password, edt_repassword, edt_Nickname, edt_PhoneNumber, edt_StudentName;
-    private Button btn_finish, btn_check_nick, btn_knuID;
+    private ImageButton btn_finish, btn_check_nick, btn_knuID;
     private String strEmail, strPassword, strNick, strMaojr, strStudentId, strPhoneNumber, strStudentName;
+    private TextView tv_guide;
     private boolean nickname_state;
 
     @Override
@@ -63,6 +65,7 @@ public class RegisterActivity extends AppCompatActivity {
         edt_Major = findViewById(R.id.edt_Major);
         edt_PhoneNumber = findViewById(R.id.edt_PhoneNumber);
         edt_Email = findViewById(R.id.edt_Email);
+        tv_guide = findViewById(R.id.tv_guide);
         edt_password = findViewById(R.id.edt_Password);
         edt_repassword = findViewById(R.id.edt_RePassword);
         edt_Nickname = findViewById(R.id.edt_nickname);
@@ -71,6 +74,13 @@ public class RegisterActivity extends AppCompatActivity {
         btn_knuID = findViewById(R.id.btn_knuID);
         btn_check_nick = findViewById(R.id.btn_check_nick);
         btn_finish = findViewById(R.id.btn_registerButton);
+
+        edt_StudentName.setVisibility(View.GONE);
+        edt_StudentID.setVisibility(View.GONE);
+        edt_Major.setVisibility(View.GONE);
+        edt_PhoneNumber.setVisibility(View.GONE);
+        edt_Email.setVisibility(View.GONE);
+        tv_guide.setVisibility(View.GONE);
 
         btn_check_nick.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -198,6 +208,12 @@ public class RegisterActivity extends AppCompatActivity {
                 @Override
                 public void onActivityResult(ActivityResult result) {
                     if (result.getResultCode() == Activity.RESULT_OK) {
+                        edt_StudentName.setVisibility(View.VISIBLE);
+                        edt_StudentID.setVisibility(View.VISIBLE);
+                        edt_Major.setVisibility(View.VISIBLE);
+                        edt_PhoneNumber.setVisibility(View.VISIBLE);
+                        edt_Email.setVisibility(View.VISIBLE);
+                        tv_guide.setVisibility(View.VISIBLE);
                         Log.d(TAG, "RegisterActivity로 돌아왔다. ");
                         strStudentId = result.getData().getStringExtra("StudentId");
                         System.out.println("회원가입 디버깅:" + strStudentId);

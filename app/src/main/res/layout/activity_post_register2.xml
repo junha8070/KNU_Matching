@@ -5,14 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".Post.EditPost_Activity">
+    tools:context=".Post.postActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?attr/colorPrimary"
-        android:backgroundTint="#00ff0000"
+        android:backgroundTint="#e8f3ff"
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme">
 
@@ -21,19 +21,31 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:text="팀원 구하기"
+            android:backgroundTint="#e8f3ff"
+            android:textColor="#0071be"
+            android:fontFamily="@font/tway_air"
             android:textSize="20dp"
             android:textStyle="bold" />
-
-        <Button
+        <LinearLayout
             style="@style/Widget.AppCompat.Button.Borderless"
-            android:id="@+id/btn_success"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="right"
-            android:text="완료"
-            android:backgroundTint="#00FF0000"
-            android:textColor="#000000"
-            android:textStyle="bold" />
+            android:layout_margin="1dp"
+            android:background="#e8f3ff">
+
+            <Button
+                android:id="@+id/btn_success"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#e8f3ff"
+                android:fontFamily="@font/tway_air"
+                android:elevation="10dp"
+                android:text="완료"
+                android:textColor="#111"
+                android:textStyle="bold" />
+        </LinearLayout>
+
 
     </androidx.appcompat.widget.Toolbar>
 
@@ -46,62 +58,59 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:padding="10dp">
 
             <EditText
                 android:id="@+id/edt_Title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:backgroundTint="#e8f3ff"
+                android:fontFamily="@font/tway_air"
                 android:hint="모집글 제목을 적어주세요" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="같이 하고 싶은 사람이 몇명인가요?" />
-
+            android:orientation="vertical"
+            android:padding="10dp">
             <EditText
                 android:id="@+id/edt_Number"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:ems="3"
-                android:hint="인원수" />
+                android:ems="15"
+                android:fontFamily="@font/tway_air"
+                android:backgroundTint="#e8f3ff"
+                android:hint="같이 하고 싶은 인원 수" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="언제부터 언제까지 모집할까요?" />
-
+            android:orientation="vertical"
+            android:padding="10dp">
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
                 <TextView
-                    android:layout_weight="1"
-                    android:layout_gravity="center_vertical"
-                    android:textSize="17dp"
                     android:id="@+id/edt_date"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:hint="기간" />
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/tway_air"
+                    android:hint="모집 시작 기간 선택"
+                    android:textSize="17dp" />
                 <TextView
                     android:gravity="center"
                     android:layout_weight="0.1"
                     android:layout_gravity="center_vertical"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/tway_air"
                     android:text="~"/>
 
                 <TextView
@@ -111,7 +120,9 @@
                     android:id="@+id/tv_EndDate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:hint="기간" />
+                    android:fontFamily="@font/tway_air"
+                    android:paddingLeft="20dp"
+                    android:hint="모집 마감 기간 선택" />
             </LinearLayout>
         </LinearLayout>
 
@@ -119,8 +130,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            tools:ignore="WebViewLayout">
-
+            tools:ignore="WebViewLayout"
+            android:padding="10dp">
             <TextView
                 android:layout_gravity="left|center_vertical"
                 android:id="@+id/tv_application"
@@ -129,6 +140,7 @@
                 android:autoLink="web"
                 android:layout_weight="6"
                 android:linksClickable="true"
+                android:fontFamily="@font/tway_air"
                 android:hint="참고할 파일이 있으면 업로드 버튼을 눌러주세요" />
 
             <Button
@@ -137,16 +149,17 @@
                 android:id="@+id/btn_choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:backgroundTint="#b1cae9"
+                android:backgroundTint="#e8f3ff"
                 android:text="업로드"
-                android:textColor="#167bc3"
+                android:textColor="#111"
                 android:textStyle="bold" />
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            tools:ignore="WebViewLayout">
+            tools:ignore="WebViewLayout"
+            android:padding="10dp">
 
             <EditText
                 android:id="@+id/edt_link"
@@ -155,15 +168,16 @@
                 android:autoLink="web"
                 android:ems="10"
                 android:linksClickable="true"
+                android:fontFamily="@font/tway_air"
+                android:backgroundTint="#e8f3ff"
                 android:hint="참고할 링크를 적어주세요" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-
+            android:orientation="vertical"
+            android:padding="10dp">
             <EditText
                 android:gravity="top"
                 android:lines="100"
@@ -171,6 +185,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:ems="10"
+                android:fontFamily="@font/tway_air"
+                android:backgroundTint="#e8f3ff"
                 android:hint="내용" />
         </LinearLayout>
 
