@@ -22,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.knu_matching.Nav.Edit_profile_Activity;
+import com.example.knu_matching.Nav.MyPost_Activity;
 import com.example.knu_matching.Nav.Scrap_Activity;
 import com.example.knu_matching.Nav.SettingActivity;
 import com.example.knu_matching.People.PeolpeFragment;
@@ -189,6 +190,13 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.nav_logout:
                         FirebaseAuth.getInstance().signOut();
                         finish();
+                        return true;
+
+                    case R.id.nav_mypost:
+                        intent = new Intent(MainActivity.context, MyPost_Activity.class);
+                        startActivity(intent);
+                        drawerLayout.closeDrawers();
+                        return true;
 
                     case R.id.nav_scrap:
                         menuItem.setChecked(true);
