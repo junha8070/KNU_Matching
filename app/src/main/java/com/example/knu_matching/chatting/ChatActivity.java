@@ -427,15 +427,16 @@ public class ChatActivity extends AppCompatActivity {
                 messageViewHolder.textView_message.setText(comments.get(position).msg);
                 messageViewHolder.textView_message.setBackgroundResource(R.drawable.sender);
                 messageViewHolder.linearLayout_destination.setVisibility(View.INVISIBLE);
-                messageViewHolder.textView_message.setTextSize(25);
+                messageViewHolder.textView_message.setTextSize(15);
                 messageViewHolder.linearLayout_main.setGravity(Gravity.RIGHT);
+
                 //상대방이 보낸 메세지
             }else {
                 messageViewHolder.textview_name.setText(comments.get(position).nickname);
                 messageViewHolder.linearLayout_destination.setVisibility(View.VISIBLE);
                 messageViewHolder.textView_message.setBackgroundResource(R.drawable.receiver);
                 messageViewHolder.textView_message.setText(comments.get(position).msg);
-                messageViewHolder.textView_message.setTextSize(25);
+                messageViewHolder.textView_message.setTextSize(15);
                 messageViewHolder.linearLayout_main.setGravity(Gravity.LEFT);
             }
             long unixTime = (long) comments.get(position).timestamp;
@@ -453,7 +454,6 @@ public class ChatActivity extends AppCompatActivity {
         private class MessageViewHolder extends RecyclerView.ViewHolder {
             public TextView textView_message;
             public TextView textview_name;
-            public ImageView imageView_profile;
             public LinearLayout linearLayout_destination;
             public LinearLayout linearLayout_main;
             public TextView textView_timestamp;

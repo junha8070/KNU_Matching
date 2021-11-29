@@ -5,7 +5,8 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -14,10 +15,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Knu_Matching"
         android:usesCleartextTraffic="true">
-        <activity android:name=".Post.EditPost_Activity"
-            android:exported="true"/>
-        <activity android:name=".WebView"
-            android:exported="true"/>
+        <activity
+            android:name=".Nav.MyPost_Activity"
+            android:exported="false" />
+        <activity
+            android:name=".Post.EditPost_Activity"
+            android:exported="true" />
+        <activity
+            android:name=".WebView"
+            android:exported="true" />
         <activity
             android:name=".Post.Visitor"
             android:exported="true" />
@@ -66,14 +72,17 @@
         <activity
             android:name=".membermanage.RegisterActivity"
             android:exported="true" />
-        <service android:name=".MyFirebaseMessagingService"
-            android:stopWithTask="false"
-            android:exported="false">
+
+        <service
+            android:name=".MyFirebaseMessagingService"
+            android:exported="false"
+            android:stopWithTask="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
+
         <meta-data
             android:name="firebase_messaging_auto_init_enabled"
             android:value="false" />
