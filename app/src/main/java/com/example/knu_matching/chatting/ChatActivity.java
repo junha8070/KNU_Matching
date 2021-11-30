@@ -294,7 +294,6 @@ public class ChatActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 System.out.println("Send msg token "+arrayList);
-
                 System.out.println("Send msg token1 "+mToken);
                 System.out.println("Send msg token2 "+map.entrySet());
 
