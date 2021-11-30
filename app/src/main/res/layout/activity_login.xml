@@ -28,6 +28,7 @@
             android:gravity="center"
             android:background="@drawable/login_profile"
             android:orientation="vertical">
+
             <EditText
                 android:id="@+id/edt_email"
                 android:layout_marginTop="80dp"
@@ -42,7 +43,6 @@
                 android:inputType="textEmailAddress" />
 
             <EditText
-
                 android:id="@+id/edt_pwd"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -50,8 +50,8 @@
                 android:layout_marginRight="40dp"
                 android:ems="10"
                 android:textSize="15dp"
-                android:fontFamily="@font/tway_air"
                 android:hint="PassWord"
+                android:singleLine="true"
                 android:inputType="textPassword" />
 
             <LinearLayout
