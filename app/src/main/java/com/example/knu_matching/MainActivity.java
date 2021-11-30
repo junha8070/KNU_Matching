@@ -206,7 +206,7 @@ public class MainActivity extends AppCompatActivity {
                         return true;
 
                     case R.id.nav_scrap:
-                        menuItem.setChecked(true);
+                        menuItem.setChecked(false);
                         intent = new Intent(MainActivity.context, Scrap_Activity.class);
                         startActivity(intent);
                         drawerLayout.closeDrawers();

@@ -133,7 +133,7 @@ public class RegisterActivity extends AppCompatActivity {
 
                 System.out.println("test" + strNick + " " + strEmail + " " + strStudentId);
 
-                if (strStudentName.trim().equals("") || strEmail.trim().equals("") || strPassword.trim().equals("") || strNick.trim().equals("") || strStudentId.trim().equals("") || strMaojr.trim().equals("") || strPhoneNumber.trim().equals("")) {
+                if (strStudentName.trim().isEmpty() || strEmail.trim().isEmpty() || strPassword.trim().isEmpty() || strNick.trim().isEmpty() || strStudentId.trim().isEmpty() || strMaojr.trim().isEmpty() || strPhoneNumber.trim().isEmpty()) {
                     Toast.makeText(RegisterActivity.this, "빈칸을 채워주세요:(", Toast.LENGTH_SHORT).show();
                 } else {
                     if (nickname_state == false) {
