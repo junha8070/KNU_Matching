@@ -61,10 +61,12 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 @RequiresApi(api = Build.VERSION_CODES.O)
@@ -77,7 +79,7 @@ public class Visitor extends AppCompatActivity {
     CommentAdapter commentAdapter = null;
     EditText edt_comment;
     String str_participate_Nickname, str_participate_Major, str_participate_StudentId, str_participate_EmailId, str_participate_Uid;
-    String str_owner_uid, str_title, str_count, str_total, str_StartDate, str_EndDate, str_filename, str_content, str_comment, str_email, str_Id, str_time, str_application, str_link, str_uid;
+    String str_owner_uid, str_title, str_Comment_uid, str_count, str_total, str_StartDate, str_EndDate, str_filename, str_content, str_comment, str_email, str_Id, str_time, str_application, str_link, str_uid;
     public String str_Current_Email;
     Intent intent;
     ArrayList<CommentItem> comment_list;
@@ -152,12 +154,17 @@ public class Visitor extends AppCompatActivity {
                 if(edt_comment.getText().toString().equals("")){
                 }
                 else{
+                    long systemtime = System.currentTimeMillis();
+                    SimpleDateFormat timeFormat = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss_SSS", Locale.KOREA);
+                    String realtime = timeFormat.format(systemtime);
                     CommentItem commentItem = new CommentItem();
                     commentItem.setStr_Email(auth.getCurrentUser().getEmail());
-                    commentItem.setStr_Date(formatedNow);
+                    commentItem.setStr_Date(realtime);
                     commentItem.setStr_NickName(((MainActivity) MainActivity.context).strNick);
                     commentItem.setStr_Content(edt_comment.getText().toString());
                     commentItem.setStr_Uid(auth.getCurrentUser().getUid());
+                    commentItem.setStr_Post_uid(str_Id);
+
                     db.collection("Post").document(str_Id).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -177,6 +184,30 @@ public class Visitor extends AppCompatActivity {
 
                         }
                     });
+
+                    db.collection("Post").document(str_Id).collection("Comment").get()
+                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                    for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
+                                        System.out.println("task qwer " + documentSnapshot.getId());
+
+                                        db.collection("Post").document(str_Id).collection("Comment")
+                                                .document(documentSnapshot.getId())
+                                                .update("str_Comment_uid", documentSnapshot.getId()).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                Toast.makeText(getApplicationContext(), "저장 되었습니다.", Toast.LENGTH_SHORT).show();
+                                            }
+                                        }).addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                Toast.makeText(getApplicationContext(), "저장하는 중 오류가 발생하였습니다.", Toast.LENGTH_SHORT).show();
+                                            }
+                                        });
+                                    }
+                                }
+                            });
 
                     db.collection("Post").document(str_Id).collection("Comment").add(commentItem)
                             .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
@@ -391,7 +422,8 @@ public class Visitor extends AppCompatActivity {
         item.setStr_Content(Content);
         item.setStr_Date(Date);
         item.setStr_Uid(Uid);
-
+        item.setStr_Post_uid(str_Id);
+        item.setStr_Comment_uid(str_Comment_uid);
         comment_list.add(item);
     }
 

@@ -154,15 +154,16 @@ public class MainActivity extends AppCompatActivity {
 //        myPagerAdapter.addFrag(frag_mypage);
         myPagerAdapter.addFrag(frag_board);
         mViewPager.setAdapter(myPagerAdapter);
-
-        //displaying tabs
-        new TabLayoutMediator(tabLayout, mViewPager, (tab, position) -> tab.setText(titles[position])).attach();
+//
+//        //displaying tabs
+//        new TabLayoutMediator(tabLayout, mViewPager, (tab, position) -> tab.setText(titles[position])).attach();
 
         //displaying tabs
         new TabLayoutMediator(tabLayout, mViewPager, (tab, position) -> tab.setText(titles[position])).attach();
 
         toolbar = findViewById(R.id.toolBar);
         setSupportActionBar(toolbar);
+
 
         // 액션바 객체
         ActionBar actionBar = getSupportActionBar();

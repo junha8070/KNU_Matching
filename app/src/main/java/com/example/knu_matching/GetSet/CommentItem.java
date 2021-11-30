@@ -1,11 +1,40 @@
 package com.example.knu_matching.GetSet;
 
 public class CommentItem {
+    String str_Comment_uid;
+    String str_Post_uid;
     String str_NickName;
     String str_Content;
     String str_Date;
     String str_Email;
     String str_Uid;
+    int str_count;
+
+    public int getStr_count() {
+        return str_count;
+    }
+
+    public void setStr_count(int str_count) {
+        this.str_count = str_count;
+    }
+
+    public String getStr_Comment_uid() {
+        return str_Comment_uid;
+    }
+
+    public void setStr_Comment_uid(String str_Comment_uid) {
+        this.str_Comment_uid = str_Comment_uid;
+    }
+
+    public String getStr_Post_uid() {
+        return str_Post_uid;
+    }
+
+    public void setStr_Post_uid(String str_Post_uid) {
+        this.str_Post_uid = str_Post_uid;
+    }
+
+
 
     public String getStr_Email() {
         return str_Email;
@@ -46,4 +75,6 @@ public class CommentItem {
     public void setStr_Uid(String str_Uid) {
         this.str_Uid = str_Uid;
     }
+
+
 }
