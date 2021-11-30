@@ -69,7 +69,7 @@ public class MyParticipate_Activity extends AppCompatActivity {
                         for (DocumentChange dc : value.getDocumentChanges()) {
                             switch (dc.getType()) {
                                 case ADDED:
-                                    System.out.println("뭐업어지니" + value.getDocumentChanges());
+                            //        System.out.println("뭐업어지니" + value.getDocumentChanges());
                                     postList = new ArrayList<>();
                                     db.collection("Post").document(dc.getDocument().getData().get("str_Id").toString()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                                         @Override
@@ -97,8 +97,8 @@ public class MyParticipate_Activity extends AppCompatActivity {
                                             runOnUiThread(new Runnable() {
                                                 @Override
                                                 public void run() {
-                                                    System.out.println("아답터 들어가기");
-                                                    System.out.println("아답터 들어가기" + postList);
+                                             //       System.out.println("아답터 들어가기");
+                                            //        System.out.println("아답터 들어가기" + postList);
                                                     adapter = new MyParticipateAdapter(MyParticipate_Activity.this, postList);
                                                     rv.setAdapter(adapter);
                                                     adapter.notifyDataSetChanged();
@@ -112,7 +112,7 @@ public class MyParticipate_Activity extends AppCompatActivity {
                                 case MODIFIED:
                                     break;
                                 case REMOVED:
-                                    System.out.println("뭐업어지니2" + value.getDocumentChanges());
+                      //              System.out.println("뭐업어지니2" + value.getDocumentChanges());
 
 
                                     break;
@@ -167,8 +167,8 @@ public class MyParticipate_Activity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        System.out.println("들어왔나용?");
-        System.out.println("들어왔나용?2");
+     //   System.out.println("들어왔나용?");
+      //  System.out.println("들어왔나용?2");
         finish();//인텐트 종료
         overridePendingTransition(0, 0);//인텐트 효과 없애기
         Intent intent = getIntent(); //인텐트

@@ -103,11 +103,11 @@ public class PeolpeFragment extends Fragment {
                             for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                                 UserAccount userAccount = snapshot.getValue(UserAccount.class);
 
-                                System.out.println("test getuid " + userAccount.getUid());
-                                System.out.println("test myUid " + myUid);
+                               // System.out.println("test getuid " + userAccount.getUid());
+                                //System.out.println("test myUid " + myUid);
                                 if (userAccount.uid.equals(myUid)) {
                                     arrNick.add(userAccount.getNickName());
-                                    System.out.println("arrNick1 "+arrNick);
+                                  //  System.out.println("arrNick1 "+arrNick);
                                     continue;
                                 }
                                 userModels.add(userAccount);
@@ -134,8 +134,8 @@ public class PeolpeFragment extends Fragment {
             ((CustomViewHolder) holder).textView.setText(userModels.get(position).getNickName());
 
             if (userModels != null && userModels.size() > 0) {
-                System.out.println("test 11111111111111 ");
-                System.out.println("test arraylist " + arrayList);
+            //    System.out.println("test 11111111111111 ");
+            //    System.out.println("test arraylist " + arrayList);
                 ((CustomViewHolder) holder).cbox_invite.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -156,10 +156,10 @@ public class PeolpeFragment extends Fragment {
                             ischeckfriend = true;
                         }
 
-                        System.out.println("test8 arraylist " + arrayList);
-                        System.out.println("test8 arrNick " + arrNick);
-                        System.out.println("test8 arrayList.size() " + arrayList.size());
-                        System.out.println("test8 ischeckfriend " + ischeckfriend);
+               //         System.out.println("test8 arraylist " + arrayList);
+               //         System.out.println("test8 arrNick " + arrNick);
+               //         System.out.println("test8 arrayList.size() " + arrayList.size());
+               //         System.out.println("test8 ischeckfriend " + ischeckfriend);
                     }
                 });
             }
@@ -189,10 +189,10 @@ public class PeolpeFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     if (iswritename == true && ischeckfriend == true) {
-                        System.out.println("test arraylist_btn_click " + arrayList);
-                        System.out.println("test iswritename " + iswritename);
-                        System.out.println("test ischeckfriend " + ischeckfriend);
-                        System.out.println("test ChatRoomName " + str_chatroom_name);
+               //         System.out.println("test arraylist_btn_click " + arrayList);
+                //        System.out.println("test iswritename " + iswritename);
+                //        System.out.println("test ischeckfriend " + ischeckfriend);
+                 //       System.out.println("test ChatRoomName " + str_chatroom_name);
                         Intent intent = new Intent(v.getContext(), ChatActivity.class);
                         intent.putExtra("invited_List", arrayList);
                         intent.putExtra("arrNick", arrNick);

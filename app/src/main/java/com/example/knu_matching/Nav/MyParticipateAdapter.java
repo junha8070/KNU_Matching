@@ -71,7 +71,7 @@ public class MyParticipateAdapter extends RecyclerView.Adapter<MyParticipateAdap
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         Log.d("Visitor", document.getId() + " => " + document.getData());
 
-                        System.out.println("닉네임"+document.getData().get("str_participate_Nickname"));
+                  //      System.out.println("닉네임"+document.getData().get("str_participate_Nickname"));
                         arrNick.add(document.getData().get("str_participate_Nickname"));
                         j = i + 1;
                         i++;
@@ -82,11 +82,11 @@ public class MyParticipateAdapter extends RecyclerView.Adapter<MyParticipateAdap
                     holder.tv_content.setText(mDataset.get(position).getStr_post());
                     holder.tv_participate.setText(Integer.toString(count));
 
-                    System.out.println("숫자"+count);
+              //      System.out.println("숫자"+count);
                     String[] arr = new String[count];
                     for(int q=0;q<count;q++){
                         arr[q] = arrNick.get(q).toString();
-                        System.out.println("숫자값"+arr[q]);
+                 //       System.out.println("숫자값"+arr[q]);
                     }
 
                 } else {

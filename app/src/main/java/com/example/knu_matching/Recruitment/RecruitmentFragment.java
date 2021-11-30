@@ -88,7 +88,7 @@ public class RecruitmentFragment extends Fragment {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if(task.isSuccessful()){
-                    System.out.println("현재 이용자 게시물"+task.getResult().getDocuments());
+                 //   System.out.println("현재 이용자 게시물"+task.getResult().getDocuments());
                 }
             }
         });

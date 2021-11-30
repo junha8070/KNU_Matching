@@ -50,7 +50,7 @@ public class ChangePassWord extends AppCompatActivity {
             public void onClick(View view) {
                 original_Password = edt_original_pwd.getText().toString();
                 new_Password = edt_new_pwd.getText().toString();
-                System.out.println("체인지" + (((MainActivity) MainActivity.context).strPassword).equals(original_Password));
+//                System.out.println("체인지" + (((MainActivity) MainActivity.context).strPassword).equals(original_Password));
                 if (original_Password.equals(new_Password)) {
                     Toast.makeText(ChangePassWord.this, "기존 비밀번호와 같습니다.", Toast.LENGTH_SHORT).show();
                 } else {

@@ -131,7 +131,7 @@ public class RegisterActivity extends AppCompatActivity {
                 strPassword = edt_password.getText().toString();
                 strNick = edt_Nickname.getText().toString();
 
-                System.out.println("test" + strNick + " " + strEmail + " " + strStudentId);
+//                System.out.println("test" + strNick + " " + strEmail + " " + strStudentId);
 
                 if (strStudentName.trim().isEmpty() || strEmail.trim().isEmpty() || strPassword.trim().isEmpty() || strNick.trim().isEmpty() || strStudentId.trim().isEmpty() || strMaojr.trim().isEmpty() || strPhoneNumber.trim().isEmpty()) {
                     Toast.makeText(RegisterActivity.this, "빈칸을 채워주세요:(", Toast.LENGTH_SHORT).show();
@@ -217,9 +217,9 @@ public class RegisterActivity extends AppCompatActivity {
                         tv_guide.setVisibility(View.VISIBLE);
                         Log.d(TAG, "RegisterActivity로 돌아왔다. ");
                         strStudentId = result.getData().getStringExtra("StudentId");
-                        System.out.println("회원가입 디버깅:" + strStudentId);
+//                        System.out.println("회원가입 디버깅:" + strStudentId);
                         strMaojr = result.getData().getStringExtra("Major");
-                        System.out.println("회원가입 디버깅:" + strMaojr);
+//                        System.out.println("회원가입 디버깅:" + strMaojr);
                         strEmail = result.getData().getStringExtra("Email");
                         strStudentName = result.getData().getStringExtra("StudentName");
                         strPhoneNumber = result.getData().getStringExtra("PhoneNumber");

@@ -130,7 +130,7 @@ public class BoardFragment extends Fragment {
                 super.onScrolled(recyclerView, dx, dy);
                 int lastVisibleItemPosition = ((LinearLayoutManager) recyclerView.getLayoutManager()).findLastCompletelyVisibleItemPosition();
                 int itemTotalCount = recyclerView.getAdapter().getItemCount() - 1;
-                System.out.println("마지막이다 이놈아아아아아아아아"+lastVisibleItemPosition+"|||"+itemTotalCount);
+            //    System.out.println("마지막이다 이놈아아아아아아아아"+lastVisibleItemPosition+"|||"+itemTotalCount);
                 if (lastVisibleItemPosition == itemTotalCount) {
                     customProgressDialog = new ProgressDialog(getContext());
                     //로딩창을 투명하게
@@ -176,34 +176,34 @@ public class BoardFragment extends Fragment {
                             else if (tag.equals("title")) {
                                 xpp.next();
                                 posts.put(TAG_TITLE, xpp.getText());
-                                System.out.println("파싱:" + xpp.getText());
+                           //     System.out.println("파싱:" + xpp.getText());
                             } else if (tag.equals("place")) {
                                 xpp.next();
                                 posts.put(TAG_PLACE, xpp.getText());
-                                System.out.println("파싱:" + xpp.getText());
+                             //   System.out.println("파싱:" + xpp.getText());
                             } else if (tag.equals("startDate")) {
                                 xpp.next();
                                 posts.put(TAG_STARTDATE, xpp.getText());
-                                System.out.println("파싱:" + xpp.getText());
+                              //  System.out.println("파싱:" + xpp.getText());
                             } else if (tag.equals("endDate")) {
                                 xpp.next();
                                 posts.put(TAG_ENDDATE, xpp.getText());
-                                System.out.println("파싱:" + xpp.getText());
+                              //  System.out.println("파싱:" + xpp.getText());
                             } else if (tag.equals("clCd")) {
                                 xpp.next();
                                 posts.put(TAG_CATEGORY, xpp.getText());
-                                System.out.println("파싱:" + xpp.getText());
+                             //   System.out.println("파싱:" + xpp.getText());
                             } else if (tag.equals("legalCd")) {
                                 xpp.next();
                                 posts.put(TAG_REGION, xpp.getText());
-                                System.out.println("파싱:" + xpp.getText());
+                             //   System.out.println("파싱:" + xpp.getText());
                             } else if (tag.equals("jobabaUrl")) {
                                 xpp.next();
                                 posts.put(TAG_URL, xpp.getText());
 
-                                System.out.println("파싱:" + xpp.getText());
-                                System.out.println("hash 출력" + posts);
-                                System.out.println("post출력" + posts);
+                               // System.out.println("파싱:" + xpp.getText());
+                               // System.out.println("hash 출력" + posts);
+                              //  System.out.println("post출력" + posts);
                                 noticeList.add(posts);
                                 posts = new HashMap<>();//메모리 주소를 다시 생성하고 다시 생성한것에 값을 넣어줘야 된다.
                             }

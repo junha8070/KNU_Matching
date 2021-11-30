@@ -66,7 +66,7 @@ public class RecruitmentAdapter extends RecyclerView.Adapter<RecruitmentAdapter.
             tv_major = itemView.findViewById(R.id.tv_major);
             tv_studentID = itemView.findViewById(R.id.tv_studentID);
 
-            System.out.println("현재 이메일 Adapter"+auth.getCurrentUser().getEmail());
+          //  System.out.println("현재 이메일 Adapter"+auth.getCurrentUser().getEmail());
         }
     }
 

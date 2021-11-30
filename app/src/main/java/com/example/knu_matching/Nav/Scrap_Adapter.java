@@ -36,7 +36,7 @@ public class Scrap_Adapter extends RecyclerView.Adapter<Scrap_Adapter.RecyclerVi
     public Scrap_Adapter(Context context, ArrayList<HashMap<String, String>> noticeList) {
         this.context = context;
         this.noticeList = noticeList;
-        System.out.println("리스트" + noticeList);
+    //    System.out.println("리스트" + noticeList);
     }
     @NonNull
     @Override
@@ -104,7 +104,7 @@ public class Scrap_Adapter extends RecyclerView.Adapter<Scrap_Adapter.RecyclerVi
 
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(cv.getContext(), "삭제버튼", Toast.LENGTH_SHORT).show();
+               //     Toast.makeText(cv.getContext(), "삭제버튼", Toast.LENGTH_SHORT).show();
                     db.collection("Scrap").document(auth.getCurrentUser().getEmail().replace(".", ">")).collection("activity")
                             .document(UID).delete().addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override

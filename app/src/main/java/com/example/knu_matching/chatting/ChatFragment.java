@@ -63,9 +63,9 @@ public class ChatFragment extends Fragment {
                     for(DataSnapshot item: snapshot.getChildren()){
                         ChatModel chatModel = item.getValue(ChatModel.class);
 
-                        System.out.println("test chat item " +chatModel.users.keySet());
+//                        System.out.println("test chat item " +chatModel.users.keySet());
                         if(chatModel.users.keySet().contains(uid)){
-                            System.out.println("testtest if equals 안");
+//                            System.out.println("testtest if equals 안");
                             chatModels.add(chatModel);
                         }
                         System.out.println("test chatModel 22 " + chatModels);
@@ -73,9 +73,9 @@ public class ChatFragment extends Fragment {
                         //chatModels는 ArrayList
                         //chatModel는 chatModel형snapshot? ChatModel.class
                     }
-                    System.out.println("test chatModel 1 " + chatModels);
+//                    System.out.println("test chatModel 1 " + chatModels);
                     notifyDataSetChanged();
-                    System.out.println("test chatModel 1 " + chatModels);
+//                    System.out.println("test chatModel 1 " + chatModels);
 
                 }
 
@@ -95,7 +95,7 @@ public class ChatFragment extends Fragment {
         @Override
         public void onBindViewHolder(RecyclerView.ViewHolder holder, @SuppressLint("RecyclerView") int position) {
             ((CustomViewHolder)holder).chatroom_name.setText(chatModels.get(position).getRoomName());
-            System.out.println("test chatModel 2 " + chatModels.get(position).getRoomName());
+//            System.out.println("test chatModel 2 " + chatModels.get(position).getRoomName());
             ((CustomViewHolder)holder).itemView.setTag(position);
         }
 
@@ -115,7 +115,7 @@ public class ChatFragment extends Fragment {
                     public void onClick(View v) {
                         int listTagNum = (int) v.getTag();
                         chat_list = true;
-                        System.out.println("test position tag "+listTagNum);
+//                        System.out.println("test position tag "+listTagNum);
 
                         //db의 순서대로 0, 1, 2 ...
                         //true면 리스트에 보인다는 뜻

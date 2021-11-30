@@ -115,11 +115,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onEvent(@Nullable DocumentSnapshot snapshot, @Nullable FirebaseFirestoreException e) {
                 if (e != null) {
-                    Log.w(TAG, "Listen failed.", e);
+                 //   Log.w(TAG, "Listen failed.", e);
                     return;
                 }
                 if (snapshot != null && snapshot.exists()) {
-                    Log.d(TAG, "Current data: " + snapshot.getData());
+                //    Log.d(TAG, "Current data: " + snapshot.getData());
                     UserAccount userAccount = snapshot.toObject(UserAccount.class);
                     strStudentName = userAccount.getStudentName();
                     strEmail = userAccount.getEmailId();
@@ -129,11 +129,11 @@ public class MainActivity extends AppCompatActivity {
                     strStudentId = userAccount.getStudentId();
                     strPhoneNumber = userAccount.getPhoneNumber();
 
-                    Toast.makeText(MainActivity.this, "메인2" + strNick, Toast.LENGTH_SHORT).show();
+                   // Toast.makeText(MainActivity.this, "메인2" + strNick, Toast.LENGTH_SHORT).show();
                 } else {
-                    Log.d(TAG, "Current data: null");
+                   // Log.d(TAG, "Current data: null");
                 }
-                Toast.makeText(MainActivity.this, "메인" + strNick, Toast.LENGTH_SHORT).show();
+             //   Toast.makeText(MainActivity.this, "메인" + strNick, Toast.LENGTH_SHORT).show();
 
 
             }
@@ -209,14 +209,12 @@ public class MainActivity extends AppCompatActivity {
                         return true;
 
                     case R.id.nav_scrap:
-                        menuItem.setChecked(false);
                         intent = new Intent(MainActivity.context, Scrap_Activity.class);
                         startActivity(intent);
                         drawerLayout.closeDrawers();
                         return true;
 
                     case R.id.nav_edit_profile:
-                        menuItem.setChecked(true);
                         intent = new Intent(MainActivity.context, Edit_profile_Activity.class);
                         intent.putExtra("nickname", strNick);
                         intent.putExtra("studentId", strStudentId);
@@ -228,7 +226,6 @@ public class MainActivity extends AppCompatActivity {
                         return true;
 
                     case R.id.nav_setting:
-                        menuItem.setChecked(true);
                         intent = new Intent(MainActivity.context, SettingActivity.class);
                         startActivity(intent);
                         drawerLayout.closeDrawers();
@@ -243,11 +240,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onEvent(@Nullable DocumentSnapshot snapshot, @Nullable FirebaseFirestoreException e) {
                 if (e != null) {
-                    Log.w(TAG, "Listen failed.", e);
+               //     Log.w(TAG, "Listen failed.", e);
                     return;
                 }
                 if (snapshot != null && snapshot.exists()) {
-                    Log.d(TAG, "Current data: " + snapshot.getData());
+              //      Log.d(TAG, "Current data: " + snapshot.getData());
                     UserAccount userAccount = snapshot.toObject(UserAccount.class);
                     strStudentName = userAccount.getStudentName();
                     strEmail = userAccount.getEmailId();
@@ -262,14 +259,14 @@ public class MainActivity extends AppCompatActivity {
                     tv_major.setText(strMaojr);
 
                 } else {
-                    Log.d(TAG, "Current data: null");
+               //     Log.d(TAG, "Current data: null");
                 }
             }
         });
     }
 
     private void displayMessage(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+     //   Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
     //메뉴 선택시 네비게이션 호출

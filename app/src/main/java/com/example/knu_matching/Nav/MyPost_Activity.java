@@ -91,9 +91,9 @@ public class MyPost_Activity extends AppCompatActivity {
                                     post.getStr_link();
                                     post.getStr_uid();
                                     postList.add(post);
-                                    System.out.println("결과값 출력2 " + postList.get(0).getStr_uid());
-                                    System.out.println("결과값 출력 " + post.getStr_Title());
-                                    System.out.println("결과값 출력 " + post.getStr_uid());
+                                 //   System.out.println("결과값 출력2 " + postList.get(0).getStr_uid());
+                                //    System.out.println("결과값 출력 " + post.getStr_Title());
+                                 //   System.out.println("결과값 출력 " + post.getStr_uid());
                                     break;
                                 case MODIFIED:
                                     break;
@@ -104,7 +104,7 @@ public class MyPost_Activity extends AppCompatActivity {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                System.out.println("아답터 들어가기");
+                       //         System.out.println("아답터 들어가기");
                                 adapter = new MyPostAdapter(MyPost_Activity.this, postList);
                                 rv.setAdapter(adapter);
                                 adapter.notifyDataSetChanged();

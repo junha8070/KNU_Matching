@@ -52,8 +52,8 @@ public class Edit_profile_Activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile);
         init();
-        System.out.println("디버깅");
-        System.out.println("infomodify디버깅");
+//        System.out.println("디버깅");
+//        System.out.println("infomodify디버깅");
         nickname_state = true;
 
         btn_update.setOnClickListener(new View.OnClickListener() {
@@ -125,7 +125,7 @@ public class Edit_profile_Activity extends AppCompatActivity {
 
     private void Check_NickName_Duplicate() {
         strNick = edt_nickname.getText().toString();
-        System.out.println("test2222   " + strNick + " " + strEmail + " " + strStudentId);
+//        System.out.println("test2222   " + strNick + " " + strEmail + " " + strStudentId);
 
         db.collection("Account")
                 .whereEqualTo("nickName", strNick)

@@ -71,14 +71,14 @@ public class Scrap_Activity extends AppCompatActivity {
                             @Override
                             public void onEvent(@Nullable QuerySnapshot snapshots, @Nullable FirebaseFirestoreException e) {
                                 if (e != null) {
-                                    Log.w(TAG, "listen:error", e);
+                                //    Log.w(TAG, "listen:error", e);
                                     return;
                                 }
 
                                 for (DocumentChange dc : snapshots.getDocumentChanges()) {
                                     switch (dc.getType()) {
                                         case ADDED:
-                                            Log.d(TAG, "Add city: " + dc.getDocument().getData());
+                                        //    Log.d(TAG, "Add city: " + dc.getDocument().getData());
                                             board = dc.getDocument().toObject(Board.class);
                                             posts.put("UID", dc.getDocument().getId());
                                             posts.put(TAG_TITLE, board.getStr_title());
@@ -91,10 +91,10 @@ public class Scrap_Activity extends AppCompatActivity {
                                             posts = new HashMap<>();
                                             break;
                                         case MODIFIED:
-                                            Log.d(TAG, "Modified city: " + dc.getDocument().getData());
+                                      //      Log.d(TAG, "Modified city: " + dc.getDocument().getData());
                                             break;
                                         case REMOVED:
-                                            Log.d(TAG, "Removed city: " + dc.getDocument().getData());
+                                       //     Log.d(TAG, "Removed city: " + dc.getDocument().getData());
                                             board = dc.getDocument().toObject(Board.class);
                                             posts.put("UID", dc.getDocument().getId());
                                             posts.put(TAG_TITLE, board.getStr_title());
@@ -119,7 +119,7 @@ public class Scrap_Activity extends AppCompatActivity {
                                     public void run() {
 //                                recyclerViewState = rv.getLayoutManager().onSaveInstanceState();
                                         for (int i = 0; i < noticeList.size(); i++) {
-                                            System.out.println("액티비티" + noticeList.get(i));
+                                    //        System.out.println("액티비티" + noticeList.get(i));
                                         }
                                         adapter = new Scrap_Adapter(Scrap_Activity.this, noticeList);
                                         rv.setAdapter(adapter);

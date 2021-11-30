@@ -55,7 +55,7 @@ public class MyPostAdapter extends RecyclerView.Adapter<MyPostAdapter.RecyclerVi
     public MyPostAdapter(Context context, ArrayList<Post> myData){
         this.mDataset = myData;
         this.context = context;
-        System.out.println("리스트" + mDataset.get(0).getStr_uid());
+       // System.out.println("리스트" + mDataset.get(0).getStr_uid());
     }
 
     @NonNull
@@ -76,7 +76,7 @@ public class MyPostAdapter extends RecyclerView.Adapter<MyPostAdapter.RecyclerVi
                 int j = 0;
                 if (task.isSuccessful()) {
                     for (QueryDocumentSnapshot document : task.getResult()) {
-                        Log.d("Visitor", document.getId() + " => " + document.getData());
+                 //       Log.d("Visitor", document.getId() + " => " + document.getData());
                         j = i + 1;
                         i++;
                     }
@@ -85,12 +85,12 @@ public class MyPostAdapter extends RecyclerView.Adapter<MyPostAdapter.RecyclerVi
                     holder.tv_date.setText(mDataset.get(position).getStr_time());
                     holder.tv_content.setText(mDataset.get(position).getStr_post());
                     holder.tv_participate.setText(Integer.toString(count));
-                    System.out.println("숫자"+count);
+                 //   System.out.println("숫자"+count);
                     if(mDataset.get(position).getStr_Number().equals(0)){
                         holder.btn_chat.setEnabled(false);
                     }
                 } else {
-                    Log.d("Visitor", "Error getting documents: ", task.getException());
+               //     Log.d("Visitor", "Error getting documents: ", task.getException());
                 }
             }
 
@@ -122,7 +122,7 @@ public class MyPostAdapter extends RecyclerView.Adapter<MyPostAdapter.RecyclerVi
         holder.btn_chat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                System.out.println("scrap strid "+mDataset.get(position).getStr_Id());
+              //  System.out.println("scrap strid "+mDataset.get(position).getStr_Id());
 
                 db.collection("Post").document(mDataset.get(position).getStr_Id()).collection("Participate")
                         .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -142,12 +142,12 @@ public class MyPostAdapter extends RecyclerView.Adapter<MyPostAdapter.RecyclerVi
 //                                    System.out.println("mypost adapter uid "+participateUser.getStr_participate_Uid());
 //                                    System.out.println("mypost adapter task "+task.getResult().getData());
 //                                    System.out.println("mypost adapter task "+task.getResult().toString());
-                                    System.out.println("mypost adapter uid " + task.getResult().get("str_participate_Uid").toString());
+                              //      System.out.println("mypost adapter uid " + task.getResult().get("str_participate_Uid").toString());
                                     arr_participated_uid.add(task.getResult().get("str_participate_Uid").toString());
                                     arr_participated_uid.add(auth.getUid());
-                                    System.out.println("mypost adapter participated_uid " + arr_participated_uid);
+                                 //   System.out.println("mypost adapter participated_uid " + arr_participated_uid);
                                     Intent intent = new Intent(v.getContext(), ChatActivity.class);
-                                    System.out.println("myPostAdapter to chatactivity " + arr_participated_uid);
+                                 //   System.out.println("myPostAdapter to chatactivity " + arr_participated_uid);
                                     intent.putExtra("participated_uid", arr_participated_uid);
                                     intent.putExtra("isMyPost", true);
                                     intent.putExtra("Number", mDataset.get(position).getStr_Number());

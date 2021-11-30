@@ -50,8 +50,8 @@ public class InfoModify extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_info_modify);
         init();
-        System.out.println("디버깅");
-        System.out.println("infomodify디버깅");
+     //   System.out.println("디버깅");
+     //   System.out.println("infomodify디버깅");
         nickname_state = true;
 
         btn_update.setOnClickListener(new View.OnClickListener() {
@@ -127,7 +127,7 @@ public class InfoModify extends AppCompatActivity {
 
     private void Check_NickName_Duplicate() {
         strNick = edt_nickname.getText().toString();
-        System.out.println("test2222   " + strNick + " " + strEmail + " " + strStudentId);
+       // System.out.println("test2222   " + strNick + " " + strEmail + " " + strStudentId);
 
         db.collection("Account")
                 .whereEqualTo("nickName", strNick)
@@ -139,7 +139,7 @@ public class InfoModify extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 UserAccount userAccount = document.toObject(UserAccount.class);
-                                Log.d("db디버깅", userAccount.getNickName());
+                    //            Log.d("db디버깅", userAccount.getNickName());
                                 if (strNick.equals(userAccount.getNickName())) {
                                     tv_nickstate.setText("중복된 닉네임 입니다.");
                                     nickname_state = false;

@@ -51,13 +51,13 @@ public class FindIDActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 strStudentId = edt_name.getText().toString();
-                System.out.println("test");
+//                System.out.println("test");
                 if (strStudentId.length() == 0) {
                     Toast.makeText(FindIDActivity.this, "이름을 입력해 주세요.", Toast.LENGTH_SHORT).show();
                     edt_name.requestFocus();
                     return;
                 }
-                System.out.println("test   " + strStudentId);
+//                System.out.println("test   " + strStudentId);
                 db.collection("Account")
                         .whereEqualTo("studentId", strStudentId)
                         .get()

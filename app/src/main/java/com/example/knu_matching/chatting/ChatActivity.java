@@ -103,11 +103,11 @@ public class ChatActivity extends AppCompatActivity {
         editText = (EditText) findViewById(R.id.messageActivity_editText);
         recyclerView = (RecyclerView)findViewById(R.id.messageActivity_reclclerview);
         final String myUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        System.out.println("test oncreate arrNick1 "+ arrayList);
+//        System.out.println("test oncreate arrNick1 "+ arrayList);
         user_arrayList = new ArrayList<String>();
 
         roomNum=0;
-        System.out.println("test oncreate arrNick2 "+arrayList);
+//        System.out.println("test oncreate arrNick2 "+arrayList);
         Map<String, Object> map = new HashMap<>();
 
         FirebaseMessaging.getInstance().getToken()
@@ -115,17 +115,17 @@ public class ChatActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<String> task) {
                         if (!task.isSuccessful()) {
-                            System.out.println("Fetching FCM registration token failed" + task.getException());
+//                            System.out.println("Fetching FCM registration token failed" + task.getException());
                             return;
                         }
                         // Get new FCM registration token
                         String token = task.getResult();
 
-                        System.out.println("fcm map 1" + token);
+//                        System.out.println("fcm map 1" + token);
                         FirebaseDatabase.getInstance().getReference().child("users").child(uid).child("token").setValue(token);
 
                         map.put("fcmToken", token);
-                        System.out.println("fcm map " + map.keySet());
+   //                     System.out.println("fcm map " + map.keySet());
                         String msg = getString(R.string.msg_token_fmt, token);
                         FirebaseDatabase.getInstance().getReference().child("users").child(uid).child("token").addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
@@ -139,20 +139,20 @@ public class ChatActivity extends AppCompatActivity {
                         });
                     }
                 });
-        System.out.println("myPostAdapter to chatactivity1 "+ arr_participated_uid);
+     //   System.out.println("myPostAdapter to chatactivity1 "+ arr_participated_uid);
 
         //myPostAdapter에서 클릭해서 채팅방 생성
         if(isMyPost.equals(true)){
 
-            System.out.println("myPostAdapter to chatactivity2 "+ arr_participated_uid);
+          //  System.out.println("myPostAdapter to chatactivity2 "+ arr_participated_uid);
 
-            System.out.println("myPostAdapter to chatactivity3 "+ arrayList);
+          //  System.out.println("myPostAdapter to chatactivity3 "+ arrayList);
             chat_list = false;
             arrayList = new ArrayList<>();
             for(String element : arr_participated_uid){
                 arrayList.add(element);
             }
-            System.out.println("myPostAdapter to chatactivity4 "+ arrayList);
+          //  System.out.println("myPostAdapter to chatactivity4 "+ arrayList);
             chatRoomName = str_roomName;
         }
 
@@ -166,25 +166,25 @@ public class ChatActivity extends AppCompatActivity {
                         user_arrayList.clear();
                         ChatModel chatModel = item.getValue(ChatModel.class);
                         roomNum++;
-                        System.out.println("arrayList real item"+ arrayList);
+                       // System.out.println("arrayList real item"+ arrayList);
                         for(String key : chatModel.users.keySet()){
                             user_arrayList.add(key);
                         }
-                        System.out.println("arrayList real user_arrayList "+ user_arrayList);
-                        System.out.println("arrayList real "+ arrayList);
+                        //System.out.println("arrayList real user_arrayList "+ user_arrayList);
+                       // System.out.println("arrayList real "+ arrayList);
 
                     }
                     ChatModel chatModel = new ChatModel();
                     for(String element: arrayList){
                         //user uid
-                        System.out.println("test arralist element " + element);
+                    //    System.out.println("test arralist element " + element);
                         chatModel.users.put(element, true);
                     }
                     chatModel.setChatRoomUid(chatRoomUid);
                     chatModel.setRoomName(chatRoomName);
                     chatModel.setRoomNum(roomNum);
-                    System.out.println("test chatModel chatModel users "+chatModel.users);
-                    System.out.println("test chatModel chatRoomUid "+chatModel.getChatRoomUid());
+                 //   System.out.println("test chatModel chatModel users "+chatModel.users);
+                 //   System.out.println("test chatModel chatRoomUid "+chatModel.getChatRoomUid());
 
                     if(chatRoomUid == null){
 
@@ -219,10 +219,10 @@ public class ChatActivity extends AppCompatActivity {
                             for(DataSnapshot item : dataSnapshot.getChildren()) {
                                 ChatModel chatModel = item.getValue(ChatModel.class);
                                 chatRoomUid = item.getKey();
-                                System.out.println("test dataSnapshot 666  " + dataSnapshot);
-                                System.out.println("test item 666  " + item);
-                                System.out.println("test listTagNum 666  " + listTagNum);
-                                System.out.println("test chatRoomUid 666  " + chatRoomUid);
+                              //  System.out.println("test dataSnapshot 666  " + dataSnapshot);
+                              //  System.out.println("test item 666  " + item);
+                              //  System.out.println("test listTagNum 666  " + listTagNum);
+                              //  System.out.println("test chatRoomUid 666  " + chatRoomUid);
                                 first_chat = false;
                                 recyclerView.setLayoutManager(new LinearLayoutManager(ChatActivity.this));
                                 recyclerView.setAdapter(new RecyclerViewAdapter());
@@ -250,7 +250,7 @@ public class ChatActivity extends AppCompatActivity {
                         }//이건 chatroom 안에 같이 있는 users arrayList
 
 
-                        System.out.println("test userarrayList "+ user_arrayList);
+                       // System.out.println("test userarrayList "+ user_arrayList);
                     }
                 }
 
@@ -267,9 +267,9 @@ public class ChatActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View view) {
-                System.out.println("Send msg token "+arrayList);
-                System.out.println("Send msg token1 "+mToken);
-                System.out.println("Send msg token2 "+map.entrySet());
+               // System.out.println("Send msg token "+arrayList);
+               // System.out.println("Send msg token1 "+mToken);
+               // System.out.println("Send msg token2 "+map.entrySet());
 
                 if(chatRoomUid == null) {
                     checkChatRoom();
@@ -285,8 +285,8 @@ public class ChatActivity extends AppCompatActivity {
                             public void onDataChange(@NonNull DataSnapshot snapshot) {
                                 for (DataSnapshot item : snapshot.getChildren()) {
                                     UserAccount userAccount = item.getValue(UserAccount.class);
-                                    System.out.println("userAccount " +userAccount.getNickName());
-                                    System.out.println("token token " +userAccount.getToken());
+                                    //System.out.println("userAccount " +userAccount.getNickName());
+                                   // System.out.println("token token " +userAccount.getToken());
                                     arr_Nick.put(userAccount.getNickName(), userAccount.getUid());
                                     token_List.put(userAccount.getToken(), userAccount.getUid());
 
@@ -300,7 +300,7 @@ public class ChatActivity extends AppCompatActivity {
                                     if (value.equals(uid)) {
                                         comment.nickname = key;
                                     } else {
-                                        System.out.println("wrong");
+                                  //      System.out.println("wrong");
                                     }
 
                                 }
@@ -309,16 +309,16 @@ public class ChatActivity extends AppCompatActivity {
                                     @Override
                                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                                         for(DataSnapshot item : snapshot.getChildren()){
-                                            System.out.println("valuevaluevalue "+ item.getKey());
+                                         //   System.out.println("valuevaluevalue "+ item.getKey());
 
                                             for(String key : token_List.keySet()) {
                                                 String value = token_List.get(key);
 
-                                                System.out.println("arrayList element "+item.getKey());
-                                                System.out.println("arrayList key "+key);
-                                                System.out.println("arrayList value "+value);
+                                           //     System.out.println("arrayList element "+item.getKey());
+                                           //     System.out.println("arrayList key "+key);
+                                           //     System.out.println("arrayList value "+value);
                                                 if(value.equals(item.getKey())){
-                                                    System.out.println("arrayList equals "+item.getKey());
+                                            //        System.out.println("arrayList equals "+item.getKey());
                                                     SendNotification.sendNotification(key, "메세지가 도착했습니다!", comment.nickname);
                                                 }
                                             }
@@ -358,9 +358,9 @@ public class ChatActivity extends AppCompatActivity {
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         for(DataSnapshot item : dataSnapshot.getChildren()){
                             chatRoomUidd = item.getKey();
-                            System.out.println("test checkChatRoom chatRoomUidd "+chatRoomUidd);
-                            System.out.println("test checkChatRoom chatRoomUid2 "+chatRoomUid);
-                            System.out.println("test checkChatRoom first_chat "+ first_chat);
+                            //System.out.println("test checkChatRoom chatRoomUidd "+chatRoomUidd);
+                            //System.out.println("test checkChatRoom chatRoomUid2 "+chatRoomUid);
+                            //System.out.println("test checkChatRoom first_chat "+ first_chat);
                             if(first_chat){
                                 chatRoomUid = chatRoomUidd;
                             }
@@ -386,7 +386,7 @@ public class ChatActivity extends AppCompatActivity {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             userModel = dataSnapshot.getValue(UserAccount.class);
-                            System.out.println("test please userModel "+ userModel.uid);
+                            //System.out.println("test please userModel "+ userModel.uid);
 
                             getMessageList();
                         }
@@ -407,7 +407,7 @@ public class ChatActivity extends AppCompatActivity {
                             comments.clear();
                             for(DataSnapshot item : dataSnapshot.getChildren()){
                                 comments.add(item.getValue(ChatModel.Comment.class));
-                                System.out.println("please comment item " + item);
+                             //   System.out.println("please comment item " + item);
                             }
                             //메세지가 갱신
                             notifyDataSetChanged();

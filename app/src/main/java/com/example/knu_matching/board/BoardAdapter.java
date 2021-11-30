@@ -41,7 +41,7 @@ public class BoardAdapter extends RecyclerView.Adapter<BoardAdapter.RecyclerView
     public BoardAdapter(Context context, ArrayList<HashMap<String, String>> noticeList) {
         this.context = context;
         this.noticeList = noticeList;
-        System.out.println("리스트" + noticeList);
+     //   System.out.println("리스트" + noticeList);
     }
 
     @NonNull

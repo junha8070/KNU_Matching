@@ -430,10 +430,7 @@ public class Post_Owner_Acticity extends AppCompatActivity {
                                         db.collection("Post").document(str_Id).collection("Comment").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                             @Override
                                             public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                                System.out.println("이건 뭐냐" + task.getResult().getDocuments().get(0));
                                                 for (QueryDocumentSnapshot document : task.getResult()) {
-                                                    System.out.println("다큐먼트" + document.getData().get("str_Content"));
-                                                    System.out.println("다큐먼트" + document.getId());
                                                     db.collection("Post").document(str_Id).collection("Comment").document(document.getId()).delete().addOnCompleteListener(new OnCompleteListener<Void>() {
                                                         @Override
                                                         public void onComplete(@NonNull Task<Void> task) {
