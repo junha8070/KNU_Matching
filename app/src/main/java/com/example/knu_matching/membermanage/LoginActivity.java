@@ -73,22 +73,28 @@ public class LoginActivity extends AppCompatActivity {
 
                 String edtEmail = edt_Email.getText().toString();
                 String edtPassword = edt_Pwd.getText().toString();
+                if(edtEmail.equals("") || edtPassword.equals("")){
+                    Toast.makeText(LoginActivity.this, "빈칸이 존재합니다.", Toast.LENGTH_SHORT).show();
 
-                mFirebaseAuth.signInWithEmailAndPassword(edtEmail,edtPassword).addOnCompleteListener
-                        (LoginActivity.this, new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
+                }
+                else{
+                    mFirebaseAuth.signInWithEmailAndPassword(edtEmail,edtPassword).addOnCompleteListener
+                            (LoginActivity.this, new OnCompleteListener<AuthResult>() {
+                                @Override
+                                public void onComplete(@NonNull Task<AuthResult> task) {
 
-                                if(task.isSuccessful()){
+                                    if(task.isSuccessful()){
 
-                                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                                    startActivity(intent);
-                                    finish();
-                                }else {
-                                    Toast.makeText(LoginActivity.this, "이메일이나 비밀번호 오류", Toast.LENGTH_SHORT).show();
+                                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                        startActivity(intent);
+                                        finish();
+                                    }else {
+                                        Toast.makeText(LoginActivity.this, "이메일이나 비밀번호 오류", Toast.LENGTH_SHORT).show();
+                                    }
                                 }
-                            }
-                        });
+                            });
+                }
+
             }
         });
     }

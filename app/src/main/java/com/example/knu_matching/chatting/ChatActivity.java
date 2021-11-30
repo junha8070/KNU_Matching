@@ -172,34 +172,6 @@ public class ChatActivity extends AppCompatActivity {
                         }
                         System.out.println("arrayList real user_arrayList "+ user_arrayList);
                         System.out.println("arrayList real "+ arrayList);
-                        if(isMyPost.equals(true)){
-                            if ((user_arrayList.containsAll(arr_participated_uid) == true) && (user_arrayList.size() == arr_participated_uid.size())){
-                                Toast.makeText(ChatActivity.this, "이미 같은 멤버와 단체방이 존재합니다.", Toast.LENGTH_SHORT).show();
-                                first_chat = false;
-                                chatRoomUid = item.getKey();
-                                System.out.println("test chatlist false roomNum "+ roomNum);
-                                System.out.println("test4 chatlist false chatRoomUid "+chatRoomUid);
-                                button.setEnabled(true);
-                                break;
-                            }
-                            else {
-                                continue;
-                            }
-                        }
-                        else{
-                            if ((user_arrayList.containsAll(arrayList) == true) && (user_arrayList.size() == arrayList.size())){
-                                Toast.makeText(ChatActivity.this, "이미 같은 멤버와 단체방이 존재합니다.", Toast.LENGTH_SHORT).show();
-                                first_chat = false;
-                                chatRoomUid = item.getKey();
-                                System.out.println("test chatlist false roomNum "+ roomNum);
-                                System.out.println("test4 chatlist false chatRoomUid "+chatRoomUid);
-                                button.setEnabled(true);
-                                break;
-                            }
-                            else {
-                                continue;
-                            }
-                        }
 
                     }
                     ChatModel chatModel = new ChatModel();
@@ -506,7 +478,11 @@ public class ChatActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+        super.onBackPressed();
         finish();
+        Intent intent = new Intent(ChatActivity.this, MainActivity.class); //지금 액티비티에서 다른 액티비티로 이동하는 인텐트 설정
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);    //인텐트 플래그 설정
+        startActivity(intent);  //인텐트 이동
         overridePendingTransition(R.anim.fromleft,R.anim.toright);
     }
 }

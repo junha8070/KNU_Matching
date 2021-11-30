@@ -130,6 +130,7 @@ public class RegisterActivity extends AppCompatActivity {
                 strEmail = edt_Email.getText().toString();
                 strPassword = edt_password.getText().toString();
                 strNick = edt_Nickname.getText().toString();
+
                 System.out.println("test" + strNick + " " + strEmail + " " + strStudentId);
 
                 if (strStudentName.trim().equals("") || strEmail.trim().equals("") || strPassword.trim().equals("") || strNick.trim().equals("") || strStudentId.trim().equals("") || strMaojr.trim().equals("") || strPhoneNumber.trim().equals("")) {

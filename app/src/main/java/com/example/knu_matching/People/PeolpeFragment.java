@@ -172,7 +172,7 @@ public class PeolpeFragment extends Fragment {
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
                     str_chatroom_name = chatroom_name.getText().toString();
-                    if (str_chatroom_name.length() == 0) {
+                    if (str_chatroom_name.trim().equals("")) {
                         iswritename = false;
                     } else {
                         iswritename = true;
