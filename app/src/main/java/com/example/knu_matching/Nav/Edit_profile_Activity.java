@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -20,6 +21,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.example.knu_matching.R;
 import com.example.knu_matching.UserAccount;
@@ -46,6 +48,7 @@ public class Edit_profile_Activity extends AppCompatActivity {
     private TextView tv_nickstate;
     private boolean nickname_state;
     MainActivity mainActivity = new MainActivity();
+    Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,6 +83,11 @@ public class Edit_profile_Activity extends AppCompatActivity {
     }
 
     public void init() {
+        toolbar = (Toolbar) findViewById(R.id.toolbar);             //툴바 설정
+        setSupportActionBar(toolbar);                               //툴바 셋업
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);      //뒤로가기 자동 생성
+        getSupportActionBar().setDisplayShowTitleEnabled(false);    //툴바 기본 타이틀 제거
+
         edt_StudentName = findViewById(R.id.edt_StudentName);
         edt_StudentID = findViewById(R.id.edt_StudentID);
         edt_Major = findViewById(R.id.edt_Major);
@@ -178,5 +186,14 @@ public class Edit_profile_Activity extends AppCompatActivity {
             }
         });
 
+    }
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

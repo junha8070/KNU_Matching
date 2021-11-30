@@ -6,9 +6,12 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.util.Log;
+import android.view.MenuItem;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -45,11 +48,17 @@ public class Scrap_Activity extends AppCompatActivity {
     ProgressDialog customProgressDialog;
     RecyclerView rv;
     private LinearLayoutManager mLinearLayoutManager;
+    Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scrap);
+
+        toolbar = (Toolbar) findViewById(R.id.toolbar);             //툴바 설정
+        setSupportActionBar(toolbar);                               //툴바 셋업
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);      //뒤로가기 자동 생성
+        getSupportActionBar().setDisplayShowTitleEnabled(false);    //툴바 기본 타이틀 제거
 
         rv = findViewById(R.id.rv);
         mLinearLayoutManager = new GridLayoutManager(Scrap_Activity.this, 1);
@@ -134,5 +143,14 @@ public class Scrap_Activity extends AppCompatActivity {
             }
         }).start();
 
+    }
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
