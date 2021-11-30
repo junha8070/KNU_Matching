@@ -15,6 +15,15 @@
         android:backgroundTint="#00ff0000"
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme">
+
+        <TextView
+            android:id="@+id/tv_toolBar_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/tway_air"
+            android:textColor="#5489C3"
+            android:textStyle="bold"
+            android:text=""/>
     </androidx.appcompat.widget.Toolbar>
 
     <com.example.knu_matching.WebViewCustom

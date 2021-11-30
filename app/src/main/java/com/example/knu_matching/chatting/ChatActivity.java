@@ -11,6 +11,7 @@ import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -26,6 +27,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -85,10 +87,16 @@ public class ChatActivity extends AppCompatActivity {
     private String mToken;
     private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy.MM.dd HH:mm");
     String str_Num, str_roomName;
+    Toolbar toolbar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);             //툴바 설정
+        setSupportActionBar(toolbar);                               //툴바 셋업
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);      //뒤로가기 자동 생성
+        getSupportActionBar().setDisplayShowTitleEnabled(false);    //툴바 기본 타이틀 제거
         uid = FirebaseAuth.getInstance().getCurrentUser().getUid();  //채팅을 요구 하는 아아디 즉 단말기에 로그인된 UID
         arrayList = getIntent().getStringArrayListExtra("invited_List");
         chat_list = getIntent().getExtras().getBoolean("chat_list");
@@ -484,5 +492,19 @@ public class ChatActivity extends AppCompatActivity {
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);    //인텐트 플래그 설정
         startActivity(intent);  //인텐트 이동
         overridePendingTransition(R.anim.fromleft,R.anim.toright);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                Intent intent = new Intent(ChatActivity.this, MainActivity.class); //지금 액티비티에서 다른 액티비티로 이동하는 인텐트 설정
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);    //인텐트 플래그 설정
+                startActivity(intent);  //인텐트 이동
+                overridePendingTransition(R.anim.fromleft,R.anim.toright);
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

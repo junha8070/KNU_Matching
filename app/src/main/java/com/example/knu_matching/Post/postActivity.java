@@ -5,6 +5,7 @@ import static android.content.ContentValues.TAG;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -16,6 +17,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.OpenableColumns;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -73,12 +75,16 @@ public class postActivity extends AppCompatActivity {
     String formatedNow = Now.format(DateTimeFormatter.ofPattern("yyyy_MM_dd_HH_mm_ss_SSS"));
     SimpleDateFormat formatter = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss");
     Date now = new Date();
+    Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post);
-
+        toolbar = (Toolbar) findViewById(R.id.toolbar);             //툴바 설정
+        setSupportActionBar(toolbar);                               //툴바 셋업
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);      //뒤로가기 자동 생성
+        getSupportActionBar().setDisplayShowTitleEnabled(false);    //툴바 기본 타이틀 제거
         btn_write = findViewById(R.id.btn_write);
         edt_date = findViewById(R.id.edt_date);
         edt_Title = findViewById(R.id.edt_Title);
@@ -280,6 +286,15 @@ public class postActivity extends AppCompatActivity {
             result = uri.getLastPathSegment();
         }
         return result;
+    }
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
 

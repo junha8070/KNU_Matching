@@ -105,6 +105,7 @@ public class BoardAdapter extends RecyclerView.Adapter<BoardAdapter.RecyclerView
                 public void onClick(View v) {
                     Intent intent = new Intent(cv.getContext(), WebView.class);
                     intent.putExtra("url", jobabaUrl);
+                    intent.putExtra("title",tv_title.getText().toString());
                     cv.getContext().startActivity(intent);
                 }
             });
