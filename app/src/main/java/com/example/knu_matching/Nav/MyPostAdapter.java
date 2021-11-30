@@ -151,6 +151,7 @@ public class MyPostAdapter extends RecyclerView.Adapter<MyPostAdapter.RecyclerVi
                                     intent.putExtra("participated_uid", arr_participated_uid);
                                     intent.putExtra("isMyPost", true);
                                     intent.putExtra("Number", mDataset.get(position).getStr_Number());
+                                    intent.putExtra("roomName", mDataset.get(position).getStr_Title());
                                     v.getContext().startActivity(intent);
 
                                 }

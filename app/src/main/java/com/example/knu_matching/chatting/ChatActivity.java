@@ -84,7 +84,7 @@ public class ChatActivity extends AppCompatActivity {
     private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
     private String mToken;
     private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy.MM.dd HH:mm");
-    String str_Num;
+    String str_Num, str_roomName;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -96,6 +96,7 @@ public class ChatActivity extends AppCompatActivity {
         arrNick = getIntent().getStringArrayListExtra("arrNick");
         str_Num = getIntent().getStringExtra("Number");
         arr_participated_uid = getIntent().getStringArrayListExtra("participated_uid");
+        str_roomName =getIntent().getExtras().getString("roomName");
         isMyPost = getIntent().getExtras().getBoolean("isMyPost");
         listTagNum = getIntent().getExtras().getInt("listTagNum");
         button = (ImageButton) findViewById(R.id.messageActivity_button);
@@ -152,6 +153,7 @@ public class ChatActivity extends AppCompatActivity {
                 arrayList.add(element);
             }
             System.out.println("myPostAdapter to chatactivity4 "+ arrayList);
+            chatRoomName = str_roomName;
         }
 
         //peopleFragment->chatActivity
