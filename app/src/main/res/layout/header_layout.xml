@@ -6,6 +6,7 @@
     android:gravity="bottom"
     android:orientation="vertical"
     android:padding="16dp"
+    android:backgroundTint="@color/color_tap_on"
     android:id="@+id/nav_header">
 
     <LinearLayout
@@ -34,17 +35,23 @@
                 android:id="@+id/tv_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/tway_air"
+                android:textColor="#5489C3"
                 android:text="tv_name" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/tway_air"
+                android:textColor="#5489C3"
                 android:text=" 님 / " />
 
             <TextView
                 android:id="@+id/tv_nickname"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/tway_air"
+                android:textColor="#5489C3"
                 android:text="tv_nickname" />
         </LinearLayout>
 
@@ -57,6 +64,8 @@
                 android:id="@+id/tv_major"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/tway_air"
+                android:textColor="#5489C3"
                 android:text="tv_major" />
 
         </LinearLayout>
@@ -70,6 +79,8 @@
                 android:id="@+id/tv_rate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/tway_air"
+                android:textColor="#5489C3"
                 android:text="tv_rate" />
         </LinearLayout>
     </LinearLayout>

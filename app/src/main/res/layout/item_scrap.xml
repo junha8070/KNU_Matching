@@ -33,6 +33,7 @@
                     android:id="@+id/tv_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/tway_air"
                     android:text="title" />
 
                 <LinearLayout
@@ -45,22 +46,26 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="20dp"
+                        android:fontFamily="@font/tway_air"
                         android:text="place" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:fontFamily="@font/tway_air"
                         android:text="(" />
 
                     <TextView
                         android:id="@+id/tv_region"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:fontFamily="@font/tway_air"
                         android:text="region" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:fontFamily="@font/tway_air"
                         android:text=")" />
                 </LinearLayout>
 
@@ -73,17 +78,20 @@
                         android:id="@+id/tv_startDate"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:fontFamily="@font/tway_air"
                         android:text="startDate" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:fontFamily="@font/tway_air"
                         android:text="~" />
 
                     <TextView
                         android:id="@+id/tv_endDate"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:fontFamily="@font/tway_air"
                         android:text="endDate" />
                 </LinearLayout>
 
@@ -101,7 +109,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:background="@null"
+                    android:backgroundTint="#e8f3ff"
+                    android:textColor="#111"
+                    android:textStyle="bold"
                     android:text="스크랩지우기" />
 
                 <Button
@@ -109,6 +119,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:backgroundTint="#e8f3ff"
+                    android:textColor="#111"
+                    android:textStyle="bold"
                     android:text="팀원구하기" />
             </LinearLayout>
 

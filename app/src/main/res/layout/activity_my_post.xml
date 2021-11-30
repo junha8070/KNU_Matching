@@ -19,6 +19,9 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/tway_air"
+            android:textColor="#5489C3"
+            android:textStyle="bold"
             android:text="내가 쓴 글"/>
 
     </androidx.appcompat.widget.Toolbar>
