@@ -82,7 +82,8 @@ public class MyPostAdapter extends RecyclerView.Adapter<MyPostAdapter.RecyclerVi
                     }
                     count = j;
                     holder.tv_title.setText(mDataset.get(position).getStr_Title());
-                    holder.tv_date.setText(mDataset.get(position).getStr_time());
+                    String timeFormmat = mDataset.get(position).getStr_time();
+                    holder.tv_date.setText(timeFormmat.substring(0,4)+"년 "+timeFormmat.substring(5,7)+"월 "+timeFormmat.substring(8,10)+"일");
                     holder.tv_content.setText(mDataset.get(position).getStr_post());
                     holder.tv_participate.setText(Integer.toString(count));
                  //   System.out.println("숫자"+count);
