@@ -33,6 +33,7 @@ import com.example.knu_matching.Post.PostFragment;
 import com.example.knu_matching.Recruitment.RecruitmentFragment;
 import com.example.knu_matching.board.BoardFragment;
 import com.example.knu_matching.chatting.ChatFragment;
+import com.example.knu_matching.membermanage.LoginActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
@@ -190,6 +191,8 @@ public class MainActivity extends AppCompatActivity {
                 switch (menuItem.getItemId()) {
                     case R.id.nav_logout:
                         FirebaseAuth.getInstance().signOut();
+                        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                        startActivity(intent);
                         finish();
                         return true;
 

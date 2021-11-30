@@ -71,20 +71,5 @@
                 android:text="tv_major" />
 
         </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="5dp">
-
-            <TextView
-                android:id="@+id/tv_rate"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/tway_air"
-                android:textColor="#5489C3"
-                android:text="tv_rate" />
-        </LinearLayout>
     </LinearLayout>
 </LinearLayout>
