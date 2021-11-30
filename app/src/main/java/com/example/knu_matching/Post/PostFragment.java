@@ -89,7 +89,7 @@ public class PostFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.activity_post_fragment, container, false);
-        Button btn_Recent = v.findViewById(R.id.btn_Recent);
+        ImageButton btn_Recent = v.findViewById(R.id.btn_Recent);
 
 
         user = FirebaseAuth.getInstance().getCurrentUser();

@@ -20,6 +20,7 @@
             android:layout_margin="10dp"
             android:textSize="15dp"
             android:layout_gravity="center"
+            android:fontFamily="@font/tway_air"
             android:layout_marginRight="20dp"/>
 
     </LinearLayout>
@@ -36,6 +37,7 @@
             android:text="메세지"
             android:id="@+id/messageItem_textView_message"
             android:layout_width="wrap_content"
+            android:fontFamily="@font/tway_air"
             android:textSize="10dp"
             android:layout_height="wrap_content" />
 
@@ -45,6 +47,7 @@
             android:textColor="@android:color/darker_gray"
             android:id="@+id/messageItem_textview_timestamp"
             android:layout_width="wrap_content"
+            android:fontFamily="@font/tway_air"
             android:layout_height="wrap_content" />
 
     </LinearLayout>

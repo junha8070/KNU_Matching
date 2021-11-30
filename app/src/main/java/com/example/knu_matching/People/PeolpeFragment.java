@@ -45,6 +45,9 @@ public class PeolpeFragment extends Fragment {
     private String uid, strNick, str_chatroom_name, strUid;
     private String chatRoomUid;
     boolean chatin, ischeckfriend, iswritename;
+    private ArrayList<String> arr_participated_uid = new ArrayList<>();
+
+
     ImageButton btn_invite;
     EditText chatroom_name;
 
@@ -67,6 +70,8 @@ public class PeolpeFragment extends Fragment {
         uid = FirebaseAuth.getInstance().getCurrentUser().getUid();  //채팅을 요구 하는 아아디 즉 단말기에 로그인된 UID
         btn_invite = (ImageButton) view.findViewById(R.id.btn_invite);
         chatroom_name = (EditText) view.findViewById(R.id.chatroom_name);
+
+
         return view;
 
     }

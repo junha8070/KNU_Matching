@@ -3,15 +3,20 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="5dp"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:layout_margin="5dp">
 
-    <TextView
-        android:id="@+id/chatroom_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="20dp"
-        android:backgroundTint="#e8f3ff"
-        android:fontFamily="@font/tway_air"
-        android:text="채팅방 이름"
-        android:textSize="17dp" />
+        <TextView
+            android:id="@+id/chatroom_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:fontFamily="@font/tway_air"
+            android:text="채팅방 이름"
+            android:textSize="17dp" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="#C5C5C5"
+            android:layout_marginTop="5dp" />
 </LinearLayout>

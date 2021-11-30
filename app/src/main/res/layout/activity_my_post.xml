@@ -19,6 +19,9 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/tway_air"
+            android:textColor="#5489C3"
+            android:textStyle="bold"
             android:text="내가 쓴 글"/>
 
     </androidx.appcompat.widget.Toolbar>
@@ -26,6 +29,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:padding="10dp"
         android:id="@+id/rv"/>
 
 </LinearLayout>

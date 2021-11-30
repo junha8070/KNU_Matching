@@ -20,11 +20,11 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="center"
-            android:gravity="center"
-            android:textColor="#0071be"
-            android:textStyle="bold"
             android:fontFamily="@font/tway_air"
-            android:text="제목" />
+            android:gravity="center"
+            android:text="제목"
+            android:textColor="#0071be"
+            android:textStyle="bold" />
     </androidx.appcompat.widget.Toolbar>
 
     <LinearLayout
@@ -82,20 +82,21 @@
             android:layout_height="wrap_content"
             android:layout_margin="10px"
             android:backgroundTint="#e8f3ff"
-            android:textColor="#111"
-            android:textSize="12dp"
             android:fontFamily="@font/tway_air"
-            android:text="참여하기" />
+            android:text="참여하기"
+            android:textColor="#111"
+            android:textSize="12dp" />
+
         <Button
             android:id="@+id/btn_participate_cancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="10px"
             android:backgroundTint="#e8f3ff"
-            android:textSize="12dp"
-            android:textColor="#111"
             android:fontFamily="@font/tway_air"
-            android:text="참여하기 취소" />
+            android:text="참여하기 취소"
+            android:textColor="#111"
+            android:textSize="12dp" />
 
     </LinearLayout>
 
@@ -165,10 +166,9 @@
 
         <TextView
             android:id="@+id/tv_file"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:autoLink="web"
-            android:ems="8"
             android:linksClickable="true"
             android:fontFamily="@font/tway_air"
             android:layout_gravity="center"
@@ -277,17 +277,18 @@
                     android:ems="8"
                     android:id="@+id/edt_comment"
                     android:layout_width="match_parent"
+                    android:layout_gravity="center"
                     android:layout_height="wrap_content"/>
-                <Button
-                    android:layout_weight="2"
+                <ImageButton
+                    android:layout_weight="5"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="답글달기"
                     android:layout_margin="10px"
-                    android:backgroundTint="#e8f3ff"
-                    android:textColor="#111"
-                    android:fontFamily="@font/tway_air"
-                    android:id="@+id/btn_comment"/>
+                    android:layout_gravity="center"
+                    android:backgroundTint="@color/color_tap_on"
+                    android:src="@drawable/ic_baseline_send_24"
+                    android:id="@+id/btn_comment"
+                    app:tint="#5489C3" />
             </LinearLayout>
         </LinearLayout>
 </RelativeLayout>

@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -71,31 +72,33 @@ public class ChatActivity extends AppCompatActivity {
     private ArrayList<String> user_arrayList;
     private Map<String, String> arr_Nick;
     private Map<String, String> token_List;
-    private Button button, chat_in;
+    private ImageButton button, chat_in;
     private EditText editText;
     private ArrayList<String> arrayList = new ArrayList<>();
     private ArrayList<String> arrNick = new ArrayList<>();
+    ArrayList<String> arr_participated_uid = new ArrayList<>();
     private String uid, chatRoomUid, chatRoomUidd, chatRoomName, nickname;
     private Integer listTagNum, roomNum;
-    private Boolean boo;
-    private Boolean chat_list;
     private RecyclerView recyclerView;
-    private Boolean first_chat;
+    private Boolean first_chat, isMyPost, chat_list;
     private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
     private String mToken;
     private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy.MM.dd HH:mm");
-
+    String str_Num;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
         uid = FirebaseAuth.getInstance().getCurrentUser().getUid();  //채팅을 요구 하는 아아디 즉 단말기에 로그인된 UID
-        arrayList = getIntent().getStringArrayListExtra("invited_List");        // 체크된 사람들 uid
-        chat_list = getIntent().getExtras().getBoolean("chat_list");            //  채팅 목록 boolean
-        chatRoomName = getIntent().getExtras().getString("chatRoom_name");      // 채팅방 이름
-        arrNick = getIntent().getStringArrayListExtra("arrNick");               //
-        listTagNum = getIntent().getExtras().getInt("listTagNum");              // 데이터 베이스 포지션 값
-        button = (Button) findViewById(R.id.messageActivity_button);
+        arrayList = getIntent().getStringArrayListExtra("invited_List");
+        chat_list = getIntent().getExtras().getBoolean("chat_list");
+        chatRoomName = getIntent().getExtras().getString("chatRoom_name");
+        arrNick = getIntent().getStringArrayListExtra("arrNick");
+        str_Num = getIntent().getStringExtra("Number");
+        arr_participated_uid = getIntent().getStringArrayListExtra("participated_uid");
+        isMyPost = getIntent().getExtras().getBoolean("isMyPost");
+        listTagNum = getIntent().getExtras().getInt("listTagNum");
+        button = (ImageButton) findViewById(R.id.messageActivity_button);
         editText = (EditText) findViewById(R.id.messageActivity_editText);
         recyclerView = (RecyclerView)findViewById(R.id.messageActivity_reclclerview);
         final String myUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -135,6 +138,21 @@ public class ChatActivity extends AppCompatActivity {
                         });
                     }
                 });
+        System.out.println("myPostAdapter to chatactivity1 "+ arr_participated_uid);
+
+        //myPostAdapter에서 클릭해서 채팅방 생성
+        if(isMyPost.equals(true)){
+
+            System.out.println("myPostAdapter to chatactivity2 "+ arr_participated_uid);
+
+            System.out.println("myPostAdapter to chatactivity3 "+ arrayList);
+            chat_list = false;
+            arrayList = new ArrayList<>();
+            for(String element : arr_participated_uid){
+                arrayList.add(element);
+            }
+            System.out.println("myPostAdapter to chatactivity4 "+ arrayList);
+        }
 
         //peopleFragment->chatActivity
         if(chat_list == false){
@@ -152,18 +170,35 @@ public class ChatActivity extends AppCompatActivity {
                         }
                         System.out.println("arrayList real user_arrayList "+ user_arrayList);
                         System.out.println("arrayList real "+ arrayList);
-                        if ((user_arrayList.containsAll(arrayList) == true) && (user_arrayList.size() == arrayList.size())){
-                            Toast.makeText(ChatActivity.this, "이미 같은 멤버와 단체방이 존재합니다.", Toast.LENGTH_SHORT).show();
-                            first_chat = false;
-                            chatRoomUid = item.getKey();
-                            System.out.println("test chatlist false roomNum "+ roomNum);
-                            System.out.println("test4 chatlist false chatRoomUid "+chatRoomUid);
-                            button.setEnabled(true);
-                            break;
+                        if(isMyPost.equals(true)){
+                            if ((user_arrayList.containsAll(arr_participated_uid) == true) && (user_arrayList.size() == arr_participated_uid.size())){
+                                Toast.makeText(ChatActivity.this, "이미 같은 멤버와 단체방이 존재합니다.", Toast.LENGTH_SHORT).show();
+                                first_chat = false;
+                                chatRoomUid = item.getKey();
+                                System.out.println("test chatlist false roomNum "+ roomNum);
+                                System.out.println("test4 chatlist false chatRoomUid "+chatRoomUid);
+                                button.setEnabled(true);
+                                break;
+                            }
+                            else {
+                                continue;
+                            }
                         }
-                        else {
-                            continue;
+                        else{
+                            if ((user_arrayList.containsAll(arrayList) == true) && (user_arrayList.size() == arrayList.size())){
+                                Toast.makeText(ChatActivity.this, "이미 같은 멤버와 단체방이 존재합니다.", Toast.LENGTH_SHORT).show();
+                                first_chat = false;
+                                chatRoomUid = item.getKey();
+                                System.out.println("test chatlist false roomNum "+ roomNum);
+                                System.out.println("test4 chatlist false chatRoomUid "+chatRoomUid);
+                                button.setEnabled(true);
+                                break;
+                            }
+                            else {
+                                continue;
+                            }
                         }
+
                     }
                     ChatModel chatModel = new ChatModel();
                     for(String element: arrayList){
@@ -175,7 +210,6 @@ public class ChatActivity extends AppCompatActivity {
                     chatModel.setRoomName(chatRoomName);
                     chatModel.setRoomNum(roomNum);
                     System.out.println("test chatModel chatModel users "+chatModel.users);
-                    System.out.println("test chatModel arrayList "+arrayList);
                     System.out.println("test chatModel chatRoomUid "+chatModel.getChatRoomUid());
 
                     if(chatRoomUid == null){
@@ -260,7 +294,6 @@ public class ChatActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 System.out.println("Send msg token "+arrayList);
-
                 System.out.println("Send msg token1 "+mToken);
                 System.out.println("Send msg token2 "+map.entrySet());
 

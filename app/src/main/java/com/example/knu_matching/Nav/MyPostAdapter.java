@@ -1,8 +1,8 @@
 package com.example.knu_matching.Nav;
 
 import android.app.Activity;
+import android.app.ActivityOptions;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,23 +13,30 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.knu_matching.GetSet.CommentItem;
 import com.example.knu_matching.GetSet.Post;
+import com.example.knu_matching.People.PeolpeFragment;
+import com.example.knu_matching.Post.ParticipateUser;
 import com.example.knu_matching.Post.PostAdapter;
 import com.example.knu_matching.Post.Post_Owner_Acticity;
 import com.example.knu_matching.R;
+import com.example.knu_matching.UserAccount;
 import com.example.knu_matching.WebView;
+import com.example.knu_matching.chatting.ChatActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.Source;
+import com.google.firebase.firestore.auth.User;
 
 import org.w3c.dom.Text;
 
@@ -41,13 +48,14 @@ public class MyPostAdapter extends RecyclerView.Adapter<MyPostAdapter.RecyclerVi
     private FirebaseAuth auth = FirebaseAuth.getInstance();
     Context context;
     private ArrayList<Post> mDataset;
-    static final ArrayList arrNick = new ArrayList();
-
     int count = 0;
+    ArrayList<String> arr_participated_uid = new ArrayList<String>();
+
 
     public MyPostAdapter(Context context, ArrayList<Post> myData){
         this.mDataset = myData;
         this.context = context;
+        System.out.println("리스트" + mDataset.get(0).getStr_uid());
     }
 
     @NonNull
@@ -69,9 +77,6 @@ public class MyPostAdapter extends RecyclerView.Adapter<MyPostAdapter.RecyclerVi
                 if (task.isSuccessful()) {
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         Log.d("Visitor", document.getId() + " => " + document.getData());
-
-                        System.out.println("닉네임"+document.getData().get("str_participate_Nickname"));
-                        arrNick.add(document.getData().get("str_participate_Nickname"));
                         j = i + 1;
                         i++;
                     }
@@ -80,21 +85,17 @@ public class MyPostAdapter extends RecyclerView.Adapter<MyPostAdapter.RecyclerVi
                     holder.tv_date.setText(mDataset.get(position).getStr_time());
                     holder.tv_content.setText(mDataset.get(position).getStr_post());
                     holder.tv_participate.setText(Integer.toString(count));
-
                     System.out.println("숫자"+count);
-                    String[] arr = new String[count];
-                    for(int q=0;q<count;q++){
-                        arr[q] = arrNick.get(q).toString();
-                        System.out.println("숫자값"+arr[q]);
+                    if(mDataset.get(position).getStr_Number().equals(0)){
+                        holder.btn_chat.setEnabled(false);
                     }
-
                 } else {
                     Log.d("Visitor", "Error getting documents: ", task.getException());
                 }
             }
+
+
         });
-
-
 
         holder.cv.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -121,14 +122,50 @@ public class MyPostAdapter extends RecyclerView.Adapter<MyPostAdapter.RecyclerVi
         holder.btn_chat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                new AlertDialog.Builder(v.getContext()).setTitle("선택").setMultiChoiceItems(, null, new DialogInterface.OnMultiChoiceClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which, boolean isChecked) {
-//                        Toast.makeText(v.getContext(), "words : " + arrNick.get(which), Toast.LENGTH_SHORT).show();
-//                    }
-//                }).setNeutralButton("closed", null).setPositiveButton("OK",null).setNegativeButton("cancel",null).show();
+                System.out.println("scrap strid "+mDataset.get(position).getStr_Id());
+
+                db.collection("Post").document(mDataset.get(position).getStr_Id()).collection("Participate")
+                        .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+
+                        for(QueryDocumentSnapshot documentSnapshot : task.getResult()) {
+                            System.out.println("mypost adapter "+documentSnapshot.getId());
+                            //참여자 이메일 쫙 나올거임
+
+                            db.collection("Post").document(mDataset.get(position).getStr_Id())
+                                    .collection("Participate").document(documentSnapshot.getId())
+                                    .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+//                                    ParticipateUser participateUser = task.getResult().toObject(ParticipateUser.class);
+//                                    System.out.println("mypost adapter uid "+participateUser.getStr_participate_Uid());
+//                                    System.out.println("mypost adapter task "+task.getResult().getData());
+//                                    System.out.println("mypost adapter task "+task.getResult().toString());
+                                    System.out.println("mypost adapter uid " + task.getResult().get("str_participate_Uid").toString());
+                                    arr_participated_uid.add(task.getResult().get("str_participate_Uid").toString());
+                                    arr_participated_uid.add(auth.getUid());
+                                    System.out.println("mypost adapter participated_uid " + arr_participated_uid);
+                                    Intent intent = new Intent(v.getContext(), ChatActivity.class);
+                                    System.out.println("myPostAdapter to chatactivity " + arr_participated_uid);
+                                    intent.putExtra("participated_uid", arr_participated_uid);
+                                    intent.putExtra("isMyPost", true);
+                                    intent.putExtra("Number", mDataset.get(position).getStr_Number());
+                                    v.getContext().startActivity(intent);
+
+                                }
+                            });
+
+                        }
+                    }
+                });
+
             }
+
+
         });
+
+
     }
 
     @Override
@@ -152,9 +189,5 @@ public class MyPostAdapter extends RecyclerView.Adapter<MyPostAdapter.RecyclerVi
 
 
         }
-    }
-
-    public void CheckboxClick(View view) {
-
     }
 }

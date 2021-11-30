@@ -25,6 +25,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -73,7 +74,8 @@ import java.util.Map;
 public class Visitor extends AppCompatActivity {
 
     Toolbar toolbar;
-    Button btn_comment, btn_participate, btn_participate_cancel;
+    Button btn_participate, btn_participate_cancel;
+    ImageButton btn_comment;
     TextView tv_count, tv_total, tv_StartDate, tv_EndDate, tv_file, tv_content, tv_title, tv_link;
     RecyclerView rv_comment;
     CommentAdapter commentAdapter = null;

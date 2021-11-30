@@ -17,6 +17,8 @@
             android:id="@+id/edt_original_pwd"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:backgroundTint="#e8f3ff"
+            android:fontFamily="@font/tway_air"
             android:hint="기존 비밀번호" />
 
         <EditText
@@ -24,6 +26,8 @@
             android:id="@+id/edt_new_pwd"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:backgroundTint="#e8f3ff"
+            android:fontFamily="@font/tway_air"
             android:hint="새로운 비밀번호" />
 
         <EditText
@@ -31,6 +35,8 @@
             android:id="@+id/edt_re_pwd"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:backgroundTint="#e8f3ff"
+            android:fontFamily="@font/tway_air"
             android:hint="새로운 비밀번호 재입력" />
 
 
@@ -47,6 +53,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="돌아가기"
+            android:backgroundTint="#e8f3ff"
+            android:textColor="#111"
+            android:fontFamily="@font/tway_air"
             android:layout_weight="1"/>
 
         <Button
@@ -54,6 +63,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="변경하기"
+            android:backgroundTint="#e8f3ff"
+            android:textColor="#111"
+            android:fontFamily="@font/tway_air"
             android:layout_weight="1"/>
     </LinearLayout>
 </RelativeLayout>
