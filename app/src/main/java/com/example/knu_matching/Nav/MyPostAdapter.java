@@ -1,6 +1,7 @@
 package com.example.knu_matching.Nav;
 
 import android.app.Activity;
+import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
@@ -15,18 +16,27 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.knu_matching.GetSet.CommentItem;
 import com.example.knu_matching.GetSet.Post;
+import com.example.knu_matching.People.PeolpeFragment;
+import com.example.knu_matching.Post.ParticipateUser;
 import com.example.knu_matching.Post.PostAdapter;
 import com.example.knu_matching.Post.Post_Owner_Acticity;
 import com.example.knu_matching.R;
+import com.example.knu_matching.UserAccount;
 import com.example.knu_matching.WebView;
+import com.example.knu_matching.chatting.ChatActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.Source;
+import com.google.firebase.firestore.auth.User;
 
 import org.w3c.dom.Text;
 
@@ -39,6 +49,8 @@ public class MyPostAdapter extends RecyclerView.Adapter<MyPostAdapter.RecyclerVi
     Context context;
     private ArrayList<Post> mDataset;
     int count = 0;
+    ArrayList<String> arr_participated_uid = new ArrayList<String>();
+
 
     public MyPostAdapter(Context context, ArrayList<Post> myData){
         this.mDataset = myData;
@@ -74,10 +86,14 @@ public class MyPostAdapter extends RecyclerView.Adapter<MyPostAdapter.RecyclerVi
                     holder.tv_content.setText(mDataset.get(position).getStr_post());
                     holder.tv_participate.setText(Integer.toString(count));
                     System.out.println("숫자"+count);
+                    if(mDataset.get(position).getStr_Number().equals(0)){
+                        holder.btn_chat.setEnabled(false);
+                    }
                 } else {
                     Log.d("Visitor", "Error getting documents: ", task.getException());
                 }
             }
+
 
         });
 
@@ -106,9 +122,50 @@ public class MyPostAdapter extends RecyclerView.Adapter<MyPostAdapter.RecyclerVi
         holder.btn_chat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                System.out.println("scrap strid "+mDataset.get(position).getStr_Id());
+
+                db.collection("Post").document(mDataset.get(position).getStr_Id()).collection("Participate")
+                        .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+
+                        for(QueryDocumentSnapshot documentSnapshot : task.getResult()) {
+                            System.out.println("mypost adapter "+documentSnapshot.getId());
+                            //참여자 이메일 쫙 나올거임
+
+                            db.collection("Post").document(mDataset.get(position).getStr_Id())
+                                    .collection("Participate").document(documentSnapshot.getId())
+                                    .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+//                                    ParticipateUser participateUser = task.getResult().toObject(ParticipateUser.class);
+//                                    System.out.println("mypost adapter uid "+participateUser.getStr_participate_Uid());
+//                                    System.out.println("mypost adapter task "+task.getResult().getData());
+//                                    System.out.println("mypost adapter task "+task.getResult().toString());
+                                    System.out.println("mypost adapter uid " + task.getResult().get("str_participate_Uid").toString());
+                                    arr_participated_uid.add(task.getResult().get("str_participate_Uid").toString());
+                                    arr_participated_uid.add(auth.getUid());
+                                    System.out.println("mypost adapter participated_uid " + arr_participated_uid);
+                                    Intent intent = new Intent(v.getContext(), ChatActivity.class);
+                                    System.out.println("myPostAdapter to chatactivity " + arr_participated_uid);
+                                    intent.putExtra("participated_uid", arr_participated_uid);
+                                    intent.putExtra("isMyPost", true);
+                                    intent.putExtra("Number", mDataset.get(position).getStr_Number());
+                                    v.getContext().startActivity(intent);
+
+                                }
+                            });
+
+                        }
+                    }
+                });
 
             }
+
+
         });
+
+
     }
 
     @Override
