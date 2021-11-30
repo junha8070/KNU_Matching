@@ -38,7 +38,6 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-
             <com.google.android.material.tabs.TabLayout
                 android:id="@+id/tab_layout"
                 android:layout_width="413dp"
@@ -71,7 +70,6 @@
 
             </com.google.android.material.tabs.TabLayout>
 
-
         </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>
 
@@ -83,7 +81,4 @@
         android:layout_gravity="left"
         app:menu="@menu/drawer_menu"
         app:headerLayout="@layout/header_layout"/>
-
-
-
 </androidx.drawerlayout.widget.DrawerLayout>

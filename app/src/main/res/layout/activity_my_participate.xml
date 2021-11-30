@@ -19,6 +19,10 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="#0071be"
+            android:fontFamily="@font/tway_air"
+            android:textSize="20dp"
+            android:textStyle="bold"
             android:text="참여 한 글"/>
 
     </androidx.appcompat.widget.Toolbar>
@@ -26,6 +30,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:padding="10dp"
         android:id="@+id/rv"/>
 
 </LinearLayout>
