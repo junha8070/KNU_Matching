@@ -204,6 +204,7 @@ public class Post_Owner_Acticity extends AppCompatActivity {
                 commentItem.setStr_Uid(auth.getCurrentUser().getUid());
                 commentItem.setStr_Post_uid(str_Id);
 
+                edt_comment.setText("");
 
                 db.collection("Post").document(str_Id).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
