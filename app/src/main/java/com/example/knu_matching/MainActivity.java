@@ -149,6 +149,7 @@ public class MainActivity extends AppCompatActivity {
 
         mViewPager = findViewById(R.id.viewPager);
         tabLayout = findViewById(R.id.tab_layout);
+        tabLayout.setTabTextColors(Color.rgb(0,0,0), Color.rgb(0,113,190));
 
         myPagerAdapter = new MyViewPagerAdapter(this);
         myPagerAdapter.addFrag(frag_post);
@@ -157,9 +158,6 @@ public class MainActivity extends AppCompatActivity {
 //        myPagerAdapter.addFrag(frag_mypage);
         myPagerAdapter.addFrag(frag_board);
         mViewPager.setAdapter(myPagerAdapter);
-
-        //displaying tabs
-        new TabLayoutMediator(tabLayout, mViewPager, (tab, position) -> tab.setText(titles[position])).attach();
 
         //displaying tabs
         new TabLayoutMediator(tabLayout, mViewPager, (tab, position) -> tab.setText(titles[position])).attach();
@@ -174,7 +172,6 @@ public class MainActivity extends AppCompatActivity {
 
         //뒤로가기버튼 이미지 적용
         actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
-
 
         drawerLayout = findViewById(R.id.drawer_layout);
 

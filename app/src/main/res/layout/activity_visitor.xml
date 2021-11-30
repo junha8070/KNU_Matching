@@ -122,7 +122,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="10px"
             android:fontFamily="@font/tway_air"
-            android:ems="5"
+            android:ems="6"
             android:hint="기간" />
 
         <TextView

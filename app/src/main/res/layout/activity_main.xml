@@ -49,6 +49,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/vp_layout"
                 app:tabBackground="@color/color_tap_on"
+                app:tabTextAppearance="@style/tab_text"
                 app:tabGravity="fill"
                 app:tabIndicatorColor="#0071be">
 
