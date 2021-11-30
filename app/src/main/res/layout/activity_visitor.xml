@@ -277,17 +277,18 @@
                     android:ems="8"
                     android:id="@+id/edt_comment"
                     android:layout_width="match_parent"
+                    android:layout_gravity="center"
                     android:layout_height="wrap_content"/>
-                <Button
-                    android:layout_weight="2"
+                <ImageButton
+                    android:layout_weight="5"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="답글달기"
                     android:layout_margin="10px"
-                    android:backgroundTint="#e8f3ff"
-                    android:textColor="#111"
-                    android:fontFamily="@font/tway_air"
-                    android:id="@+id/btn_comment"/>
+                    android:layout_gravity="center"
+                    android:backgroundTint="@color/color_tap_on"
+                    android:src="@drawable/ic_baseline_send_24"
+                    android:id="@+id/btn_comment"
+                    app:tint="#5489C3" />
             </LinearLayout>
         </LinearLayout>
 </RelativeLayout>
