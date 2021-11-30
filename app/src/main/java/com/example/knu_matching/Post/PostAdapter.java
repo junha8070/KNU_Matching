@@ -79,6 +79,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.GalleryViewHol
                     intent.putExtra("Uid", mDataset.get(temp).getStr_uid());
 
                     view.getContext().startActivity(intent);
+
                 }
                 else{
                     Intent intent = new Intent(view.getContext(), Visitor.class);

@@ -24,6 +24,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.knu_matching.Nav.Edit_profile_Activity;
+import com.example.knu_matching.Nav.MyParticipate_Activity;
 import com.example.knu_matching.Nav.MyPost_Activity;
 import com.example.knu_matching.Nav.Scrap_Activity;
 import com.example.knu_matching.Nav.SettingActivity;
@@ -52,6 +53,7 @@ import java.util.Map;
 public class MainActivity extends AppCompatActivity {
     public static Context context;
 
+    private long backpressedTime = 0;
     public Button btn_register, btn_logout;
     private final String TAG = this.getClass().getSimpleName();
     private FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -197,6 +199,12 @@ public class MainActivity extends AppCompatActivity {
                         drawerLayout.closeDrawers();
                         return true;
 
+                    case R.id.nav_participate:
+                        intent = new Intent(MainActivity.context, MyParticipate_Activity.class);
+                        startActivity(intent);
+                        drawerLayout.closeDrawers();
+                        return true;
+
                     case R.id.nav_scrap:
                         menuItem.setChecked(true);
                         intent = new Intent(MainActivity.context, Scrap_Activity.class);
@@ -272,5 +280,18 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    //뒤로가기 두번해야 꺼지게 하는 코드
+    @Override
+    public void onBackPressed() {
+
+        if (System.currentTimeMillis() > backpressedTime + 2000) {
+            backpressedTime = System.currentTimeMillis();
+            Toast.makeText(this, "\'뒤로\' 버튼을 한번 더 누르시면 종료됩니다.", Toast.LENGTH_SHORT).show();
+        } else if (System.currentTimeMillis() <= backpressedTime + 2000) {
+            finish();
+        }
+
     }
 }

@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.knu_matching.GetSet.Post;
 import com.example.knu_matching.Post.PostAdapter;
 import com.example.knu_matching.Post.Post_Owner_Acticity;
+import com.example.knu_matching.Post.Visitor;
 import com.example.knu_matching.R;
 import com.example.knu_matching.WebView;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -36,7 +37,7 @@ import org.w3c.dom.Text;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class MyPostAdapter extends RecyclerView.Adapter<MyPostAdapter.RecyclerViewHolders> {
+public class MyParticipateAdapter extends RecyclerView.Adapter<MyParticipateAdapter.RecyclerViewHolders> {
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private FirebaseAuth auth = FirebaseAuth.getInstance();
     Context context;
@@ -45,7 +46,7 @@ public class MyPostAdapter extends RecyclerView.Adapter<MyPostAdapter.RecyclerVi
 
     int count = 0;
 
-    public MyPostAdapter(Context context, ArrayList<Post> myData){
+    public MyParticipateAdapter(Context context, ArrayList<Post> myData){
         this.mDataset = myData;
         this.context = context;
     }
@@ -53,7 +54,7 @@ public class MyPostAdapter extends RecyclerView.Adapter<MyPostAdapter.RecyclerVi
     @NonNull
     @Override
     public RecyclerViewHolders onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_mypost, null);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_myparticipate, null);
         RecyclerViewHolders rcv = new RecyclerViewHolders(v);
         return rcv;
     }
@@ -99,7 +100,7 @@ public class MyPostAdapter extends RecyclerView.Adapter<MyPostAdapter.RecyclerVi
         holder.cv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), Post_Owner_Acticity.class);
+                Intent intent = new Intent(v.getContext(), Visitor.class);
                 intent.putExtra("Title", mDataset.get(position).getStr_Title());
                 intent.putExtra("StartDate", mDataset.get(position).getStr_StartDate());
                 intent.putExtra("EndDate", mDataset.get(position).getStr_EndDate());
@@ -114,19 +115,8 @@ public class MyPostAdapter extends RecyclerView.Adapter<MyPostAdapter.RecyclerVi
                 intent.putExtra("Link", mDataset.get(position).getStr_link());
                 intent.putExtra("Uid", mDataset.get(position).getStr_uid());
 
-                v.getContext().startActivity(intent);
-            }
-        });
-
-        holder.btn_chat.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//                new AlertDialog.Builder(v.getContext()).setTitle("선택").setMultiChoiceItems(, null, new DialogInterface.OnMultiChoiceClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which, boolean isChecked) {
-//                        Toast.makeText(v.getContext(), "words : " + arrNick.get(which), Toast.LENGTH_SHORT).show();
-//                    }
-//                }).setNeutralButton("closed", null).setPositiveButton("OK",null).setNegativeButton("cancel",null).show();
+//                v.getContext().startActivity(intent);
+                ((Activity)context).startActivityForResult(intent, 0);
             }
         });
     }
@@ -139,7 +129,6 @@ public class MyPostAdapter extends RecyclerView.Adapter<MyPostAdapter.RecyclerVi
     public class RecyclerViewHolders extends RecyclerView.ViewHolder {
         TextView tv_title, tv_date, tv_content, tv_participate;
         CardView cv;
-        Button btn_chat;
         public RecyclerViewHolders(@NonNull View itemView) {
             super(itemView);
 
@@ -147,14 +136,9 @@ public class MyPostAdapter extends RecyclerView.Adapter<MyPostAdapter.RecyclerVi
             tv_date = itemView.findViewById(R.id.tv_date);
             tv_content = itemView.findViewById(R.id.tv_content);
             tv_participate = itemView.findViewById(R.id.tv_participate);
-            btn_chat = itemView.findViewById(R.id.btn_Chat);
             cv = itemView.findViewById(R.id.cv);
-
-
         }
     }
 
-    public void CheckboxClick(View view) {
 
-    }
 }

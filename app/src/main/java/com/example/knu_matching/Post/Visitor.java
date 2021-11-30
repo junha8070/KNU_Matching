@@ -91,8 +91,10 @@ public class Visitor extends AppCompatActivity {
     LocalDateTime now = LocalDateTime.now();
     String formatedNow = now.format(DateTimeFormatter.ofPattern("yyyy_MM_dd_HH_mm_ss_SSS"));
 
+
+
     // Firebase
-    FirebaseAuth mFirebaseAuth;
+    FirebaseAuth mFirebaseAuth=FirebaseAuth.getInstance();
     DatabaseReference mDatabaseRef;
     FirebaseUser user;
     FirebaseAuth auth = FirebaseAuth.getInstance();
@@ -136,6 +138,20 @@ public class Visitor extends AppCompatActivity {
                             tv_count.setText(count + "");
                             btn_participate_cancel.setEnabled(false);
                             btn_participate.setEnabled(true);
+                            Post post = new Post();
+                            post.getStr_Id();
+                            db.collection("Participate").document(mFirebaseAuth.getCurrentUser().getEmail().replace(".",">")).collection("participate").document(str_Id)
+                                    .delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if(task.isSuccessful()){
+                                        Intent intent = new Intent();
+                                        setResult(RESULT_OK, intent);
+                                        System.out.println("인텐트"+intent.getClass());
+                                        finish();
+                                    }
+                                }
+                            });
                             finish();
                         }
                     }
@@ -294,6 +310,7 @@ public class Visitor extends AppCompatActivity {
                             switch (doc.getType()){
                                 case ADDED:
                                     System.out.println("오너 디버깅"+doc.getDocument().getString("str_Email"));
+
                                     addItem(doc.getDocument().getString("str_Email"),doc.getDocument().getString("str_NickName"),doc.getDocument().getString("str_Content"),doc.getDocument().getString("str_Date"), doc.getDocument().getString("str_Uid"));
                                     commentAdapter.notifyDataSetChanged();
                                     break;
@@ -365,6 +382,18 @@ public class Visitor extends AppCompatActivity {
                 } else {
                     // 게시글 작성자가 참여가 확인하는 곳
                 }
+
+                Post post = new Post();
+                post.setStr_Id(str_Id);
+
+                db.collection("Participate").document(mFirebaseAuth.getCurrentUser().getEmail().replace(".",">")).collection("participate").document(str_Id).set(post).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if(task.isSuccessful()){
+
+                        }
+                    }
+                });
             }
         });
 

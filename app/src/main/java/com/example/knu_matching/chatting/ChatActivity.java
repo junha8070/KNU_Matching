@@ -90,11 +90,11 @@ public class ChatActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
         uid = FirebaseAuth.getInstance().getCurrentUser().getUid();  //채팅을 요구 하는 아아디 즉 단말기에 로그인된 UID
-        arrayList = getIntent().getStringArrayListExtra("invited_List");
-        chat_list = getIntent().getExtras().getBoolean("chat_list");
-        chatRoomName = getIntent().getExtras().getString("chatRoom_name");
-        arrNick = getIntent().getStringArrayListExtra("arrNick");
-        listTagNum = getIntent().getExtras().getInt("listTagNum");
+        arrayList = getIntent().getStringArrayListExtra("invited_List");        // 체크된 사람들 uid
+        chat_list = getIntent().getExtras().getBoolean("chat_list");            //  채팅 목록 boolean
+        chatRoomName = getIntent().getExtras().getString("chatRoom_name");      // 채팅방 이름
+        arrNick = getIntent().getStringArrayListExtra("arrNick");               //
+        listTagNum = getIntent().getExtras().getInt("listTagNum");              // 데이터 베이스 포지션 값
         button = (Button) findViewById(R.id.messageActivity_button);
         editText = (EditText) findViewById(R.id.messageActivity_editText);
         recyclerView = (RecyclerView)findViewById(R.id.messageActivity_reclclerview);

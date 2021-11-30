@@ -169,6 +169,7 @@ public class postActivity extends AppCompatActivity {
                             });
                         }
                     });
+
                 }else if(filePath != null){
                     Uri file = filePath;
                     StorageReference riversRef = storageRef.child(mFirebaseAuth.getUid()).child(getFileName(file));

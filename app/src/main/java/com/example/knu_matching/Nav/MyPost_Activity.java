@@ -106,7 +106,6 @@ public class MyPost_Activity extends AppCompatActivity {
                             public void run() {
                                 System.out.println("아답터 들어가기");
                                 adapter = new MyPostAdapter(MyPost_Activity.this, postList);
-                                System.out.println("결과값 출력23 " + postList.get(0).getStr_uid());
                                 rv.setAdapter(adapter);
                                 adapter.notifyDataSetChanged();
                             }

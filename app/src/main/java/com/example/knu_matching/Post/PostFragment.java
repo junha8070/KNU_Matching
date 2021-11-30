@@ -141,6 +141,9 @@ public class PostFragment extends Fragment {
                         ft.detach(PostFragment.this).attach(PostFragment.this).commit();
                         Log.d(TAG, "RegisterActivity로 돌아왔다. ");
                     }
+                    if(result.getResultCode()==2){
+                        Toast.makeText(getContext(),"삭제후 돌아옴",Toast.LENGTH_SHORT).show();
+                    }
                 }
             });
     public void getData(){

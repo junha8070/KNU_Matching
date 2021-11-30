@@ -80,7 +80,7 @@ public class Post_Owner_Acticity extends AppCompatActivity {
     Toolbar toolbar;
     Button btn_down, btn_comment, btn_participate;
     TextView tv_count, tv_total, tv_StartDate, tv_EndDate, tv_file, tv_content, tv_title, tv_link;
-    static final Map<String, String> comment_notice= new HashMap<String,String>();
+    static final Map<String, String> comment_notice = new HashMap<String, String>();
     RecyclerView rv_comment;
     CommentAdapter commentAdapter = null;
     EditText edt_comment;
@@ -93,6 +93,9 @@ public class Post_Owner_Acticity extends AppCompatActivity {
     LocalDateTime now = LocalDateTime.now();
     String formatedNow = now.format(DateTimeFormatter.ofPattern("yyyy_MM_dd_HH_mm_ss_SSS"));
     String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+
+
     String File_Name = "확장자를 포함한 파일명";
     String File_extend = "확장자명";
     String Save_Path;
@@ -211,15 +214,15 @@ public class Post_Owner_Acticity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                         Post post = task.getResult().toObject(Post.class);
                         str_owner_uid = post.getStr_uid();
-                        System.out.println("글쓴이 uid1 "+str_owner_uid);
+                        System.out.println("글쓴이 uid1 " + str_owner_uid);
                         FirebaseDatabase.getInstance().getReference().child("users").child(str_owner_uid).get()
                                 .addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                                     @Override
                                     public void onComplete(@NonNull Task<DataSnapshot> task) {
                                         UserAccount userAccount = task.getResult().getValue(UserAccount.class);
-                                        System.out.println("토큰 값 2  "+userAccount.getToken());
-                                        comment_notice.put(userAccount.getToken(),str_owner_uid);
-                                        System.out.println("해쉬 "+comment_notice.keySet());
+                                        System.out.println("토큰 값 2  " + userAccount.getToken());
+                                        comment_notice.put(userAccount.getToken(), str_owner_uid);
+                                        System.out.println("해쉬 " + comment_notice.keySet());
                                     }
                                 });
                     }
@@ -281,11 +284,11 @@ public class Post_Owner_Acticity extends AppCompatActivity {
                                                                     .addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                                                                         @Override
                                                                         public void onComplete(@NonNull Task<DataSnapshot> task) {
-                                                                            System.out.println("토큰 값 "+task.getResult());
+                                                                            System.out.println("토큰 값 " + task.getResult());
                                                                             UserAccount userAccount = task.getResult().getValue(UserAccount.class);
-                                                                            System.out.println("토큰 값 2  "+userAccount.getToken());
-                                                                            comment_notice.put(userAccount.getToken(),uid);
-                                                                            System.out.println("해쉬 "+comment_notice.keySet());
+                                                                            System.out.println("토큰 값 2  " + userAccount.getToken());
+                                                                            comment_notice.put(userAccount.getToken(), uid);
+                                                                            System.out.println("해쉬 " + comment_notice.keySet());
 
                                                                         }
                                                                     });
@@ -306,10 +309,10 @@ public class Post_Owner_Acticity extends AppCompatActivity {
                                         System.out.println("일단 실패?");
                                     }
                                 });
-                                for(String key : comment_notice.keySet()) {
+                                for (String key : comment_notice.keySet()) {
                                     String value = comment_notice.get(key);
-                                    System.out.println("comment_notice key "+key);
-                                    System.out.println("comment_notice value "+value);
+                                    System.out.println("comment_notice key " + key);
+                                    System.out.println("comment_notice value " + value);
                                     SendNotification.sendNotification(key, "댓글이 달렸습니다!", str_title);
                                     System.out.println("comment_notice value enddddd");
                                 }
@@ -336,6 +339,7 @@ public class Post_Owner_Acticity extends AppCompatActivity {
                             switch (doc.getType()) {
                                 case ADDED:
                                     System.out.println("오너 디버깅" + doc.getDocument().getString("str_Email"));
+                                    System.out.println("실시간 시간"+formatedNow);
                                     addItem(doc.getDocument().getString("str_Email"), doc.getDocument().getString("str_NickName"), doc.getDocument().getString("str_Content"), doc.getDocument().getString("str_Date"), doc.getDocument().getString("str_Uid"));
                                     commentAdapter.notifyDataSetChanged();
                                     break;
@@ -370,7 +374,6 @@ public class Post_Owner_Acticity extends AppCompatActivity {
     // 댓글 삭제 눌렀을때 작동
     private void delItem(String Email, String Nickname, String Content, String Date, String Uid) {
         CommentItem item = new CommentItem();
-
         item.setStr_Email(Email);
         item.setStr_NickName(Nickname);
         item.setStr_Content(Content);
@@ -378,6 +381,7 @@ public class Post_Owner_Acticity extends AppCompatActivity {
         item.setStr_Uid(Uid);
 
         comment_list.remove(item);
+        commentAdapter.notifyDataSetChanged();
     }
 
     // 상단 툴바에 ... 메뉴 띄우기
@@ -423,18 +427,36 @@ public class Post_Owner_Acticity extends AppCompatActivity {
                                 new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int id) {
                                         // 프로그램을 종료한다
-                                        db.collection("Post").document(str_Id).delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        db.collection("Post").document(str_Id).collection("Comment").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                             @Override
-                                            public void onComplete(@NonNull Task<Void> task) {
-                                                if (task.isSuccessful()) {
-                                                    Toast.makeText(getApplicationContext(), "삭제가 완료되었습니다:)", Toast.LENGTH_SHORT).show();
-                                                    finish();
+                                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                System.out.println("이건 뭐냐" + task.getResult().getDocuments().get(0));
+                                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                                    System.out.println("다큐먼트" + document.getData().get("str_Content"));
+                                                    System.out.println("다큐먼트" + document.getId());
+                                                    db.collection("Post").document(str_Id).collection("Comment").document(document.getId()).delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                        @Override
+                                                        public void onComplete(@NonNull Task<Void> task) {
+                                                            if (task.isSuccessful()) {
+                                                                db.collection("Post").document(str_Id).delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                    @Override
+                                                                    public void onComplete(@NonNull Task<Void> task) {
+                                                                        if (task.isSuccessful()) {
+                                                                            Toast.makeText(getApplicationContext(), "삭제가 완료되었습니다:)", Toast.LENGTH_SHORT).show();
+                                                                            setResult(2);
+                                                                            finish();
+                                                                        }
+                                                                    }
+                                                                }).addOnFailureListener(new OnFailureListener() {
+                                                                    @Override
+                                                                    public void onFailure(@NonNull Exception e) {
+                                                                        Toast.makeText(getApplicationContext(), "오류가 발생하였습니다.\n관리자한테 문의주시길 바랍니다.", Toast.LENGTH_SHORT).show();
+                                                                    }
+                                                                });
+                                                            }
+                                                        }
+                                                    });
                                                 }
-                                            }
-                                        }).addOnFailureListener(new OnFailureListener() {
-                                            @Override
-                                            public void onFailure(@NonNull Exception e) {
-                                                Toast.makeText(getApplicationContext(), "오류가 발생하였습니다.\n관리자한테 문의주시길 바랍니다.", Toast.LENGTH_SHORT).show();
                                             }
                                         });
 
@@ -452,6 +474,7 @@ public class Post_Owner_Acticity extends AppCompatActivity {
                                                 Toast.makeText(getApplicationContext(), "오류가 발생하였습니다.\n관리자한테 문의주시길 바랍니다.", Toast.LENGTH_SHORT).show();
                                             }
                                         });
+
                                     }
                                 })
                         .setNegativeButton("아니요",
