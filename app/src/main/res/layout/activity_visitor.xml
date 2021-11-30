@@ -165,10 +165,9 @@
 
         <TextView
             android:id="@+id/tv_file"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:autoLink="web"
-            android:ems="20"
             android:linksClickable="true"
             android:fontFamily="@font/tway_air"
             android:layout_gravity="center"
