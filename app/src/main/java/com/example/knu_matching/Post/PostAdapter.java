@@ -56,7 +56,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.GalleryViewHol
         TextView textView = cardView.findViewById(R.id.textView);
         textView.setText(mDataset.get(position).getStr_Title());
         TextView dateView = cardView.findViewById(R.id.dateView);
-        dateView.setText((mDataset.get(position).getStr_time().substring(0,12)));
+        String timeFormmat = mDataset.get(position).getStr_time();
+        dateView.setText(timeFormmat.substring(0,4)+"년 "+timeFormmat.substring(5,7)+"월 "+timeFormmat.substring(8,10)+"일");
 
         cardView.setOnClickListener(new View.OnClickListener() {
             @Override
