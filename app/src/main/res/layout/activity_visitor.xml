@@ -82,20 +82,21 @@
             android:layout_height="wrap_content"
             android:layout_margin="10px"
             android:backgroundTint="#e8f3ff"
-            android:textColor="#111"
-            android:textSize="12dp"
             android:fontFamily="@font/tway_air"
-            android:text="참여하기" />
+            android:text="참여하기"
+            android:textColor="#111"
+            android:textSize="12dp" />
+
         <Button
             android:id="@+id/btn_participate_cancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="10px"
             android:backgroundTint="#e8f3ff"
-            android:textSize="12dp"
-            android:textColor="#111"
             android:fontFamily="@font/tway_air"
-            android:text="참여하기 취소" />
+            android:text="참여하기 취소"
+            android:textColor="#111"
+            android:textSize="12dp" />
 
     </LinearLayout>
 

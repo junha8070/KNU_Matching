@@ -36,17 +36,16 @@ tools:context=".Post.PostFragment"
     </LinearLayout>
 
 
-    <Button
+    <ImageButton
         android:id="@+id/btn_Recent"
-        android:layout_width="100dp"
-        android:layout_height="50dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:layout_alignParentRight="true"
-        android:layout_gravity="center|bottom"
-        android:layout_margin="5dp"
+        android:layout_gravity="right|bottom"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp"
         android:layout_weight="1"
-        android:backgroundTint="#e8f3ff"
-        android:textColor="#111"
-        android:fontFamily="@font/tway_air"
-        android:text="글쓰기" />
+        android:background="@drawable/ic_baseline_add_circle_24"
+        android:backgroundTint="#5489C3" />
 
 </FrameLayout>

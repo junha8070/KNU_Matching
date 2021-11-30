@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -71,7 +72,7 @@ public class ChatActivity extends AppCompatActivity {
     private ArrayList<String> user_arrayList;
     private Map<String, String> arr_Nick;
     private Map<String, String> token_List;
-    private Button button, chat_in;
+    private ImageButton button, chat_in;
     private EditText editText;
     private ArrayList<String> arrayList = new ArrayList<>();
     private ArrayList<String> arrNick = new ArrayList<>();
@@ -95,7 +96,7 @@ public class ChatActivity extends AppCompatActivity {
         chatRoomName = getIntent().getExtras().getString("chatRoom_name");
         arrNick = getIntent().getStringArrayListExtra("arrNick");
         listTagNum = getIntent().getExtras().getInt("listTagNum");
-        button = (Button) findViewById(R.id.messageActivity_button);
+        button = (ImageButton) findViewById(R.id.messageActivity_button);
         editText = (EditText) findViewById(R.id.messageActivity_editText);
         recyclerView = (RecyclerView)findViewById(R.id.messageActivity_reclclerview);
         final String myUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
