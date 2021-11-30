@@ -25,6 +25,7 @@ public class MyViewPagerAdapter extends FragmentStateAdapter {
     @Override
     public Fragment createFragment(int position) {
         // Fragment 교체를 보여주는 처리 구현
+
         return mFragmentList.get(position);
     }
 

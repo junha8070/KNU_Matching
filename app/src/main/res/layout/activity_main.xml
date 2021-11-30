@@ -9,6 +9,7 @@
     android:fitsSystemWindows="true"
     >
 
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -37,16 +38,19 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
+
             <com.google.android.material.tabs.TabLayout
                 android:id="@+id/tab_layout"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
+                android:layout_width="413dp"
+                android:layout_height="44dp"
                 app:layout_collapseMode="pin"
-                app:tabGravity="fill"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/vp_layout">
+                app:layout_constraintTop_toBottomOf="@+id/vp_layout"
+                app:tabBackground="@color/color_tap_on"
+                app:tabGravity="fill"
+                app:tabIndicatorColor="#0071be">
 
                 <com.google.android.material.tabs.TabItem
                     android:layout_width="wrap_content"
@@ -54,21 +58,15 @@
 
                 <com.google.android.material.tabs.TabItem
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="공지" />
+                    android:layout_height="wrap_content" />
 
                 <com.google.android.material.tabs.TabItem
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="보기" />
+                    android:layout_height="wrap_content" />
+
                 <com.google.android.material.tabs.TabItem
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="네번째" />
-                <com.google.android.material.tabs.TabItem
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="다섯째" />
+                    android:layout_height="wrap_content" />
 
             </com.google.android.material.tabs.TabLayout>
 

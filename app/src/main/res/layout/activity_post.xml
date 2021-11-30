@@ -149,9 +149,10 @@
                 android:id="@+id/btn_choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:backgroundTint="#e8f3ff"
                 android:text="업로드"
+                android:backgroundTint="#e8f3ff"
                 android:textColor="#111"
+                android:fontFamily="@font/tway_air"
                 android:textStyle="bold" />
         </LinearLayout>
         <LinearLayout
