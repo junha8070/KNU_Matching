@@ -65,10 +65,12 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
@@ -82,7 +84,7 @@ public class Post_Owner_Acticity extends AppCompatActivity {
     RecyclerView rv_comment;
     CommentAdapter commentAdapter = null;
     EditText edt_comment;
-    String str_title, str_count, str_total, str_StartDate, str_EndDate, str_filename, str_content, str_comment, str_email, str_Id, str_time, str_uri, str_link, str_uid, str_owner_uid;
+    String str_title, str_count, str_total, str_StartDate, str_EndDate, str_filename, str_content, str_Comment_uid, str_email, str_Id, str_time, str_uri, str_link, str_uid, str_owner_uid;
     public String str_Current_Email;
     Intent intent;
     ArrayList<CommentItem> comment_list;
@@ -188,16 +190,22 @@ public class Post_Owner_Acticity extends AppCompatActivity {
             }
 
         });
-
         btn_comment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                long systemtime = System.currentTimeMillis();
+                SimpleDateFormat timeFormat = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss_SSS", Locale.KOREA);
+                String realtime = timeFormat.format(systemtime);
                 CommentItem commentItem = new CommentItem();
                 commentItem.setStr_Email(auth.getCurrentUser().getEmail());
-                commentItem.setStr_Date(formatedNow);
+                commentItem.setStr_Date(realtime);
                 commentItem.setStr_NickName(((MainActivity) MainActivity.context).strNick);
                 commentItem.setStr_Content(edt_comment.getText().toString());
                 commentItem.setStr_Uid(auth.getCurrentUser().getUid());
+                commentItem.setStr_Post_uid(str_Id);
+
+                edt_comment.setText("");
+
                 db.collection("Post").document(str_Id).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -214,9 +222,32 @@ public class Post_Owner_Acticity extends AppCompatActivity {
                                         System.out.println("해쉬 "+comment_notice.keySet());
                                     }
                                 });
-
                     }
                 });
+
+                db.collection("Post").document(str_Id).collection("Comment").get()
+                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
+                                    System.out.println("task qwer " + documentSnapshot.getId());
+
+                                    db.collection("Post").document(str_Id).collection("Comment")
+                                            .document(documentSnapshot.getId())
+                                            .update("str_Comment_uid", documentSnapshot.getId()).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            Toast.makeText(getApplicationContext(), "저장 되었습니다.", Toast.LENGTH_SHORT).show();
+                                        }
+                                    }).addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            Toast.makeText(getApplicationContext(), "저장하는 중 오류가 발생하였습니다.", Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+                                }
+                            }
+                        });
 
 
                 db.collection("Post").document(str_Id).collection("Comment").add(commentItem)
@@ -224,6 +255,10 @@ public class Post_Owner_Acticity extends AppCompatActivity {
                             @Override
                             public void onComplete(@NonNull Task<DocumentReference> task) {
                                 Toast.makeText(Post_Owner_Acticity.this, "성공", Toast.LENGTH_SHORT).show();
+
+                                str_Comment_uid = commentItem.getStr_Comment_uid();
+                                System.out.println("comment item str_comment_uid1 "+str_Comment_uid);
+
                                 FirebaseDatabase.getInstance().getReference().child("users").equalTo(str_uid).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                                     @Override
                                     public void onComplete(@NonNull Task<DataSnapshot> task) {
@@ -327,7 +362,8 @@ public class Post_Owner_Acticity extends AppCompatActivity {
         item.setStr_Content(Content);
         item.setStr_Date(Date);
         item.setStr_Uid(Uid);
-
+        item.setStr_Post_uid(str_Id);
+        item.setStr_Comment_uid(str_Comment_uid);
         comment_list.add(item);
     }
 
@@ -374,7 +410,6 @@ public class Post_Owner_Acticity extends AppCompatActivity {
                 startActivity(intent);
                 break;
             case R.id.btn_del:
-
                 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
 
                 // 제목셋팅
@@ -389,6 +424,21 @@ public class Post_Owner_Acticity extends AppCompatActivity {
                                     public void onClick(DialogInterface dialog, int id) {
                                         // 프로그램을 종료한다
                                         db.collection("Post").document(str_Id).delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                if (task.isSuccessful()) {
+                                                    Toast.makeText(getApplicationContext(), "삭제가 완료되었습니다:)", Toast.LENGTH_SHORT).show();
+                                                    finish();
+                                                }
+                                            }
+                                        }).addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                Toast.makeText(getApplicationContext(), "오류가 발생하였습니다.\n관리자한테 문의주시길 바랍니다.", Toast.LENGTH_SHORT).show();
+                                            }
+                                        });
+
+                                        db.collection("Post").document(str_Id).collection("Comment").document().delete().addOnCompleteListener(new OnCompleteListener<Void>() {
                                             @Override
                                             public void onComplete(@NonNull Task<Void> task) {
                                                 if (task.isSuccessful()) {

@@ -24,6 +24,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.knu_matching.Nav.Edit_profile_Activity;
+import com.example.knu_matching.Nav.MyPost_Activity;
 import com.example.knu_matching.Nav.Scrap_Activity;
 import com.example.knu_matching.Nav.SettingActivity;
 import com.example.knu_matching.People.PeolpeFragment;
@@ -74,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
     private TabLayout tabLayout;
 
     String code;
-    private String[] titles = new String[]{" 게시판", "친구", "채팅", "활동\n게시판"};
+    private String[] titles = new String[]{"게시판", "친구", "채팅", "활동\n게시판"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -149,8 +150,6 @@ public class MainActivity extends AppCompatActivity {
         mViewPager = findViewById(R.id.viewPager);
         tabLayout = findViewById(R.id.tab_layout);
 
-        tabLayout.setTabTextColors(Color.rgb(0, 0, 0), Color.rgb(0, 113, 190));
-
         myPagerAdapter = new MyViewPagerAdapter(this);
         myPagerAdapter.addFrag(frag_post);
         myPagerAdapter.addFrag(frag_people);
@@ -159,10 +158,12 @@ public class MainActivity extends AppCompatActivity {
         myPagerAdapter.addFrag(frag_board);
         mViewPager.setAdapter(myPagerAdapter);
 
-
+        //displaying tabs
+        new TabLayoutMediator(tabLayout, mViewPager, (tab, position) -> tab.setText(titles[position])).attach();
 
         //displaying tabs
         new TabLayoutMediator(tabLayout, mViewPager, (tab, position) -> tab.setText(titles[position])).attach();
+
         toolbar = findViewById(R.id.toolBar);
         setSupportActionBar(toolbar);
 
@@ -173,6 +174,7 @@ public class MainActivity extends AppCompatActivity {
 
         //뒤로가기버튼 이미지 적용
         actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
+
 
         drawerLayout = findViewById(R.id.drawer_layout);
 
@@ -190,6 +192,13 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.nav_logout:
                         FirebaseAuth.getInstance().signOut();
                         finish();
+                        return true;
+
+                    case R.id.nav_mypost:
+                        intent = new Intent(MainActivity.context, MyPost_Activity.class);
+                        startActivity(intent);
+                        drawerLayout.closeDrawers();
+                        return true;
 
                     case R.id.nav_scrap:
                         menuItem.setChecked(true);
@@ -250,7 +259,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
 
     private void displayMessage(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();

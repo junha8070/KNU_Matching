@@ -180,7 +180,6 @@ public class PeolpeFragment extends Fragment {
                 }
             });
 
-
             btn_invite.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
