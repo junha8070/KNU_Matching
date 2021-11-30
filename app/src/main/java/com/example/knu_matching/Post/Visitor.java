@@ -279,7 +279,6 @@ public class Visitor extends AppCompatActivity {
 
 
             }
-
         });
 
         // 댓글 DB 실시간으로 가져오기
