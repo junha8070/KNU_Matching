@@ -51,6 +51,7 @@ public class RegisterActivity extends AppCompatActivity {
     private String strEmail, strPassword, strNick, strMaojr, strStudentId, strPhoneNumber, strStudentName;
     private TextView tv_guide;
     private boolean nickname_state;
+    private int rate = 5;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -156,6 +157,7 @@ public class RegisterActivity extends AppCompatActivity {
                                     account.setMajor(strMaojr);
                                     account.setNickName(strNick);
                                     account.setPassword(strPassword);
+                                    account.setRate(rate);
                                     UserAccount users = new UserAccount();
                                     users.setUid(account.uid);
                                     users.setNickName(account.getNickName());

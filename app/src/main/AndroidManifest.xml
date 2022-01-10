@@ -46,9 +46,6 @@
             android:name=".Nav.ChangePassWord"
             android:exported="true" />
         <activity
-            android:name=".Post.Post_Visitor_Activity"
-            android:exported="true" />
-        <activity
             android:name=".Post.postActivity"
             android:exported="true" />
         <activity

@@ -108,7 +108,7 @@ public class Visitor extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_visitor);
         //TODO: 첨부파일 작업하기
-
+        System.out.println("Visitor.class 활성화 여부");
         init();     // 요소 초기화 작업
         // ArrayList 초기화
         comment_list = new ArrayList<>();

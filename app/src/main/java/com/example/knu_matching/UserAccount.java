@@ -11,6 +11,15 @@ public class UserAccount {
     private String StudentName;
     private String PhoneNumber;
     private String token;
+    private int rate;
+
+    public int getRate() {
+        return rate;
+    }
+
+    public void setRate(int rate) {
+        this.rate = rate;
+    }
 
     public String getToken() {
         return token;

@@ -111,6 +111,7 @@ public class Post_Owner_Acticity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        System.out.println("Owner 활성화 여부");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post_owner_acticity);
         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();

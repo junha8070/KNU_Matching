@@ -79,6 +79,7 @@ public class postActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        System.out.println("Visitor 활성화 여부");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post);
         toolbar = (Toolbar) findViewById(R.id.toolbar);             //툴바 설정
