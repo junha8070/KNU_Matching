@@ -23,60 +23,65 @@
             android:exported="false" />
         <activity
             android:name=".Post.EditPost_Activity"
-            android:exported="true" />
+            android:exported="false" />
         <activity
             android:name=".WebView"
-            android:exported="true" />
+            android:exported="false" />
         <activity
             android:name=".Post.Visitor"
-            android:exported="true" />
+            android:exported="false" />
         <activity
             android:name=".Post.Post_Owner_Acticity"
             android:exported="false" />
         <activity
             android:name=".Nav.Edit_profile_Activity"
-            android:exported="true" />
+            android:exported="false" />
         <activity
             android:name=".Nav.SettingActivity"
-            android:exported="true" />
+            android:exported="false" />
         <activity
             android:name=".Nav.Scrap_Activity"
-            android:exported="true" />
+            android:exported="false" />
         <activity
             android:name=".Nav.ChangePassWord"
-            android:exported="true" />
+            android:exported="false" />
         <activity
             android:name=".Post.postActivity"
-            android:exported="true" />
+            android:exported="false" />
         <activity
             android:name=".Nav.InfoModify"
-            android:exported="true" />
+            android:exported="false" />
         <activity
             android:name=".chatting.ChatActivity"
-            android:exported="true" />
+            android:exported="false" />
         <activity
             android:name=".membermanage.LoginActivity"
-            android:exported="true" />
+            android:exported="true" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".membermanage.FindPasswordActivity"
-            android:exported="true" />
+            android:exported="false" />
         <activity
             android:name=".membermanage.FindIDActivity"
-            android:exported="true" />
+            android:exported="false" />
         <activity
             android:name=".membermanage.Student_Certificate"
-            android:exported="true" />
+            android:exported="false" />
         <activity
             android:name=".MainActivity"
-            android:exported="true" />
+            android:exported="false" />
         <activity
             android:name=".membermanage.RegisterActivity"
-            android:exported="true" />
+            android:exported="false" />
 
         <service
             android:name=".MyFirebaseMessagingService"
-            android:exported="false"
-            android:stopWithTask="false">
+            android:exported="true"
+            android:stopWithTask="true">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />

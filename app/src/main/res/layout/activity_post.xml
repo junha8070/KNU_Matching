@@ -57,6 +57,62 @@
 
         <LinearLayout
             android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:padding="10dp">
+            <Button
+                android:id="@+id/btn_foreign"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:backgroundTint="#e8f3ff"
+                android:textColor="@color/colorGray"
+                android:fontFamily="@font/tway_air"
+                android:layout_marginRight="6dp"
+                android:onClick="click1"
+                android:text="대외활동"></Button>
+            <Button
+                android:id="@+id/btn_competition"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:backgroundTint="#e8f3ff"
+                android:textColor="@color/colorGray"
+                android:fontFamily="@font/tway_air"
+                android:layout_marginRight="6dp"
+                android:onClick="click2"
+                android:text="공모전"></Button>/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:padding="10dp">
+            <Button
+                android:id="@+id/btn_knuactivity"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:backgroundTint="#e8f3ff"
+                android:textColor="@color/colorGray"
+                android:fontFamily="@font/tway_air"
+                android:layout_marginRight="6dp"
+                android:onClick="click3"
+                android:text="비교과"></Button>
+            <Button
+                android:id="@+id/btn_study"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:backgroundTint="#e8f3ff"
+                android:textColor="@color/colorGray"
+                android:fontFamily="@font/tway_air"
+                android:onClick="click4"
+                android:text="스터디"></Button>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:padding="10dp">

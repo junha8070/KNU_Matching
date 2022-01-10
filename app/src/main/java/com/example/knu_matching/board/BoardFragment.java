@@ -130,7 +130,7 @@ public class BoardFragment extends Fragment {
                 super.onScrolled(recyclerView, dx, dy);
                 int lastVisibleItemPosition = ((LinearLayoutManager) recyclerView.getLayoutManager()).findLastCompletelyVisibleItemPosition();
                 int itemTotalCount = recyclerView.getAdapter().getItemCount() - 1;
-            //    System.out.println("마지막이다 이놈아아아아아아아아"+lastVisibleItemPosition+"|||"+itemTotalCount);
+            //    System.out.println("마지막이다 "+lastVisibleItemPosition+"|||"+itemTotalCount);
                 if (lastVisibleItemPosition == itemTotalCount) {
                     customProgressDialog = new ProgressDialog(getContext());
                     //로딩창을 투명하게

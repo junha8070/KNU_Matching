@@ -12,12 +12,14 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.OpenableColumns;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -56,6 +58,9 @@ import io.grpc.Context;
 
 @RequiresApi(api = Build.VERSION_CODES.O)
 public class postActivity extends AppCompatActivity {
+    //모집분야
+    private Button btn_foreign,btn_competition,btn_knuactivity,btn_study;
+
     private Button btn_write, btn_choice;
     private EditText edt_Title, edt_Number, edt_post, edt_link;
     private FirebaseAuth mFirebaseAuth=FirebaseAuth.getInstance();
@@ -86,6 +91,13 @@ public class postActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);                               //툴바 셋업
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);      //뒤로가기 자동 생성
         getSupportActionBar().setDisplayShowTitleEnabled(false);    //툴바 기본 타이틀 제거
+
+        //모집분야
+        btn_foreign = findViewById(R.id.btn_foreign);
+        btn_competition = findViewById(R.id.btn_competition);
+        btn_knuactivity = findViewById(R.id.btn_knuactivity);
+        btn_study = findViewById(R.id.btn_study);
+
         btn_write = findViewById(R.id.btn_write);
         edt_date = findViewById(R.id.edt_date);
         edt_Title = findViewById(R.id.edt_Title);
@@ -103,7 +115,10 @@ public class postActivity extends AppCompatActivity {
 
 
 
+
         this.InitializeListener();
+
+
 
         edt_date.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -248,6 +263,32 @@ public class postActivity extends AppCompatActivity {
             application.setText(str_filename);
         }
     }
+    int maincolor = getColor(R.color.mainColor);
+    public void click1(View view){
+        btn_foreign.setBackgroundColor(Color.BLUE);
+        btn_competition.setBackgroundColor(maincolor);
+        btn_knuactivity.setBackgroundColor(maincolor);
+        btn_study.setBackgroundColor(maincolor);
+    }
+    public void click2(View view){
+        btn_foreign.setBackgroundColor(maincolor);
+        btn_competition.setBackgroundColor(Color.BLUE);
+        btn_knuactivity.setBackgroundColor(maincolor);
+        btn_study.setBackgroundColor(maincolor);
+    }
+    public void click3(View view){
+        btn_foreign.setBackgroundColor(maincolor);
+        btn_competition.setBackgroundColor(maincolor);
+        btn_knuactivity.setBackgroundColor(Color.BLUE);
+        btn_study.setBackgroundColor(maincolor);
+    }
+    public void click4(View view){
+        btn_foreign.setBackgroundColor(maincolor);
+        btn_competition.setBackgroundColor(maincolor);
+        btn_knuactivity.setBackgroundColor(maincolor);
+        btn_study.setBackgroundColor(Color.BLUE);
+    }
+
 
     public void InitializeListener()
     {
