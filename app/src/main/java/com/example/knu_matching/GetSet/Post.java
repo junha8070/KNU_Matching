@@ -16,6 +16,16 @@ public class Post {
     String uri;
     String str_link;
     String str_uid;
+    String str_field;
+
+
+    public String getStr_field() {
+        return str_field;
+    }
+
+    public void setStr_field(String str_field) {
+        this.str_field = str_field;
+    }
 
     public String getStr_link() {
         return str_link;

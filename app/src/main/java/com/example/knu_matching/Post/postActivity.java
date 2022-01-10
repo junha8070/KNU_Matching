@@ -2,6 +2,8 @@ package com.example.knu_matching.Post;
 
 import static android.content.ContentValues.TAG;
 
+import static com.example.knu_matching.MainActivity.context;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
@@ -60,6 +62,7 @@ import io.grpc.Context;
 public class postActivity extends AppCompatActivity {
     //모집분야
     private Button btn_foreign,btn_competition,btn_knuactivity,btn_study;
+    private String str_field;
 
     private Button btn_write, btn_choice;
     private EditText edt_Title, edt_Number, edt_post, edt_link;
@@ -157,9 +160,10 @@ public class postActivity extends AppCompatActivity {
                 str_Number = edt_Number.getText().toString();
                 str_post = edt_post.getText().toString();
                 str_filename = application.getText().toString();
-                str_Nickname = ((MainActivity)MainActivity.context).strNick;
+                str_Nickname = ((MainActivity) context).strNick;
                 str_email = mFirebaseAuth.getCurrentUser().getEmail();
                 str_uid = mFirebaseAuth.getCurrentUser().getUid();
+
 
                 if(filePath == null){
                     Post post = new Post();
@@ -173,6 +177,7 @@ public class postActivity extends AppCompatActivity {
                     post.setStr_email(str_email);
                     post.setStr_Nickname(str_Nickname);
                     post.setStr_uid(str_uid);
+                    post.setStr_field(str_field);
                     db.collection("Post").add(post).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                         @Override
                         public void onSuccess(DocumentReference documentReference) {
@@ -224,6 +229,7 @@ public class postActivity extends AppCompatActivity {
                                 post.setStr_email(str_email);
                                 post.setStr_Nickname(str_Nickname);
                                 post.setStr_uid(str_uid);
+                                post.setStr_field(str_field);
 
                                 db.collection("Post").add(post).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                                     @Override
@@ -263,30 +269,35 @@ public class postActivity extends AppCompatActivity {
             application.setText(str_filename);
         }
     }
-    int maincolor = getColor(R.color.mainColor);
+
+    int maincolor = context.getResources().getColor(R.color.mainColor);
     public void click1(View view){
         btn_foreign.setBackgroundColor(Color.BLUE);
         btn_competition.setBackgroundColor(maincolor);
         btn_knuactivity.setBackgroundColor(maincolor);
         btn_study.setBackgroundColor(maincolor);
+        str_field="대외활동";
     }
     public void click2(View view){
         btn_foreign.setBackgroundColor(maincolor);
         btn_competition.setBackgroundColor(Color.BLUE);
         btn_knuactivity.setBackgroundColor(maincolor);
         btn_study.setBackgroundColor(maincolor);
+        str_field="공모전";
     }
     public void click3(View view){
         btn_foreign.setBackgroundColor(maincolor);
         btn_competition.setBackgroundColor(maincolor);
         btn_knuactivity.setBackgroundColor(Color.BLUE);
         btn_study.setBackgroundColor(maincolor);
+        str_field="비교과";
     }
     public void click4(View view){
         btn_foreign.setBackgroundColor(maincolor);
         btn_competition.setBackgroundColor(maincolor);
         btn_knuactivity.setBackgroundColor(maincolor);
         btn_study.setBackgroundColor(Color.BLUE);
+        str_field="스터디";
     }
 
 

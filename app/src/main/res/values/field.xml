@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="field">
+        <item>전체</item>
+        <item>대외활동</item>
+        <item>공모전</item>
+        <item>비교과</item>
+        <item>스터디</item>
+    </string-array>
+</resources>

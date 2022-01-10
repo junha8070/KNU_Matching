@@ -73,7 +73,9 @@
             android:exported="false" />
         <activity
             android:name=".MainActivity"
-            android:exported="false" />
+            android:exported="false">
+
+        </activity>
         <activity
             android:name=".membermanage.RegisterActivity"
             android:exported="false" />

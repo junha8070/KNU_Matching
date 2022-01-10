@@ -22,8 +22,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.knu_matching.GetSet.Post;
@@ -47,12 +49,16 @@ public class PostFragment extends Fragment {
     private static final String ARG_PARAM2 = "param2";
 
     // TODO: Rename and change types of parameters
+    private Spinner spinner_field;
+    private String serch;
     private String mParam1;
     private String mParam2;
     private Button btn_Recent;
     private Button btn_next;
     private Button btn_back, btn_test;
     private FirebaseUser user;
+
+
 
     public PostFragment() {
         // Required empty public constructor
@@ -79,6 +85,7 @@ public class PostFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
@@ -90,6 +97,9 @@ public class PostFragment extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.activity_post_fragment, container, false);
         ImageButton btn_Recent = v.findViewById(R.id.btn_Recent);
+        Spinner spinner_field=v.findViewById(R.id.spinner_field);
+
+
 
 
         user = FirebaseAuth.getInstance().getCurrentUser();
@@ -102,6 +112,44 @@ public class PostFragment extends Fragment {
                 getData();
                 ft.detach(PostFragment.this).attach(PostFragment.this).commit();
                 swipeRefreshLayout.setRefreshing(false);
+            }
+        });
+
+        spinner_field.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String item = parent.getItemAtPosition(position).toString();
+                String total="전체";
+                String foreign="대외활동";
+                String competition="공모전";
+                String knuactivity="비교과";
+                String study="스터디";
+
+                if(item.equals(foreign)){
+                    serch="대외활동";
+                    getData();
+                }
+                else if(item.equals(competition)){
+                    serch="공모전";
+                    getData();
+                }
+                else if(item.equals(knuactivity)){
+                    serch="비교과";
+                    getData();
+                }
+                else if(item.equals(study)){
+                    serch="스터디";
+                    getData();
+                }
+                else if(item.equals(total)){
+                    serch="전체";
+                    getData();
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
             }
         });
 
@@ -155,24 +203,48 @@ public class PostFragment extends Fragment {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             ArrayList<Post> postList = new ArrayList<>();
+                            String str;
+                            String result="전체";
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Log.d(TAG, document.getId() + "==>" + document.getData());
                                 Post post = document.toObject(Post.class);
-                                post.getStr_Title();
-                                post.getStr_Title();
-                                post.getStr_Number();
-                                post.getUri();
-                                post.getStr_post();
-                                post.getStr_email();
-                                post.getStr_filename();
-                                post.getStr_EndDate();
-                                post.getStr_StartDate();
-                                post.getStr_Id();
-                                post.getStr_Nickname();
-                                post.getStr_time();
-                                post.getStr_link();
-                                post.getStr_uid();
-                                postList.add(post);
+                                if(serch.equals(result)){
+                                    post.getStr_Title();
+                                    post.getStr_Title();
+                                    post.getStr_Number();
+                                    post.getUri();
+                                    post.getStr_post();
+                                    post.getStr_email();
+                                    post.getStr_filename();
+                                    post.getStr_EndDate();
+                                    post.getStr_StartDate();
+                                    post.getStr_Id();
+                                    post.getStr_Nickname();
+                                    post.getStr_time();
+                                    post.getStr_link();
+                                    post.getStr_uid();
+                                    post.getStr_field();
+                                    postList.add(post);
+                                }
+                                else if(serch.equals(post.getStr_field())){
+                                    post.getStr_Title();
+                                    post.getStr_Title();
+                                    post.getStr_Number();
+                                    post.getUri();
+                                    post.getStr_post();
+                                    post.getStr_email();
+                                    post.getStr_filename();
+                                    post.getStr_EndDate();
+                                    post.getStr_StartDate();
+                                    post.getStr_Id();
+                                    post.getStr_Nickname();
+                                    post.getStr_time();
+                                    post.getStr_link();
+                                    post.getStr_uid();
+                                    post.getStr_field();
+                                    postList.add(post);
+                                }
+
 //                                postList.add(new postInfo(
 //                                        document.getData().get("str_Title").toString(),
 //                                        document.getData().get("str_StartDate").toString(),
@@ -191,11 +263,16 @@ public class PostFragment extends Fragment {
                             recyclerView.setHasFixedSize(true);
                             recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
                             RecyclerView.Adapter mAdapter = new PostAdapter(getActivity(), postList);
+                            mAdapter.notifyDataSetChanged();
                             recyclerView.setAdapter(mAdapter);
+
                         } else {
                             Log.d(TAG, "error", task.getException());
                         }
                     }
                 });
     }
+
+
+
 }

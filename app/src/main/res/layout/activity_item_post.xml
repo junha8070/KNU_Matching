@@ -24,6 +24,17 @@
             android:paddingLeft="10dp"
             android:fontFamily="@font/tway_air"
             tools:ignore="MissingConstraints" />
+        <TextView
+            android:id="@+id/tv_field"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#000000"
+            android:textSize="13sp"
+            android:background="#ffffff"
+            android:paddingTop="10dp"
+            android:paddingLeft="10dp"
+            android:fontFamily="@font/tway_air"
+            tools:ignore="MissingConstraints" />
 
         <TextView
             android:id="@+id/dateView"

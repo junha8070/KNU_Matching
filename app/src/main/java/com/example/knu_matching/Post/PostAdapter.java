@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -15,6 +16,8 @@ import com.example.knu_matching.GetSet.Post;
 import com.example.knu_matching.MainActivity;
 import com.example.knu_matching.R;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.GalleryViewHolder> {
@@ -24,9 +27,13 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.GalleryViewHol
 
     public static class GalleryViewHolder extends RecyclerView.ViewHolder{
         public CardView cardView;
+        public TextView tv_field;
+
         public GalleryViewHolder(CardView v){
             super(v);
             cardView = v;
+            this.tv_field=v.findViewById(R.id.tv_field);
+
         }
     }
 
@@ -55,9 +62,14 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.GalleryViewHol
         CardView cardView = holder.cardView;
         TextView textView = cardView.findViewById(R.id.textView);
         textView.setText(mDataset.get(position).getStr_Title());
+
+        TextView tv_field = cardView.findViewById(R.id.tv_field);
+        tv_field.setText(mDataset.get(position).getStr_field());
+        
         TextView dateView = cardView.findViewById(R.id.dateView);
         String timeFormmat = mDataset.get(position).getStr_time();
         dateView.setText(timeFormmat.substring(0,4)+"년 "+timeFormmat.substring(5,7)+"월 "+timeFormmat.substring(8,10)+"일");
+
 
         cardView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,6 +90,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.GalleryViewHol
                     intent.putExtra("Filename", mDataset.get(temp).getStr_filename());
                     intent.putExtra("Link", mDataset.get(temp).getStr_link());
                     intent.putExtra("Uid", mDataset.get(temp).getStr_uid());
+                    intent.putExtra("field", mDataset.get(temp).getStr_field());
 
                     view.getContext().startActivity(intent);
 
@@ -97,6 +110,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.GalleryViewHol
                     intent.putExtra("Filename", mDataset.get(temp).getStr_filename());
                     intent.putExtra("Link", mDataset.get(temp).getStr_link());
                     intent.putExtra("Uid", mDataset.get(temp).getStr_uid());
+                    intent.putExtra("field", mDataset.get(temp).getStr_field());
 
                     view.getContext().startActivity(intent);
                 }
@@ -110,6 +124,9 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.GalleryViewHol
     public int getItemCount(){
         return mDataset.size();
     }
+
+
+
 
 
 
