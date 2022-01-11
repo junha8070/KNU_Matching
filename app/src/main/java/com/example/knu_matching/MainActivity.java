@@ -53,7 +53,7 @@ import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
     public static Context context;
-
+//
     private long backpressedTime = 0;
     public Button btn_register, btn_logout;
     private final String TAG = this.getClass().getSimpleName();
