@@ -31,6 +31,7 @@ import android.widget.Toast;
 
 import com.example.knu_matching.GetSet.CommentItem;
 import com.example.knu_matching.GetSet.Post;
+import com.example.knu_matching.GetSet.Report;
 import com.example.knu_matching.MainActivity;
 import com.example.knu_matching.R;
 import com.example.knu_matching.SendNotification;
@@ -209,13 +210,27 @@ public class Visitor extends AppCompatActivity {
                                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                     for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
                                         System.out.println("task qwer " + documentSnapshot.getId());
-
+                                        Report report = new Report();
+                                        report.setStr_Reporter_uid(auth.getCurrentUser().getUid());
                                         db.collection("Post").document(str_Id).collection("Comment")
                                                 .document(documentSnapshot.getId())
                                                 .update("str_Comment_uid", documentSnapshot.getId()).addOnCompleteListener(new OnCompleteListener<Void>() {
                                             @Override
                                             public void onComplete(@NonNull Task<Void> task) {
                                                 Toast.makeText(getApplicationContext(), "저장 되었습니다.", Toast.LENGTH_SHORT).show();
+                                                db.collection("Post").document(str_Id).collection("Comment")
+                                                        .document(documentSnapshot.getId()).collection("reportList")
+                                                        .add(report).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<DocumentReference> task) {
+                                                        Toast.makeText(getApplicationContext(), "ReportList 생성 완료.", Toast.LENGTH_SHORT).show();
+                                                    }
+                                                }).addOnFailureListener(new OnFailureListener() {
+                                                    @Override
+                                                    public void onFailure(@NonNull Exception e) {
+                                                        Toast.makeText(getApplicationContext(), "ReportList 생성 실패.", Toast.LENGTH_SHORT).show();
+                                                    }
+                                                });
                                             }
                                         }).addOnFailureListener(new OnFailureListener() {
                                             @Override

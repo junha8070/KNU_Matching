@@ -32,6 +32,7 @@ import android.widget.Toast;
 
 import com.example.knu_matching.GetSet.CommentItem;
 import com.example.knu_matching.GetSet.Post;
+import com.example.knu_matching.GetSet.Report;
 import com.example.knu_matching.MainActivity;
 import com.example.knu_matching.R;
 import com.example.knu_matching.SendNotification;
@@ -93,7 +94,6 @@ public class Post_Owner_Acticity extends AppCompatActivity {
     LocalDateTime now = LocalDateTime.now();
     String formatedNow = now.format(DateTimeFormatter.ofPattern("yyyy_MM_dd_HH_mm_ss_SSS"));
     String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-
 
 
     String File_Name = "확장자를 포함한 파일명";
@@ -229,29 +229,45 @@ public class Post_Owner_Acticity extends AppCompatActivity {
                     }
                 });
 
-                db.collection("Post").document(str_Id).collection("Comment").get()
-                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
-                                    System.out.println("task qwer " + documentSnapshot.getId());
+                db.collection("Post").document(str_Id).collection("Comment")
+                        .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
+                            System.out.println("task qwer " + documentSnapshot.getId());
+                            Report report = new Report();
+                            report.setStr_Reporter_uid(auth.getCurrentUser().getUid());
 
+                            db.collection("Post").document(str_Id).collection("Comment")
+                                    .document(documentSnapshot.getId())
+                                    .update("str_Comment_uid", documentSnapshot.getId()).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    Toast.makeText(getApplicationContext(), "저장 되었습니다.", Toast.LENGTH_SHORT).show();
                                     db.collection("Post").document(str_Id).collection("Comment")
-                                            .document(documentSnapshot.getId())
-                                            .update("str_Comment_uid", documentSnapshot.getId()).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            .document(documentSnapshot.getId()).collection("reportList")
+                                            .add(report).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
                                         @Override
-                                        public void onComplete(@NonNull Task<Void> task) {
-                                            Toast.makeText(getApplicationContext(), "저장 되었습니다.", Toast.LENGTH_SHORT).show();
+                                        public void onComplete(@NonNull Task<DocumentReference> task) {
+                                            Toast.makeText(getApplicationContext(), "ReportList 생성 완료.", Toast.LENGTH_SHORT).show();
                                         }
                                     }).addOnFailureListener(new OnFailureListener() {
                                         @Override
                                         public void onFailure(@NonNull Exception e) {
-                                            Toast.makeText(getApplicationContext(), "저장하는 중 오류가 발생하였습니다.", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(getApplicationContext(), "ReportList 생성 실패.", Toast.LENGTH_SHORT).show();
                                         }
                                     });
                                 }
-                            }
-                        });
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Toast.makeText(getApplicationContext(), "저장하는 중 오류가 발생하였습니다.", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+
+                        }
+                    }
+                });
 
 
                 db.collection("Post").document(str_Id).collection("Comment").add(commentItem)
@@ -261,7 +277,7 @@ public class Post_Owner_Acticity extends AppCompatActivity {
                                 Toast.makeText(Post_Owner_Acticity.this, "성공", Toast.LENGTH_SHORT).show();
 
                                 str_Comment_uid = commentItem.getStr_Comment_uid();
-                                System.out.println("comment item str_comment_uid1 "+str_Comment_uid);
+                                System.out.println("comment item str_comment_uid1 " + str_Comment_uid);
 
                                 FirebaseDatabase.getInstance().getReference().child("users").equalTo(str_uid).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                                     @Override
@@ -270,7 +286,8 @@ public class Post_Owner_Acticity extends AppCompatActivity {
                                             System.out.println("일단 성공?");
 
 
-                                            db.collection("Post").document(str_Id).collection("Comment").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                            db.collection("Post").document(str_Id).collection("Comment")
+                                                    .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                                 @Override
                                                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                                     System.out.println("일단 성공?2");
@@ -324,6 +341,9 @@ public class Post_Owner_Acticity extends AppCompatActivity {
                         Toast.makeText(Post_Owner_Acticity.this, "실패", Toast.LENGTH_SHORT).show();
                     }
                 });
+
+
+
             }
         });
 
@@ -340,7 +360,7 @@ public class Post_Owner_Acticity extends AppCompatActivity {
                             switch (doc.getType()) {
                                 case ADDED:
                                     System.out.println("오너 디버깅" + doc.getDocument().getString("str_Email"));
-                                    System.out.println("실시간 시간"+formatedNow);
+                                    System.out.println("실시간 시간" + formatedNow);
                                     addItem(doc.getDocument().getString("str_Email"), doc.getDocument().getString("str_NickName"), doc.getDocument().getString("str_Content"), doc.getDocument().getString("str_Date"), doc.getDocument().getString("str_Uid"));
                                     commentAdapter.notifyDataSetChanged();
                                     break;
