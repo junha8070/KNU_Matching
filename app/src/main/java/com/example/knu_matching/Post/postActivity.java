@@ -271,8 +271,9 @@ public class postActivity extends AppCompatActivity {
     }
 
     int maincolor = context.getResources().getColor(R.color.mainColor);
+    int colorSkyBlue = context.getResources().getColor(R.color.colorSkyBlue);
     public void click1(View view){
-        btn_foreign.setBackgroundColor(Color.BLUE);
+        btn_foreign.setBackgroundColor(colorSkyBlue);
         btn_competition.setBackgroundColor(maincolor);
         btn_knuactivity.setBackgroundColor(maincolor);
         btn_study.setBackgroundColor(maincolor);
@@ -280,7 +281,7 @@ public class postActivity extends AppCompatActivity {
     }
     public void click2(View view){
         btn_foreign.setBackgroundColor(maincolor);
-        btn_competition.setBackgroundColor(Color.BLUE);
+        btn_competition.setBackgroundColor(colorSkyBlue);
         btn_knuactivity.setBackgroundColor(maincolor);
         btn_study.setBackgroundColor(maincolor);
         str_field="공모전";
@@ -288,7 +289,7 @@ public class postActivity extends AppCompatActivity {
     public void click3(View view){
         btn_foreign.setBackgroundColor(maincolor);
         btn_competition.setBackgroundColor(maincolor);
-        btn_knuactivity.setBackgroundColor(Color.BLUE);
+        btn_knuactivity.setBackgroundColor(colorSkyBlue);
         btn_study.setBackgroundColor(maincolor);
         str_field="비교과";
     }
@@ -296,7 +297,7 @@ public class postActivity extends AppCompatActivity {
         btn_foreign.setBackgroundColor(maincolor);
         btn_competition.setBackgroundColor(maincolor);
         btn_knuactivity.setBackgroundColor(maincolor);
-        btn_study.setBackgroundColor(Color.BLUE);
+        btn_study.setBackgroundColor(colorSkyBlue);
         str_field="스터디";
     }
 

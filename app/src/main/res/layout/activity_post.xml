@@ -197,10 +197,9 @@
                 android:layout_weight="6"
                 android:linksClickable="true"
                 android:fontFamily="@font/tway_air"
-                android:hint="참고할 파일이 있으면 업로드 버튼을 눌러주세요" />
+                android:hint="참고 파일" />
 
             <Button
-                android:layout_weight="1"
                 android:layout_gravity="right|center_vertical"
                 android:id="@+id/btn_choice"
                 android:layout_width="wrap_content"
