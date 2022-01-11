@@ -18,7 +18,12 @@ import com.example.knu_matching.R;
 
 import org.w3c.dom.Text;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
 
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.GalleryViewHolder> {
     private ArrayList<Post> mDataset;
@@ -69,7 +74,39 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.GalleryViewHol
         TextView dateView = cardView.findViewById(R.id.dateView);
         String timeFormmat = mDataset.get(position).getStr_time();
         dateView.setText(timeFormmat.substring(0,4)+"년 "+timeFormmat.substring(5,7)+"월 "+timeFormmat.substring(8,10)+"일");
+        String startday=timeFormmat.substring(0,4)+"/"+timeFormmat.substring(5,7)+"/"+timeFormmat.substring(8,10);
 
+        String str = mDataset.get(position).getStr_EndDate();
+        String[] result= new String[3];
+        result = str.split(". ");
+        String result0=result[0];
+        String result1=result[1];
+        String result2=result[2];
+
+        String endday=result0+"/"+result1+"/"+result2;
+
+        Date format1 = null;
+        try {
+            format1 = new SimpleDateFormat("yyyy/MM/dd").parse(endday);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        Date format2 = null;
+        try {
+            format2 = new SimpleDateFormat("yyyy/MM/dd").parse(startday);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        long diffSec = (format1.getTime() - format2.getTime()) / 1000; //초 차이
+        long diffMin = (format1.getTime() - format2.getTime()) / 60000; //분 차이
+        long diffHor = (format1.getTime() - format2.getTime()) / 3600000; //시 차이
+        long diffDays = diffSec / (24*60*60); //일자수 차이
+
+        String final_day="D-"+String.valueOf(diffDays);
+
+        TextView tv_Dday=cardView.findViewById(R.id.tv_Dday);
+        tv_Dday.setText(final_day);
 
         cardView.setOnClickListener(new View.OnClickListener() {
             @Override
