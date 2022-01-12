@@ -103,9 +103,18 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
         str_Date = item.getStr_Date();
         str_count = item.getStr_count();
 
-        holder.tv_nickname.setText(item.getStr_NickName());
-        holder.tv_content.setText(item.getStr_Content());
-        holder.tv_date.setText(item.getStr_Date());
+        if(position==0){
+            holder.tv_content.setVisibility(View.GONE);
+            holder.tv_date.setVisibility(View.GONE);
+            holder.btn_del_comment.setVisibility(View.GONE);
+            holder.tv_nickname.setText(item.getStr_NickName()+"님의 글 입니다.");
+        }
+        else{
+
+            holder.tv_nickname.setText(item.getStr_NickName());
+            holder.tv_content.setText(item.getStr_Content());
+            holder.tv_date.setText(item.getStr_Date());
+        }
         if ((str_Email.equals(auth.getCurrentUser().getEmail())) == false) {
             holder.btn_del_comment.setVisibility(View.GONE);
         }

@@ -77,7 +77,6 @@ import java.util.Set;
 
 @RequiresApi(api = Build.VERSION_CODES.O)
 public class Post_Owner_Acticity extends AppCompatActivity {
-
     Toolbar toolbar;
     Button btn_down, btn_comment, btn_participate;
     TextView tv_count, tv_total, tv_StartDate, tv_EndDate, tv_file, tv_content, tv_title, tv_link;
@@ -448,10 +447,13 @@ public class Post_Owner_Acticity extends AppCompatActivity {
                                 new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int id) {
                                         // 프로그램을 종료한다
-                                        db.collection("Post").document(str_Id).collection("Comment").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+
+                                        db.collection("Post").document(str_Id).collection("Comment").get()
+                                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                             @Override
                                             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                                 for (QueryDocumentSnapshot document : task.getResult()) {
+                                                    System.out.println("테에스으트으 "+document.getData());
                                                     db.collection("Post").document(str_Id).collection("Comment").document(document.getId()).delete().addOnCompleteListener(new OnCompleteListener<Void>() {
                                                         @Override
                                                         public void onComplete(@NonNull Task<Void> task) {
@@ -475,6 +477,11 @@ public class Post_Owner_Acticity extends AppCompatActivity {
                                                         }
                                                     });
                                                 }
+                                            }
+                                        }).addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                System.out.println("테에스으트으 d");
                                             }
                                         });
 

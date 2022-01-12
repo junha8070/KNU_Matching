@@ -29,6 +29,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.knu_matching.GetSet.CommentItem;
 import com.example.knu_matching.GetSet.Post;
 import com.example.knu_matching.MainActivity;
 import com.example.knu_matching.R;
@@ -55,6 +56,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.Locale;
 
 import io.grpc.Context;
 
@@ -187,6 +189,19 @@ public class postActivity extends AppCompatActivity {
                                         setResult(Activity.RESULT_OK);
                                         finish();
                                         Toast.makeText(getApplicationContext(),"게시물을 올렸습니다.",Toast.LENGTH_SHORT).show();
+                                        CommentItem comment = new CommentItem();
+
+                                        long systemtime = System.currentTimeMillis();
+                                        SimpleDateFormat timeFormat = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss_SSS", Locale.KOREA);
+                                        String realtime = timeFormat.format(systemtime);
+                                        comment.setStr_Email(mFirebaseAuth.getCurrentUser().getEmail());
+                                        comment.setStr_Date(realtime);
+                                        comment.setStr_NickName(((MainActivity) MainActivity.context).strNick);
+                                        comment.setStr_Content("test 댓글임");
+                                        comment.setStr_Uid(mFirebaseAuth.getCurrentUser().getUid());
+                                        comment.setStr_Post_uid(str_Id);
+                                        db.collection("Post").document(documentReference.getId()).collection("Comment").add(comment);
+
                                     }
                                 }).addOnFailureListener(new OnFailureListener() {
                                     @Override
