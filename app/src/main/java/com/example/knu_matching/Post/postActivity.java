@@ -150,7 +150,6 @@ public class postActivity extends AppCompatActivity {
             }
         });
 
-
         btn_write.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
