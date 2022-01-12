@@ -1,4 +1,6 @@
 package com.example.knu_matching;
+import android.app.PendingIntent;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.view.textclassifier.TextLinks;
@@ -36,6 +38,7 @@ public class SendNotification {
                 }catch (Exception e){
                     Log.d("error", e+"");
                 }
+
                 return  null;
             }
         }.execute();
