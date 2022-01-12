@@ -41,11 +41,13 @@ import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.HashMap;
@@ -53,7 +55,7 @@ import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
     public static Context context;
-//
+    //
     private long backpressedTime = 0;
     public Button btn_register, btn_logout;
     private final String TAG = this.getClass().getSimpleName();
@@ -64,12 +66,13 @@ public class MainActivity extends AppCompatActivity {
     DocumentReference dbRef = db.collection("Account").document(user.getEmail().replace(".", ">"));
     Context mContext;
     public String strEmail, strPassword, strNick, strMaojr, strStudentId, strPhoneNumber, strStudentName;
+    int rate;
 
     // DrawerLayout
     private Toolbar toolbar;
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
-    private ImageView iv_profile;
+    private ImageView iv_level;
     private TextView tv_name, tv_nickname, tv_major, tv_rate;
 
     private Intent intent;
@@ -115,11 +118,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onEvent(@Nullable DocumentSnapshot snapshot, @Nullable FirebaseFirestoreException e) {
                 if (e != null) {
-                 //   Log.w(TAG, "Listen failed.", e);
+                    //   Log.w(TAG, "Listen failed.", e);
                     return;
                 }
                 if (snapshot != null && snapshot.exists()) {
-                //    Log.d(TAG, "Current data: " + snapshot.getData());
+                    //    Log.d(TAG, "Current data: " + snapshot.getData());
                     UserAccount userAccount = snapshot.toObject(UserAccount.class);
                     strStudentName = userAccount.getStudentName();
                     strEmail = userAccount.getEmailId();
@@ -129,11 +132,11 @@ public class MainActivity extends AppCompatActivity {
                     strStudentId = userAccount.getStudentId();
                     strPhoneNumber = userAccount.getPhoneNumber();
 
-                   // Toast.makeText(MainActivity.this, "메인2" + strNick, Toast.LENGTH_SHORT).show();
+                    // Toast.makeText(MainActivity.this, "메인2" + strNick, Toast.LENGTH_SHORT).show();
                 } else {
-                   // Log.d(TAG, "Current data: null");
+                    // Log.d(TAG, "Current data: null");
                 }
-             //   Toast.makeText(MainActivity.this, "메인" + strNick, Toast.LENGTH_SHORT).show();
+                //   Toast.makeText(MainActivity.this, "메인" + strNick, Toast.LENGTH_SHORT).show();
 
 
             }
@@ -152,7 +155,7 @@ public class MainActivity extends AppCompatActivity {
 
         mViewPager = findViewById(R.id.viewPager);
         tabLayout = findViewById(R.id.tab_layout);
-        tabLayout.setTabTextColors(Color.rgb(0,0,0), Color.rgb(0,113,190));
+        tabLayout.setTabTextColors(Color.rgb(0, 0, 0), Color.rgb(0, 113, 190));
 
         myPagerAdapter = new MyViewPagerAdapter(this);
         myPagerAdapter.addFrag(frag_post);
@@ -180,7 +183,9 @@ public class MainActivity extends AppCompatActivity {
 
         navigationView = findViewById(R.id.navigationView);
         View nav_header_view = navigationView.getHeaderView(0);
+//        tv_rate = nav_header_view.findViewById(R.id.tv_rate);
         tv_name = nav_header_view.findViewById(R.id.tv_name);
+        iv_level = nav_header_view.findViewById(R.id.iv_level);
         tv_nickname = nav_header_view.findViewById(R.id.tv_nickname);
         tv_major = nav_header_view.findViewById(R.id.tv_major);
 
@@ -235,16 +240,90 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
         });
-
+        db.collection("Report").whereEqualTo("str_comment_email", mFirebaseAuth.getCurrentUser().getEmail()).addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                if (error != null) {
+                    System.out.println("Error: Post_Owner_Activity - Comment 불러오기 오류");
+                    return;
+                }
+                for (DocumentChange doc : value.getDocumentChanges()) {
+                    switch (doc.getType()) {
+                        case ADDED:
+                            System.out.println("신고 사이즈"+value.getDocuments().size());
+                            // 추가되었을때 작업
+                        case MODIFIED:
+                            // 수정되었을때 작업
+                        case REMOVED:
+                            // 삭제되었을때 작업
+                            switch (value.getDocuments().size()) {
+                                case 0:
+                                    iv_level.setImageResource(R.drawable.ic_level_6);
+                                    break;
+                                case 1:
+                                    iv_level.setImageResource(R.drawable.ic_level_5);
+                                    break;
+                                case 2:
+                                    iv_level.setImageResource(R.drawable.ic_level_4);
+                                    break;
+                                case 3:
+                                    iv_level.setImageResource(R.drawable.ic_level_3);
+                                    break;
+                                case 4:
+                                    iv_level.setImageResource(R.drawable.ic_level_2);
+                                    break;
+                                case 5:
+                                    iv_level.setImageResource(R.drawable.ic_level_1);
+                                    break;
+                                case 6:
+                                default:
+                                    iv_level.setImageResource(R.drawable.ic_level_0);
+                                    break;
+                            }
+                            break;
+                    }
+                }
+            }
+        });
+//                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//            @Override
+//            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                System.out.println("신고 사이즈"+task.getResult().size());
+//                switch (task.getResult().size()){
+//                    case 0:
+//                        iv_level.setImageResource(R.drawable.ic_level_6);
+//                        break;
+//                    case 1:
+//                        iv_level.setImageResource(R.drawable.ic_level_5);
+//                        break;
+//                    case 2:
+//                        iv_level.setImageResource(R.drawable.ic_level_4);
+//                        break;
+//                    case 3:
+//                        iv_level.setImageResource(R.drawable.ic_level_3);
+//                        break;
+//                    case 4:
+//                        iv_level.setImageResource(R.drawable.ic_level_2);
+//                        break;
+//                    case 5:
+//                        iv_level.setImageResource(R.drawable.ic_level_1);
+//                        break;
+//                    case 6:
+//                    default:
+//                        iv_level.setImageResource(R.drawable.ic_level_0);
+//                        break;
+//                }
+//            }
+//        });
         dbRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot snapshot, @Nullable FirebaseFirestoreException e) {
                 if (e != null) {
-               //     Log.w(TAG, "Listen failed.", e);
+                    //     Log.w(TAG, "Listen failed.", e);
                     return;
                 }
                 if (snapshot != null && snapshot.exists()) {
-              //      Log.d(TAG, "Current data: " + snapshot.getData());
+                    //      Log.d(TAG, "Current data: " + snapshot.getData());
                     UserAccount userAccount = snapshot.toObject(UserAccount.class);
                     strStudentName = userAccount.getStudentName();
                     strEmail = userAccount.getEmailId();
@@ -253,20 +332,22 @@ public class MainActivity extends AppCompatActivity {
                     strMaojr = userAccount.getMajor();
                     strStudentId = userAccount.getStudentId();
                     strPhoneNumber = userAccount.getPhoneNumber();
+                    rate = userAccount.getRate();
 
                     tv_name.setText(strStudentName);
                     tv_nickname.setText(strNick);
                     tv_major.setText(strMaojr);
+//                    tv_rate.setText(String.valueOf(rate));
 
                 } else {
-               //     Log.d(TAG, "Current data: null");
+                    //     Log.d(TAG, "Current data: null");
                 }
             }
         });
     }
 
     private void displayMessage(String message) {
-     //   Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+        //   Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
     //메뉴 선택시 네비게이션 호출
@@ -285,7 +366,6 @@ public class MainActivity extends AppCompatActivity {
     //뒤로가기 두번해야 꺼지게 하는 코드
     @Override
     public void onBackPressed() {
-
         if (System.currentTimeMillis() > backpressedTime + 2000) {
             backpressedTime = System.currentTimeMillis();
             Toast.makeText(this, "\'뒤로\' 버튼을 한번 더 누르시면 종료됩니다.", Toast.LENGTH_SHORT).show();

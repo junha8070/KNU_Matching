@@ -244,19 +244,19 @@ public class Post_Owner_Acticity extends AppCompatActivity {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                     Toast.makeText(getApplicationContext(), "저장 되었습니다.", Toast.LENGTH_SHORT).show();
-                                    db.collection("Post").document(str_Id).collection("Comment")
-                                            .document(documentSnapshot.getId()).collection("reportList")
-                                            .add(report).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<DocumentReference> task) {
-                                            Toast.makeText(getApplicationContext(), "ReportList 생성 완료.", Toast.LENGTH_SHORT).show();
-                                        }
-                                    }).addOnFailureListener(new OnFailureListener() {
-                                        @Override
-                                        public void onFailure(@NonNull Exception e) {
-                                            Toast.makeText(getApplicationContext(), "ReportList 생성 실패.", Toast.LENGTH_SHORT).show();
-                                        }
-                                    });
+//                                    db.collection("Post").document(str_Id).collection("Comment")
+//                                            .document(documentSnapshot.getId()).collection("reportList")
+//                                            .add(report).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+//                                        @Override
+//                                        public void onComplete(@NonNull Task<DocumentReference> task) {
+//                                            Toast.makeText(getApplicationContext(), "ReportList 생성 완료.", Toast.LENGTH_SHORT).show();
+//                                        }
+//                                    }).addOnFailureListener(new OnFailureListener() {
+//                                        @Override
+//                                        public void onFailure(@NonNull Exception e) {
+//                                            Toast.makeText(getApplicationContext(), "ReportList 생성 실패.", Toast.LENGTH_SHORT).show();
+//                                        }
+//                                    });
                                 }
                             }).addOnFailureListener(new OnFailureListener() {
                                 @Override

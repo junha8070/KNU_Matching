@@ -29,7 +29,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.GalleryViewHol
     private ArrayList<Post> mDataset;
     private Activity activity;
 
-
     public static class GalleryViewHolder extends RecyclerView.ViewHolder{
         public CardView cardView;
         public TextView tv_field;

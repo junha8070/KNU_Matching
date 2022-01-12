@@ -191,10 +191,11 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
                                                         //예 눌렀을때의 이벤트 처리
                                                         Report report = new Report();
                                                         report.setStr_Reporter_uid(auth.getCurrentUser().getUid());
-                                                        CollectionReference checkReport = db.collection("Post").document(str_post_uid).collection("Comment")
-                                                                .document(str_Comment_uid).collection("reportList");
-                                                        db.collection("Post").document(str_post_uid).collection("Comment")
-                                                                .document(str_Comment_uid).collection("reportList").whereEqualTo("str_Reporter_uid", auth.getCurrentUser().getUid())
+                                                        report.setStr_comment_uid(str_Comment_uid);
+                                                        report.setStr_post_uid(str_post_uid);
+                                                        report.setStr_comment_email(str_Email);
+                                                        CollectionReference checkReport = db.collection("Report");
+                                                        checkReport.whereEqualTo("str_comment_uid",str_Comment_uid).whereEqualTo("str_Reporter_uid", auth.getCurrentUser().getUid())
                                                                 .get()
                                                                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                                                     @Override
