@@ -57,7 +57,6 @@ public class RegisterActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-
         mFirebaseAuth = FirebaseAuth.getInstance();
         mDatabaseref = FirebaseDatabase.getInstance().getReference("Knu_Matching");
         DatabaseReference mProfieDatabaseReference = mDatabaseref.child("UserAccount");
@@ -70,8 +69,6 @@ public class RegisterActivity extends AppCompatActivity {
         edt_password = findViewById(R.id.edt_Password);
         edt_repassword = findViewById(R.id.edt_RePassword);
         edt_Nickname = findViewById(R.id.edt_nickname);
-
-
         btn_knuID = findViewById(R.id.btn_knuID);
         btn_check_nick = findViewById(R.id.btn_check_nick);
         btn_finish = findViewById(R.id.btn_registerButton);
@@ -143,7 +140,8 @@ public class RegisterActivity extends AppCompatActivity {
                     if (nickname_state == true) {
 
 
-                        mFirebaseAuth.createUserWithEmailAndPassword(strEmail, strPassword).addOnCompleteListener(RegisterActivity.this, new OnCompleteListener<AuthResult>() {
+                        mFirebaseAuth.createUserWithEmailAndPassword(strEmail, strPassword)
+                                .addOnCompleteListener(RegisterActivity.this, new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {

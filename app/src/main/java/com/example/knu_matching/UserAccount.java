@@ -96,4 +96,43 @@ public class UserAccount {
     public UserAccount() {
 
     }
+    public static class friend
+    {
+        public String stdId;
+        public String uid;
+        public String email;
+        public String nickname;
+
+        public String getUid() {
+            return uid;
+        }
+
+        public void setUid(String uid) {
+            this.uid = uid;
+        }
+
+        public String getNickname() {
+            return nickname;
+        }
+
+        public void setNickname(String nickname) {
+            this.nickname = nickname;
+        }
+
+        public String getEmail() {
+            return email;
+        }
+
+        public void setEmail(String email) {
+            this.email = email;
+        }
+
+        public String getStdId() {
+            return stdId;
+        }
+
+        public void setStdId(String stdId) {
+            this.stdId = stdId;
+        }
+    }
 }

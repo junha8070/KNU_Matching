@@ -69,7 +69,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
 
-
 public class ChatActivity extends AppCompatActivity {
     private ArrayList<String> user_arrayList;
     private Map<String, String> arr_Nick;
@@ -135,11 +134,13 @@ public class ChatActivity extends AppCompatActivity {
                         map.put("fcmToken", token);
    //                     System.out.println("fcm map " + map.keySet());
                         String msg = getString(R.string.msg_token_fmt, token);
-                        FirebaseDatabase.getInstance().getReference().child("users").child(uid).child("token").addListenerForSingleValueEvent(new ValueEventListener() {
+                        System.out.println("test msg "+ msg);
+                        FirebaseDatabase.getInstance().getReference().child("users").child(uid).child("token")
+                                .addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot snapshot) {
-
                                 mToken = snapshot.getValue().toString();
+
                             }
                             @Override
                             public void onCancelled(@NonNull DatabaseError error) {
@@ -204,8 +205,7 @@ public class ChatActivity extends AppCompatActivity {
                                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void aVoid) {
-
-//                                        checkChatRoom();
+                                        checkChatRoom();
                                     }
                                 });
                     }
@@ -225,18 +225,12 @@ public class ChatActivity extends AppCompatActivity {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             for(DataSnapshot item : dataSnapshot.getChildren()) {
-                                ChatModel chatModel = item.getValue(ChatModel.class);
                                 chatRoomUid = item.getKey();
-                              //  System.out.println("test dataSnapshot 666  " + dataSnapshot);
-                              //  System.out.println("test item 666  " + item);
-                              //  System.out.println("test listTagNum 666  " + listTagNum);
-                              //  System.out.println("test chatRoomUid 666  " + chatRoomUid);
                                 first_chat = false;
                                 recyclerView.setLayoutManager(new LinearLayoutManager(ChatActivity.this));
                                 recyclerView.setAdapter(new RecyclerViewAdapter());
                             }
                         }
-
                         @Override
                         public void onCancelled(DatabaseError databaseError) {
 
@@ -256,8 +250,6 @@ public class ChatActivity extends AppCompatActivity {
                         for (String key : chatModel.users.keySet()) {
                             user_arrayList.add(key);
                         }//이건 chatroom 안에 같이 있는 users arrayList
-
-
                        // System.out.println("test userarrayList "+ user_arrayList);
                     }
                 }
@@ -266,13 +258,16 @@ public class ChatActivity extends AppCompatActivity {
                 public void onCancelled(@NonNull DatabaseError error) {
 
                 }
-            });
 
+            });
         }
+        //단순히 uid가져오는거
+        checkChatRoom();
+        System.out.println("테스트1 first_chat "+first_chat);
+        System.out.println("테스트2 chatRoomUid "+chatRoomUid);
 
         //채팅방 내에서 메세지 전송 버튼
         button.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View view) {
                // System.out.println("Send msg token "+arrayList);
@@ -283,9 +278,7 @@ public class ChatActivity extends AppCompatActivity {
                     checkChatRoom();
                 }
                 else {
-                    if(editText.getText().toString().equals("")){
-                    }
-                    else{
+                    if(!editText.getText().toString().equals("")){
                         arr_Nick = new HashMap<>();
                         token_List = new HashMap<>();
                         FirebaseDatabase.getInstance().getReference().child("users").addValueEventListener(new ValueEventListener() {
@@ -297,7 +290,6 @@ public class ChatActivity extends AppCompatActivity {
                                    // System.out.println("token token " +userAccount.getToken());
                                     arr_Nick.put(userAccount.getNickName(), userAccount.getUid());
                                     token_List.put(userAccount.getToken(), userAccount.getUid());
-
                                 }
                                 ChatModel.Comment comment = new ChatModel.Comment();
                                 comment.uid = uid;
@@ -310,24 +302,22 @@ public class ChatActivity extends AppCompatActivity {
                                     } else {
                                   //      System.out.println("wrong");
                                     }
-
                                 }
 
-                                FirebaseDatabase.getInstance().getReference().child("chatrooms").child(chatRoomUid).child("users").addListenerForSingleValueEvent(new ValueEventListener() {
+                                FirebaseDatabase.getInstance().getReference().child("chatrooms").child(chatRoomUid).child("users")
+                                        .addListenerForSingleValueEvent(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                                         for(DataSnapshot item : snapshot.getChildren()){
                                          //   System.out.println("valuevaluevalue "+ item.getKey());
-
                                             for(String key : token_List.keySet()) {
                                                 String value = token_List.get(key);
-
                                            //     System.out.println("arrayList element "+item.getKey());
                                            //     System.out.println("arrayList key "+key);
                                            //     System.out.println("arrayList value "+value);
                                                 if(value.equals(item.getKey())){
                                             //        System.out.println("arrayList equals "+item.getKey());
-                                                    SendNotification.sendNotification(key, "메세지가 도착했습니다!", comment.nickname);
+                                                    SendNotification.sendNotification(key,  comment.nickname+"님이 보낸 메시지 : "+comment.msg, comment.nickname);
                                                 }
                                             }
                                         }
@@ -356,7 +346,6 @@ public class ChatActivity extends AppCompatActivity {
                 }
             }
         });
-        checkChatRoom();
     }
 
     public void  checkChatRoom(){
@@ -366,9 +355,9 @@ public class ChatActivity extends AppCompatActivity {
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         for(DataSnapshot item : dataSnapshot.getChildren()){
                             chatRoomUidd = item.getKey();
-                            //System.out.println("test checkChatRoom chatRoomUidd "+chatRoomUidd);
-                            //System.out.println("test checkChatRoom chatRoomUid2 "+chatRoomUid);
-                            //System.out.println("test checkChatRoom first_chat "+ first_chat);
+                            System.out.println("test checkChatRoom chatRoomUidd "+chatRoomUidd);
+                            System.out.println("test checkChatRoom chatRoomUid2 "+chatRoomUid);
+                            System.out.println("test checkChatRoom first_chat "+ first_chat);
                             if(first_chat){
                                 chatRoomUid = chatRoomUidd;
                             }
@@ -394,7 +383,8 @@ public class ChatActivity extends AppCompatActivity {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             userModel = dataSnapshot.getValue(UserAccount.class);
-                            //System.out.println("test please userModel "+ userModel.uid);
+                            System.out.println("테스트3 userModel.uid "+ userModel.uid);
+                            System.out.println("테스트4 comments "+ comments);
 
                             getMessageList();
                         }
@@ -406,8 +396,7 @@ public class ChatActivity extends AppCompatActivity {
         }
 
         void getMessageList(){
-            System.out.println("getMessageList chatRoomUid " + chatRoomUid);
-
+            System.out.println("테스트 chatRoomUid " + chatRoomUid);
             FirebaseDatabase.getInstance().getReference().child("chatrooms").child(chatRoomUid).child("comments")
                     .addValueEventListener(new ValueEventListener() {
                         @Override
@@ -415,8 +404,9 @@ public class ChatActivity extends AppCompatActivity {
                             comments.clear();
                             for(DataSnapshot item : dataSnapshot.getChildren()){
                                 comments.add(item.getValue(ChatModel.Comment.class));
-                             //   System.out.println("please comment item " + item);
                             }
+                            System.out.println("테스트 5 comments" + comments.toString());
+
                             //메세지가 갱신
                             notifyDataSetChanged();
                             recyclerView.scrollToPosition(comments.size() - 1);

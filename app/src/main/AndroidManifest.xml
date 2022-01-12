@@ -74,21 +74,14 @@
         <activity
             android:name=".MainActivity"
             android:exported="false">
+            <intent-filter>
+                <action android:name="NOTIFICATION_CLICK"/>
+            </intent-filter>
 
         </activity>
         <activity
             android:name=".membermanage.RegisterActivity"
             android:exported="false" />
-
-        <service
-            android:name=".MyFirebaseMessagingService"
-            android:exported="true"
-            android:stopWithTask="true">
-            <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT" />
-                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
-            </intent-filter>
-        </service>
 
         <meta-data
             android:name="firebase_messaging_auto_init_enabled"
