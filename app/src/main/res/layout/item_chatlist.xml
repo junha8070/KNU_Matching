@@ -12,6 +12,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
             android:fontFamily="@font/tway_air"
+            android:textColor="#000000"
             android:text="채팅방 이름"
             android:textSize="17dp" />
         <View

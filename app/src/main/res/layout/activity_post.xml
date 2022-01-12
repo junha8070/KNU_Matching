@@ -138,7 +138,7 @@
                 android:ems="15"
                 android:fontFamily="@font/tway_air"
                 android:backgroundTint="#e8f3ff"
-                android:hint="같이 하고 싶은 인원 수" />
+                android:hint="모집인원" />
         </LinearLayout>
 
         <LinearLayout
@@ -197,7 +197,7 @@
                 android:layout_weight="6"
                 android:linksClickable="true"
                 android:fontFamily="@font/tway_air"
-                android:hint="참고 파일" />
+                android:hint="참고파일" />
 
             <Button
                 android:layout_gravity="right|center_vertical"
@@ -226,7 +226,7 @@
                 android:linksClickable="true"
                 android:fontFamily="@font/tway_air"
                 android:backgroundTint="#e8f3ff"
-                android:hint="참고할 링크를 적어주세요" />
+                android:hint="참고링크" />
         </LinearLayout>
 
         <LinearLayout
@@ -243,7 +243,7 @@
                 android:ems="10"
                 android:fontFamily="@font/tway_air"
                 android:backgroundTint="#e8f3ff"
-                android:hint="내용" />
+                android:hint="상세내용" />
         </LinearLayout>
 
 

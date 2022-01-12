@@ -67,7 +67,7 @@
                 android:layout_height="wrap_content"
                 android:backgroundTint="#e8f3ff"
                 android:fontFamily="@font/tway_air"
-                android:hint="모집글 제목을 적어주세요" />
+                android:hint="제목" />
         </LinearLayout>
 
         <LinearLayout
@@ -82,7 +82,7 @@
                 android:ems="15"
                 android:fontFamily="@font/tway_air"
                 android:backgroundTint="#e8f3ff"
-                android:hint="같이 하고 싶은 인원 수" />
+                android:hint="모집인원" />
         </LinearLayout>
 
         <LinearLayout
@@ -141,7 +141,7 @@
                 android:layout_weight="6"
                 android:linksClickable="true"
                 android:fontFamily="@font/tway_air"
-                android:hint="참고할 파일이 있으면 업로드 버튼을 눌러주세요" />
+                android:hint="참고파일" />
 
             <Button
                 android:layout_weight="1"
@@ -170,7 +170,7 @@
                 android:linksClickable="true"
                 android:fontFamily="@font/tway_air"
                 android:backgroundTint="#e8f3ff"
-                android:hint="참고할 링크를 적어주세요" />
+                android:hint="참고링크" />
         </LinearLayout>
 
         <LinearLayout
@@ -187,7 +187,7 @@
                 android:ems="10"
                 android:fontFamily="@font/tway_air"
                 android:backgroundTint="#e8f3ff"
-                android:hint="내용" />
+                android:hint="상세내용" />
         </LinearLayout>
 
 
