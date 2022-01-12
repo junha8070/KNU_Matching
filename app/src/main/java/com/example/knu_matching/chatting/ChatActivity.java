@@ -1,31 +1,18 @@
 package com.example.knu_matching.chatting;
 
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
-import android.provider.ContactsContract;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -36,35 +23,21 @@ import com.example.knu_matching.R;
 //import com.example.knu_matching.SendNotification;
 import com.example.knu_matching.SendNotification;
 import com.example.knu_matching.UserAccount;
-import com.example.knu_matching.membermanage.FindIDActivity;
-import com.example.knu_matching.membermanage.RegisterActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
-import com.google.api.SystemParameterRule;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.firestore.auth.User;
-import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.iid.InstanceIdResult;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
@@ -430,18 +403,18 @@ public class ChatActivity extends AppCompatActivity {
             //내가보낸 메세지
             if(comments.get(position).uid.equals(uid)){
                 messageViewHolder.textView_message.setText(comments.get(position).msg);
-                messageViewHolder.textView_message.setBackgroundResource(R.drawable.sender);
+                messageViewHolder.textView_message.setBackgroundResource(R.drawable.send_no);
                 messageViewHolder.linearLayout_destination.setVisibility(View.INVISIBLE);
-                messageViewHolder.textView_message.setTextSize(15);
+                messageViewHolder.textView_message.setTextSize(10);
                 messageViewHolder.linearLayout_main.setGravity(Gravity.RIGHT);
 
                 //상대방이 보낸 메세지
             }else {
                 messageViewHolder.textview_name.setText(comments.get(position).nickname);
                 messageViewHolder.linearLayout_destination.setVisibility(View.VISIBLE);
-                messageViewHolder.textView_message.setBackgroundResource(R.drawable.receiver);
+                messageViewHolder.textView_message.setBackgroundResource(R.drawable.receive_no);
                 messageViewHolder.textView_message.setText(comments.get(position).msg);
-                messageViewHolder.textView_message.setTextSize(15);
+                messageViewHolder.textView_message.setTextSize(10);
                 messageViewHolder.linearLayout_main.setGravity(Gravity.LEFT);
             }
             long unixTime = (long) comments.get(position).timestamp;

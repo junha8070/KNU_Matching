@@ -38,7 +38,7 @@
             android:id="@+id/messageItem_textView_message"
             android:layout_width="wrap_content"
             android:fontFamily="@font/tway_air"
-            android:textSize="10dp"
+            android:textSize="5dp"
             android:layout_height="wrap_content" />
 
         <TextView
