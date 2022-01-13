@@ -25,7 +25,7 @@
         android:layout_margin="5dp"
         android:ems="15"
         android:fontFamily="@font/tway_air"
-        android:hint="이름을 입력해 주세요."
+        android:hint="학번을 입력해 주세요."
         android:textSize="15dp"
         android:inputType="textPersonName" />
 

@@ -235,9 +235,7 @@ public class PeolpeFragment extends Fragment {
                             dialog.cancel();
                         }
                     });
-
                     alert.show();
-
                 }
             });
 
@@ -256,36 +254,18 @@ public class PeolpeFragment extends Fragment {
                             }
                         }
                     });
-//
             System.out.println("testtest " + userModels.get(0).getNickname());  //0 번째는 무조건 자기 자신
-//            if (!(String.valueOf(userModels.get(0).getNickname()).equals(checkMe_nickname))) {
-//                ((CustomViewHolder) holder).cbox_invite.setVisibility(View.GONE);
-//                // textView에 달려있는 모든 text가 다 바뀜
-//                //처음엔 이거 나옴 근데 하나 더 친구를 추가하는 순간에 아래의 else로 감
-//            } else {
-//                if (String.valueOf(position).equals("0")) {
-//
-//                    ((CustomViewHolder) holder).textView.setText("친구와 대화를 시작해보세요!");
-//                } else {
-//                    ((CustomViewHolder) holder).textView.setText(userModels.get(position).getNickname());
-//                }
-//            }
-
             if (position == 0) {
                 ((CustomViewHolder) holder).cbox_invite.setVisibility(View.GONE);
                 ((CustomViewHolder) holder).textView.setText("친구와 대화를 시작해보세요!");
-
             } else {
                 ((CustomViewHolder) holder).textView.setText(userModels.get(position).getNickname());
             }
             if (userModels != null && userModels.size() > 0) {
-                //    System.out.println("test 11111111111111 ");
-                //    System.out.println("test arraylist " + arrayList);
                 ((CustomViewHolder) holder).cbox_invite.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         if (((CustomViewHolder) holder).cbox_invite.isChecked()) {
-
                             strUid = userModels.get(position).getUid();
                             arrNick.add(userModels.get(position).getNickname());
                             arrayList.add(strUid);
@@ -294,17 +274,11 @@ public class PeolpeFragment extends Fragment {
                             arrNick.remove(userModels.get(position).getNickname());
                             arrayList.remove(strUid);
                         }
-
                         if (arrayList.size() == 1) {
                             ischeckfriend = false;
                         } else {
                             ischeckfriend = true;
                         }
-
-                        //         System.out.println("test8 arraylist " + arrayList);
-                        //         System.out.println("test8 arrNick " + arrNick);
-                        //         System.out.println("test8 arrayList.size() " + arrayList.size());
-                        //         System.out.println("test8 ischeckfriend " + ischeckfriend);
                     }
                 });
             }
@@ -322,7 +296,6 @@ public class PeolpeFragment extends Fragment {
                     } else {
                         iswritename = true;
                     }
-
                 }
 
                 @Override
@@ -334,10 +307,6 @@ public class PeolpeFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     if (iswritename == true && ischeckfriend == true) {
-                        //         System.out.println("test arraylist_btn_click " + arrayList);
-                        //        System.out.println("test iswritename " + iswritename);
-                        //        System.out.println("test ischeckfriend " + ischeckfriend);
-                        //       System.out.println("test ChatRoomName " + str_chatroom_name);
                         Intent intent = new Intent(v.getContext(), ChatActivity.class);
                         intent.putExtra("invited_List", arrayList);
                         intent.putExtra("arrNick", arrNick);
@@ -359,40 +328,6 @@ public class PeolpeFragment extends Fragment {
                 }
             });
         }
-
-        private boolean isAlreadyFriend(String email) {
-
-            //이미 친구인가?
-            //
-//            db.collection("Account").document(email.replace(".", ">")).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-//                @Override
-//                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-//                    UserAccount userAccount = task.getResult().toObject(UserAccount.class);
-//                    strEmail = userAccount.getEmailId();
-//                }
-//            });
-
-
-//                    .addListenerForSingleValueEvent(new ValueEventListener() {
-//                @Override
-//                public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                    UserAccount.friend user = snapshot.getValue(UserAccount.friend.class);
-//                    System.out.println("테테스스트트트 "+snapshot.child("email").getValue());
-////                    for(DataSnapshot dataSnapshot : snapshot.getChildren()) {
-////                        System.out.println("테테스스트트트 "+dataSnapshot.getValue());
-////                        dataSnapshot.getChildren().;
-////                        System.out.println("테테스스트트트트트트 "+dataSnapshot.getValue());
-////                    }
-//                }
-//
-//                @Override
-//                public void onCancelled(@NonNull DatabaseError error) {
-//
-//                }
-//            });
-            return isexistfriend;
-        }
-
 
         @Override
         public int getItemCount() {

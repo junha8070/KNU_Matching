@@ -100,12 +100,19 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.GalleryViewHol
         long diffSec = (format1.getTime() - format2.getTime()) / 1000; //초 차이
         long diffMin = (format1.getTime() - format2.getTime()) / 60000; //분 차이
         long diffHor = (format1.getTime() - format2.getTime()) / 3600000; //시 차이
-        long diffDays = diffSec / (24*60*60); //일자수 차이
-
-        String final_day="D-"+String.valueOf(diffDays);
-
-        TextView tv_Dday=cardView.findViewById(R.id.tv_Dday);
-        tv_Dday.setText(final_day);
+        if(diffSec<0){
+            long diffDays = diffSec / (24*60*60); //일자수 차이
+            diffDays=-diffDays;
+            String final_day="D+"+String.valueOf(diffDays);
+            TextView tv_Dday=cardView.findViewById(R.id.tv_Dday);
+            tv_Dday.setText(final_day);
+        }
+        else{
+            long diffDays = diffSec / (24*60*60); //일자수 차이
+            String final_day="D-"+String.valueOf(diffDays);
+            TextView tv_Dday=cardView.findViewById(R.id.tv_Dday);
+            tv_Dday.setText(final_day);
+        }
 
         cardView.setOnClickListener(new View.OnClickListener() {
             @Override

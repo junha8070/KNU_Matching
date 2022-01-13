@@ -4,22 +4,23 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?attr/colorPrimary"
-        android:backgroundTint="#00ff0000"
+        android:background="@color/mainColor"
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme">
-
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/tway_air"
+            android:text="ㅎㅇ"
+            android:id="@+id/chatroomName"
+            android:layout_gravity="left"
             android:textColor="#5489C3"
-            android:textStyle="bold"
-            android:text="채팅방"/>
+            android:textStyle="bold" />
     </androidx.appcompat.widget.Toolbar>
 
         <androidx.recyclerview.widget.RecyclerView

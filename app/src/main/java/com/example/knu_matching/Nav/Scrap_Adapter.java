@@ -91,6 +91,7 @@ public class Scrap_Adapter extends RecyclerView.Adapter<Scrap_Adapter.RecyclerVi
             btn_recruit = itemView.findViewById(R.id.btn_post);
             cv = (CardView) itemView.findViewById(R.id.cv);
 
+            btn_recruit.setVisibility(View.GONE);
             cv.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -119,13 +120,14 @@ public class Scrap_Adapter extends RecyclerView.Adapter<Scrap_Adapter.RecyclerVi
                     });
                 }
             });
-            btn_recruit.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Toast.makeText(cv.getContext(), "게시판으로 연동", Toast.LENGTH_SHORT).show();
-
-                }
-            });
+//
+//            btn_recruit.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    Toast.makeText(cv.getContext(), "게시판으로 연동", Toast.LENGTH_SHORT).show();
+//
+//                }
+//            });
         }
     }
 }

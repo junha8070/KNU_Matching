@@ -107,7 +107,8 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
             holder.tv_content.setVisibility(View.GONE);
             holder.tv_date.setVisibility(View.GONE);
             holder.btn_del_comment.setVisibility(View.GONE);
-            holder.tv_nickname.setText(item.getStr_NickName()+"님의 글 입니다.");
+            holder.btn_report.setVisibility(View.GONE);
+            holder.tv_nickname.setText("");
         }
         else{
 

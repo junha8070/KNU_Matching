@@ -31,7 +31,7 @@ import java.util.List;
 
 public class ChatFragment extends Fragment {
     private String uid;
-    private TextView chatroom_name;
+    private TextView chatroomName;
     private String chatRoomUid;
     boolean chat_list= false;
     public ChatFragment() {
@@ -45,7 +45,7 @@ public class ChatFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(inflater.getContext()));
         recyclerView.setAdapter(new ChatFragmentRecyclerViewAdapter());
         uid = FirebaseAuth.getInstance().getCurrentUser().getUid();  //채팅을 요구 하는 아아디 즉 단말기에 로그인된 UID
-
+        chatroomName = view.findViewById(R.id.chatroomName);
         return view;
     }
 
@@ -97,6 +97,7 @@ public class ChatFragment extends Fragment {
             ((CustomViewHolder)holder).chatroom_name.setText(chatModels.get(position).getRoomName());
 //            System.out.println("test chatModel 2 " + chatModels.get(position).getRoomName());
             ((CustomViewHolder)holder).itemView.setTag(position);
+
         }
 
         @Override
@@ -122,6 +123,7 @@ public class ChatFragment extends Fragment {
                         Intent intent = new Intent(v.getContext(), ChatActivity.class);
                         intent.putExtra("chat_list", chat_list);
                         intent.putExtra("listTagNum", listTagNum);
+                        intent.putExtra("chatroomName", chatroom_name.getText().toString());
                         ActivityOptions activityOptions = null;
                         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN) {
                             activityOptions = ActivityOptions.makeCustomAnimation(v.getContext(), R.anim.fromright,R.anim.toleft);

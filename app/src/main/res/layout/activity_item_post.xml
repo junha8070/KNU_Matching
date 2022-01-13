@@ -69,8 +69,24 @@
                 tools:ignore="MissingConstraints" />
         </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#ffffff"
+        android:orientation="horizontal">
+        <TextView
+            android:text="작성 날짜"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="200dp"
+            android:background="#ffffff"
+            android:fontFamily="@font/tway_air"
+            android:paddingBottom="9dp"
+            android:paddingRight="10dp"
+            tools:ignore="MissingConstraints" />
         <TextView
             android:id="@+id/dateView"
+            android:text="2022년1월13일"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="right|end"
@@ -80,6 +96,8 @@
             android:paddingBottom="9dp"
             android:paddingRight="10dp"
             tools:ignore="MissingConstraints" />
+    </LinearLayout>
+
 
     </LinearLayout>
 
