@@ -30,6 +30,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.knu_matching.GetSet.CommentItem;
+import com.example.knu_matching.GetSet.Participate;
 import com.example.knu_matching.GetSet.Post;
 import com.example.knu_matching.GetSet.Report;
 import com.example.knu_matching.MainActivity;
@@ -81,7 +82,7 @@ public class Visitor extends AppCompatActivity {
     RecyclerView rv_comment;
     CommentAdapter commentAdapter = null;
     EditText edt_comment;
-    String str_participate_Nickname, str_participate_Major, str_participate_StudentId, str_participate_EmailId, str_participate_Uid;
+    String str_participate_Nickname, str_participate_Major, str_participate_StudentId, str_participate_EmailId, str_participate_Uid, str_participate_strId;
     String str_owner_uid, str_title, str_Comment_uid, str_count, str_total, str_StartDate, str_EndDate, str_filename, str_content, str_comment, str_email, str_Id, str_time, str_application, str_link, str_uid;
     public String str_Current_Email;
     Intent intent;
@@ -132,6 +133,24 @@ public class Visitor extends AppCompatActivity {
         btn_participate_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                db.collection("Participate_list").whereEqualTo("str_post_uid",str_Id).whereEqualTo("str_user_uid",auth.getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        String tempId = task.getResult().getDocuments().toString();
+                        System.out.println("템프"+tempId);
+                        String target ="DocumentSnapshot{key=Participate_list/";
+                        int target_num = tempId.indexOf(target);
+                        String result = tempId.substring(target_num+38,(tempId.substring(target_num).indexOf(", metadata=")+target_num));
+                        System.out.println("템프결과"+result);
+                        db.collection("Participate_list").document(result).delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if(task.isSuccessful())
+                                    Toast.makeText(getApplicationContext(),"1차 삭제완료",Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                });
                 db.collection("Post").document(str_Id).collection("Participate").document(auth.getCurrentUser().getEmail().replace(".", ">")).delete().addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
@@ -384,6 +403,19 @@ public class Visitor extends AppCompatActivity {
                                 str_participate_StudentId = userAccount.getStudentId();
                                 str_participate_EmailId = userAccount.getEmailId();
                                 str_participate_Uid = userAccount.getUid();
+                                str_participate_strId = str_Id;
+
+                                Participate participate = new Participate();
+                                participate.setStr_post_uid(str_Id);
+                                participate.setStr_user_email(userAccount.getEmailId());
+                                participate.setStr_user_uid(userAccount.getUid());
+
+                                db.collection("Participate_list").add(participate).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<DocumentReference> task) {
+                                        Toast.makeText(getApplicationContext(),"내 맘음속에 저장",Toast.LENGTH_SHORT).show();
+                                    }
+                                });
                                 ParticipateUser participateUser = new ParticipateUser(str_participate_Nickname, str_participate_Major, str_participate_StudentId, str_participate_EmailId, str_participate_Uid);
                                 ParticipateUserSave(participateUser);
                                 Intent intent = new Intent();
@@ -411,6 +443,10 @@ public class Visitor extends AppCompatActivity {
                         }
                     }
                 });
+
+
+
+
             }
         });
 

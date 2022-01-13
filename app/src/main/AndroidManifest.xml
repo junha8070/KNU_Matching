@@ -16,6 +16,9 @@
         android:theme="@style/Theme.Knu_Matching"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".Nav.Select_Person"
+            android:exported="false" />
+        <activity
             android:name=".Nav.MyParticipate_Activity"
             android:exported="false" />
         <activity
@@ -56,9 +59,10 @@
             android:exported="false" />
         <activity
             android:name=".membermanage.LoginActivity"
-            android:exported="true" >
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -75,9 +79,8 @@
             android:name=".MainActivity"
             android:exported="false">
             <intent-filter>
-                <action android:name="NOTIFICATION_CLICK"/>
+                <action android:name="NOTIFICATION_CLICK" />
             </intent-filter>
-
         </activity>
         <activity
             android:name=".membermanage.RegisterActivity"
