@@ -231,7 +231,7 @@ public class ChatActivity extends AppCompatActivity {
                         }//이건 chatroom 안에 같이 있는 users arrayList
 
 
-                       // System.out.println("test userarrayList "+ user_arrayList);
+                       // System.out.println("test userarrayList "+ user_arrayList);fvrrrfv
                     }
                 }
 
@@ -251,85 +251,89 @@ public class ChatActivity extends AppCompatActivity {
                // System.out.println("Send msg token "+arrayList);
                // System.out.println("Send msg token1 "+mToken);
                // System.out.println("Send msg token2 "+map.entrySet());
+                msgEnter();
 
-                if(chatRoomUid == null) {
-                    checkChatRoom();
-                }
-                else {
-                    if(editText.getText().toString().equals("")){
-                    }
-                    else{
-                        arr_Nick = new HashMap<>();
-                        token_List = new HashMap<>();
-                        FirebaseDatabase.getInstance().getReference().child("users").addValueEventListener(new ValueEventListener() {
+            }
+        });
+        checkChatRoom();
+    }
+
+    public void msgEnter(){
+        if(chatRoomUid == null) {
+            checkChatRoom();
+        }
+        else {
+            if(editText.getText().toString().equals("")){
+            }
+            else{
+                arr_Nick = new HashMap<>();
+                token_List = new HashMap<>();
+                FirebaseDatabase.getInstance().getReference().child("users").addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        for (DataSnapshot item : snapshot.getChildren()) {
+                            UserAccount userAccount = item.getValue(UserAccount.class);
+                            //System.out.println("userAccount " +userAccount.getNickName());
+                            // System.out.println("token token " +userAccount.getToken());
+                            arr_Nick.put(userAccount.getNickName(), userAccount.getUid());
+                            token_List.put(userAccount.getToken(), userAccount.getUid());
+
+                        }
+                        ChatModel.Comment comment = new ChatModel.Comment();
+                        comment.uid = uid;
+                        comment.msg = editText.getText().toString();
+                        comment.timestamp = ServerValue.TIMESTAMP;
+                        for (String key : arr_Nick.keySet()) {
+                            String value = arr_Nick.get(key);
+                            if (value.equals(uid)) {
+                                comment.nickname = key;
+                            } else {
+                                //      System.out.println("wrong");
+                            }
+
+                        }
+
+                        FirebaseDatabase.getInstance().getReference().child("chatrooms").child(chatRoomUid).child("users").addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                for (DataSnapshot item : snapshot.getChildren()) {
-                                    UserAccount userAccount = item.getValue(UserAccount.class);
-                                    //System.out.println("userAccount " +userAccount.getNickName());
-                                   // System.out.println("token token " +userAccount.getToken());
-                                    arr_Nick.put(userAccount.getNickName(), userAccount.getUid());
-                                    token_List.put(userAccount.getToken(), userAccount.getUid());
+                                for(DataSnapshot item : snapshot.getChildren()){
+                                    //   System.out.println("valuevaluevalue "+ item.getKey());
 
-                                }
-                                ChatModel.Comment comment = new ChatModel.Comment();
-                                comment.uid = uid;
-                                comment.msg = editText.getText().toString();
-                                comment.timestamp = ServerValue.TIMESTAMP;
-                                for (String key : arr_Nick.keySet()) {
-                                    String value = arr_Nick.get(key);
-                                    if (value.equals(uid)) {
-                                        comment.nickname = key;
-                                    } else {
-                                  //      System.out.println("wrong");
-                                    }
+                                    for(String key : token_List.keySet()) {
+                                        String value = token_List.get(key);
 
-                                }
-
-                                FirebaseDatabase.getInstance().getReference().child("chatrooms").child(chatRoomUid).child("users").addListenerForSingleValueEvent(new ValueEventListener() {
-                                    @Override
-                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                        for(DataSnapshot item : snapshot.getChildren()){
-                                         //   System.out.println("valuevaluevalue "+ item.getKey());
-
-                                            for(String key : token_List.keySet()) {
-                                                String value = token_List.get(key);
-
-                                           //     System.out.println("arrayList element "+item.getKey());
-                                           //     System.out.println("arrayList key "+key);
-                                           //     System.out.println("arrayList value "+value);
-                                                if(value.equals(item.getKey())){
+                                        //     System.out.println("arrayList element "+item.getKey());
+                                        //     System.out.println("arrayList key "+key);
+                                        //     System.out.println("arrayList value "+value);
+                                        if(value.equals(item.getKey())){
                                             //        System.out.println("arrayList equals "+item.getKey());
-                                                    SendNotification.sendNotification(key, "메세지가 도착했습니다!", comment.nickname);
-                                                }
-                                            }
+                                            SendNotification.sendNotification(key, "메세지가 도착했습니다!", comment.nickname);
                                         }
                                     }
-
-                                    @Override
-                                    public void onCancelled(@NonNull DatabaseError error) {
-
-                                    }
-                                });
-
-                                FirebaseDatabase.getInstance().getReference().child("chatrooms").child(chatRoomUid).child("comments").push().setValue(comment).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<Void> task) {
-                                        editText.setText("");
-                                    }
-                                });
-
+                                }
                             }
+
                             @Override
                             public void onCancelled(@NonNull DatabaseError error) {
 
                             }
                         });
+
+                        FirebaseDatabase.getInstance().getReference().child("chatrooms").child(chatRoomUid).child("comments").push().setValue(comment).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                editText.setText("");
+                            }
+                        });
+
                     }
-                }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
             }
-        });
-        checkChatRoom();
+        }
     }
 
     public void  checkChatRoom(){
@@ -413,17 +417,17 @@ public class ChatActivity extends AppCompatActivity {
             //내가보낸 메세지
             if(comments.get(position).uid.equals(uid)){
                 messageViewHolder.textView_message.setText(comments.get(position).msg);
-                messageViewHolder.textView_message.setBackgroundResource(R.drawable.chat_se_final);
+                messageViewHolder.textView_message.setBackgroundResource(R.drawable.send_l);
                 messageViewHolder.linearLayout_destination.setVisibility(View.INVISIBLE);
-                messageViewHolder.textView_message.setTextSize(10);
+                messageViewHolder.textView_message.setTextSize(15);
                 messageViewHolder.linearLayout_main.setGravity(Gravity.RIGHT);
                 //상대방이 보낸 메세지
             }else {
                 messageViewHolder.textview_name.setText(comments.get(position).nickname);
                 messageViewHolder.linearLayout_destination.setVisibility(View.VISIBLE);
-                messageViewHolder.textView_message.setBackgroundResource(R.drawable.chat_re_final);
+                messageViewHolder.textView_message.setBackgroundResource(R.drawable.receiver_l);
                 messageViewHolder.textView_message.setText(comments.get(position).msg);
-                messageViewHolder.textView_message.setTextSize(10);
+                messageViewHolder.textView_message.setTextSize(15);
                 messageViewHolder.linearLayout_main.setGravity(Gravity.LEFT);
             }
             long unixTime = (long) comments.get(position).timestamp;
