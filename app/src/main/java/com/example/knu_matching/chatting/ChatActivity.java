@@ -413,7 +413,7 @@ public class ChatActivity extends AppCompatActivity {
             //내가보낸 메세지
             if(comments.get(position).uid.equals(uid)){
                 messageViewHolder.textView_message.setText(comments.get(position).msg);
-                messageViewHolder.textView_message.setBackgroundResource(R.drawable.send_no);
+                messageViewHolder.textView_message.setBackgroundResource(R.drawable.chat_se_final);
                 messageViewHolder.linearLayout_destination.setVisibility(View.INVISIBLE);
                 messageViewHolder.textView_message.setTextSize(10);
                 messageViewHolder.linearLayout_main.setGravity(Gravity.RIGHT);
@@ -421,7 +421,7 @@ public class ChatActivity extends AppCompatActivity {
             }else {
                 messageViewHolder.textview_name.setText(comments.get(position).nickname);
                 messageViewHolder.linearLayout_destination.setVisibility(View.VISIBLE);
-                messageViewHolder.textView_message.setBackgroundResource(R.drawable.receive_no);
+                messageViewHolder.textView_message.setBackgroundResource(R.drawable.chat_re_final);
                 messageViewHolder.textView_message.setText(comments.get(position).msg);
                 messageViewHolder.textView_message.setTextSize(10);
                 messageViewHolder.linearLayout_main.setGravity(Gravity.LEFT);

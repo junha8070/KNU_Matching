@@ -46,8 +46,8 @@
 
         <TextView
             android:text="2011.11.11 11:11"
-            android:layout_gravity="right|end"
-            android:gravity="right|end"
+            android:layout_gravity="left|end"
+            android:gravity="left|end"
             android:textSize="9dp"
             android:textColor="@android:color/darker_gray"
             android:id="@+id/messageItem_textview_timestamp"
