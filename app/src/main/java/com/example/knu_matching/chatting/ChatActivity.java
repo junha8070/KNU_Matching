@@ -61,11 +61,12 @@ public class ChatActivity extends AppCompatActivity {
     private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy.MM.dd HH:mm");
     String str_Num, str_roomName;
     Toolbar toolbar;
-
+    TextView chatroomName;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
+        chatroomName = (TextView) findViewById(R.id.chatroomName);
         toolbar = (Toolbar) findViewById(R.id.toolbar);             //툴바 설정
         setSupportActionBar(toolbar);                               //툴바 셋업
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);      //뒤로가기 자동 생성
@@ -73,7 +74,7 @@ public class ChatActivity extends AppCompatActivity {
         uid = FirebaseAuth.getInstance().getCurrentUser().getUid();  //채팅을 요구 하는 아아디 즉 단말기에 로그인된 UID
         arrayList = getIntent().getStringArrayListExtra("invited_List");
         chat_list = getIntent().getExtras().getBoolean("chat_list");
-        chatRoomName = getIntent().getExtras().getString("chatRoom_name");
+        chatRoomName = getIntent().getExtras().getString("chatroomName");
         arrNick = getIntent().getStringArrayListExtra("arrNick");
         str_Num = getIntent().getStringExtra("Number");
         arr_participated_uid = getIntent().getStringArrayListExtra("participated_uid");
@@ -90,7 +91,8 @@ public class ChatActivity extends AppCompatActivity {
         roomNum=0;
 //        System.out.println("test oncreate arrNick2 "+arrayList);
         Map<String, Object> map = new HashMap<>();
-
+        System.out.println("chatRoomName "+ chatRoomName);
+        chatroomName.setText(chatRoomName);
         FirebaseMessaging.getInstance().getToken()
                 .addOnCompleteListener(new OnCompleteListener<String>() {
                     @Override

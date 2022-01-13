@@ -29,9 +29,11 @@
             android:exported="false" />
         <activity
             android:name=".Post.Visitor"
+            android:windowSoftInputMode="adjustPan"
             android:exported="false" />
         <activity
             android:name=".Post.Post_Owner_Acticity"
+            android:windowSoftInputMode="adjustPan"
             android:exported="false" />
         <activity
             android:name=".Nav.Edit_profile_Activity"
@@ -47,6 +49,7 @@
             android:exported="false" />
         <activity
             android:name=".Post.postActivity"
+            android:windowSoftInputMode="adjustPan"
             android:exported="false" />
         <activity
             android:name=".Nav.InfoModify"
