@@ -69,6 +69,7 @@ public class MyPostAdapter extends RecyclerView.Adapter<MyPostAdapter.RecyclerVi
     //    private String[] listArr;
     private ArrayList<String> listArr = new ArrayList<>();
     private ArrayList<String> uidArr = new ArrayList<>();
+    private ArrayList<String> NickArr = new ArrayList<>();
     int count = 0;
     List<String> mSelectedItems;
     ArrayList<String> arr_participated_uid = new ArrayList<String>();
@@ -158,15 +159,27 @@ public class MyPostAdapter extends RecyclerView.Adapter<MyPostAdapter.RecyclerVi
                                     System.out.println("템프 document getId " + documentSnapshot.getId());
                                     System.out.println("템프 document getData " + documentSnapshot.getData().toString());
                                     listArr.add(documentSnapshot.getId());
+                                    NickArr.add((documentSnapshot.get("str_participate_Nickname").toString()));
+//                                    db.collection("Account").document(documentSnapshot.getId()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+//                                        @Override
+//                                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+//                                            UserAccount userAccount = task.getResult().toObject(UserAccount.class);
+//                                            NickArr.add(userAccount.getNickName());
+//                                        }
+//                                    });
                                 }
+
                                 String[] tempArr = new String[listArr.size()];
+                                String[] tempNickArr = new String[listArr.size()];
                                 for (int i = 0; i < listArr.size(); i++) {
                                     tempArr[i] = listArr.get(i);
+                                    tempNickArr[i] = NickArr.get(i);
                                 }
                                 System.out.println("템프 listArr 1 " + listArr);
                                 ArrayList<String> select_arr = new ArrayList<String>();
+
                                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                                builder.setMultiChoiceItems(tempArr, null, new DialogInterface.OnMultiChoiceClickListener() {
+                                builder.setMultiChoiceItems(tempNickArr, null, new DialogInterface.OnMultiChoiceClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which, boolean isChecked) {
                                         if (isChecked) {
@@ -253,7 +266,7 @@ public class MyPostAdapter extends RecyclerView.Adapter<MyPostAdapter.RecyclerVi
                                         dialog.cancel();
                                     }
                                 });
-                                builder.setTitle("리스트 다이얼로그");
+                                builder.setTitle("같이할 팀원을 선택해주세요");
 
                                 AlertDialog alertDialog = builder.create();
                                 alertDialog.show();
