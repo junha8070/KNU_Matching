@@ -18,6 +18,19 @@
     - 스크랩 기능을 통해 관심 있는 활동을 저장 할 수 있습니다.
     - 팀원 구하기 버튼을 활용하여 url이 바로 기입되게 하면서 번거로운 일을 최소화하여 게시글을 쓸  수  있도록 구현하였습니다.
     
+---
+
+## Using
+
+View
+
+- Fragment
+- RecyclerView
+
+Tool
+
+- XmlPullparser
+- Firebase
 
 ---
 
